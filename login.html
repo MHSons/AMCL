@@ -2,35 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Alpha Med Lab - User Login</title>
+  <title>Alpha Med Lab - Login</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="login-container">
-    <h1>Alpha Med Lab</h1>
-    <h2>User Login</h2>
-
+  <div class="form-container">
+    <h1>Login</h1>
     <form id="loginForm">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" placeholder="Enter username" required>
+      <input type="text" id="username" required>
 
       <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter password" required>
-
-      <label for="role">Select Role</label>
-      <select id="role" name="role" required>
-        <option value="">-- Select Role --</option>
-        <option value="admin">Admin</option>
-        <option value="reception">Reception</option>
-        <option value="technician">Technician</option>
-      </select>
+      <input type="password" id="password" required>
 
       <button type="submit">Login</button>
     </form>
-
-    <p class="note">Login with your role (Admin / Reception / Technician)</p>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    const form = document.getElementById("loginForm");
+
+    // Create default users if none exist
+    if (!localStorage.getItem("users")) {
+      const defaultUsers = [
+        { username: "admin", password: "admin123", role: "admin" },
+        { username: "reception", password: "reception123", role: "reception" },
+        { username: "tech", password: "tech123", role: "technician" }
+      ];
+      localStorage.setItem("users", JSON.stringify(defaultUsers));
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.username === username && u.password === password);
+
+      if (user) {
+        localStorage.setItem("loggedInUser", JSON.stringify(user));
+        if (user.role === "admin") window.location.href = "admin.html";
+        if (user.role === "reception") window.location.href = "reception.html";
+        if (user.role === "technician") window.location.href = "technician.html";
+      } else {
+        alert("Invalid username or password!");
+      }
+    });
+  </script>
 </body>
 </html>
