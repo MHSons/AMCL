@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - Reception Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header>
+      <h1>Reception Dashboard</h1>
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="register_patient.html">➕ Register Patient</a></li>
+        <li><a href="registration-slip.html">🧾 Generate Slip</a></li>
+        <li><a href="view_reports.html">📑 View Reports</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Welcome, Reception!</h2>
+      <p>Register patients, generate slips, and check reports here.</p>
+    </main>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
