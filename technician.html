@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - Technician Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header>
+      <h1>Technician Dashboard</h1>
+      <button onclick="logout()">Logout</button>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="add_test_result.html">🧪 Add Test Result</a></li>
+        <li><a href="view_reports.html">📑 View Reports</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <h2>Welcome, Technician!</h2>
+      <p>Enter test results and view assigned reports here.</p>
+    </main>
+  </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("loggedInUser");
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
