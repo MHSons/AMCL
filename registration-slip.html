@@ -2,65 +2,122 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Alpha Med Lab - Registration Slip</title>
+  <title>Registration Slip - Alpha Med Lab</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      position: relative;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .header .lab-info {
+      text-align: right;
+    }
+
+    .watermark {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    .patient-info, .test-list {
+      margin-bottom: 20px;
+    }
+
+    .test-list ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .qr {
+      width: 100px;
+      height: 100px;
+    }
+
+    .footer {
+      border-top: 1px solid #000;
+      margin-top: 20px;
+      padding-top: 10px;
+      text-align: center;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
-  <div class="slip-container">
-    <h1>Patient Registration Slip</h1>
-
-    <form id="slipForm">
-      <label for="patient">Select Patient</label>
-      <select id="patient" required></select>
-      <button type="submit">Generate Slip</button>
-    </form>
-
-    <div id="slip" class="slip" style="display:none;">
+  <div class="header">
+    <canvas id="qrcode"></canvas>
+    <div class="lab-info">
       <h2>Alpha Med Lab</h2>
-      <p><b>Name:</b> <span id="sName"></span></p>
-      <p><b>Age:</b> <span id="sAge"></span></p>
-      <p><b>Gender:</b> <span id="sGender"></span></p>
-      <p><b>Department:</b> <span id="sDepartment"></span></p>
-      <p><b>Tests:</b></p>
-      <ul id="sTests"></ul>
-      <button onclick="window.print()">🖨 Print Slip</button>
+      <p>Trusted Diagnostic Services</p>
+      <p>Phone: +92-300-1234567</p>
     </div>
   </div>
 
+  <img src="logo.png" class="watermark" width="300" alt="Lab Logo">
+
+  <div class="patient-info" id="patientInfo"></div>
+  <div class="test-list" id="testList"></div>
+
+  <div class="footer">
+    <p>This slip is computer generated. Please bring it along with you for test sample submission.</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
   <script>
-    const patientSelect = document.getElementById("patient");
-    const slipDiv = document.getElementById("slip");
+    // get sample number from query
+    const urlParams = new URLSearchParams(window.location.search);
+    const sampleNo = urlParams.get('sample');
 
-    let patients = JSON.parse(localStorage.getItem("patients")) || [];
+    const patients = JSON.parse(localStorage.getItem('patients_data') || '[]');
+    const patient = patients.find(p => p.sampleNo === sampleNo);
 
-    // Load patients into dropdown
-    patients.forEach((p, index) => {
-      const option = document.createElement("option");
-      option.value = index;
-      option.textContent = `${p.name} (${p.department})`;
-      patientSelect.appendChild(option);
-    });
+    if (patient) {
+      // fill patient info
+      document.getElementById('patientInfo').innerHTML = `
+        <h3>Patient Information</h3>
+        <p><strong>Sample No:</strong> ${patient.sampleNo}</p>
+        <p><strong>Name:</strong> ${patient.name}</p>
+        <p><strong>Age/Gender:</strong> ${patient.age} / ${patient.gender}</p>
+        <p><strong>Phone:</strong> ${patient.phone}</p>
+        <p><strong>Address:</strong> ${patient.address}</p>
+        <p><strong>Department:</strong> ${patient.department}</p>
+      `;
 
-    // Generate slip
-    document.getElementById("slipForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const patient = patients[patientSelect.value];
+      // fill test list
+      let testHTML = "<h3>Selected Tests</h3><ul>";
+      patient.tests.forEach(t => {
+        testHTML += `<li>${t.name} (${t.parameter}, Normal: ${t.normalMin}-${t.normalMax} ${t.unit})</li>`;
+      });
+      testHTML += "</ul>";
+      document.getElementById('testList').innerHTML = testHTML;
 
-      document.getElementById("sName").textContent = patient.name;
-      document.getElementById("sAge").textContent = patient.age;
-      document.getElementById("sGender").textContent = patient.gender;
-      document.getElementById("sDepartment").textContent = patient.department;
-
-      const testList = document.getElementById("sTests");
-      testList.innerHTML = "";
-      patient.tests.forEach(test => {
-        const li = document.createElement("li");
-        li.textContent = test;
-        testList.appendChild(li);
+      // generate QR code with sampleNo
+      const qr = new QRious({
+        element: document.getElementById('qrcode'),
+        value: `Alpha Med Lab | Sample No: ${patient.sampleNo}`,
+        size: 100
       });
 
-      slipDiv.style.display = "block";
-    });
+      // auto print if opened with ?sample
+      setTimeout(() => {
+        window.print();
+      }, 800);
+    } else {
+      document.body.innerHTML = "<h2>❌ Patient not found.</h2>";
+    }
   </script>
 </body>
 </html>
