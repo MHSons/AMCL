@@ -1,9 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Alpha Med Lab - Register Patient</title>
+  <meta charset="utf-8">
+  <title>Register Patient - Alpha Med Lab</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    /* small adjustments for selection list */
+    #tests-list { max-height: 300px; overflow:auto; border:1px solid #ddd; padding:8px; }
+    #tests-list label { display:block; margin-bottom:6px; }
+    .small { font-size:0.9em; color:#555; }
+  </style>
 </head>
 <body>
   <div class="form-container">
@@ -11,77 +17,163 @@
 
     <form id="patientForm">
       <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter full name" required>
+      <input type="text" id="name" required>
 
       <label for="age">Age</label>
-      <input type="number" id="age" name="age" placeholder="Enter age" required>
+      <input type="number" id="age" required>
 
       <label for="gender">Gender</label>
-      <select id="gender" name="gender" required>
-        <option value="">-- Select Gender --</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
+      <select id="gender" required>
+        <option value="">--Select--</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
       </select>
 
+      <label for="phone">Phone</label>
+      <input type="text" id="phone">
+
+      <label for="address">Address</label>
+      <input type="text" id="address">
+
       <label for="department">Department</label>
-      <select id="department" name="department" required>
+      <select id="department" required>
         <option value="">-- Select Department --</option>
       </select>
 
-      <label for="tests">Select Tests</label>
-      <select id="tests" name="tests" multiple required>
-        <!-- Tests will load here -->
-      </select>
+      <label>Available Tests <span class="small">(choose tests for this patient)</span></label>
+      <div id="tests-list">
+        <!-- checkboxes appended here -->
+      </div>
 
-      <button type="submit">Register Patient</button>
+      <label for="sampleNo">Sample Number</label>
+      <input type="text" id="sampleNo" readonly>
+
+      <button type="submit">Save & Print Slip</button>
     </form>
   </div>
 
   <script src="test-data.js"></script>
   <script>
-    // Load departments
-    const deptSelect = document.getElementById("department");
-    const testSelect = document.getElementById("tests");
+    // helper: generate sample number S-YYYYMMDD-XXXX (incremental within localStorage)
+    function generateSampleNo() {
+      const date = new Date();
+      const y = date.getFullYear();
+      const m = String(date.getMonth()+1).padStart(2,'0');
+      const d = String(date.getDate()).padStart(2,'0');
+      const prefix = `S-${y}${m}${d}`;
+      // read counter from localStorage
+      const key = `sample_counter_${y}${m}${d}`;
+      let counter = parseInt(localStorage.getItem(key) || '0', 10);
+      counter++;
+      localStorage.setItem(key, String(counter));
+      const num = String(counter).padStart(4,'0');
+      return `${prefix}-${num}`;
+    }
 
-    const departments = Object.keys(testData);
+    // populate departments dropdown from testData
+    const deptSelect = document.getElementById('department');
+    const testsListDiv = document.getElementById('tests-list');
+    const sampleInput = document.getElementById('sampleNo');
 
-    departments.forEach(dept => {
-      const option = document.createElement("option");
-      option.value = dept;
-      option.textContent = dept;
-      deptSelect.appendChild(option);
+    function populateDepartments() {
+      const depts = Object.keys(window.testData || {});
+      depts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        deptSelect.appendChild(opt);
+      });
+    }
+
+    function loadTestsForDept(deptName) {
+      testsListDiv.innerHTML = '';
+      if(!deptName) return;
+      const arr = (window.testData && window.testData[deptName]) || [];
+      arr.forEach(t => {
+        const id = t.id;
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = id;
+        checkbox.dataset.name = t.name;
+        checkbox.dataset.parameter = t.parameter;
+        checkbox.dataset.normalMin = t.normalMin;
+        checkbox.dataset.normalMax = t.normalMax;
+        checkbox.dataset.unit = t.unit;
+        label.appendChild(checkbox);
+        const span = document.createElement('span');
+        span.innerHTML = `<strong>${t.name}</strong> — <span class="small">${t.parameter} | Normal: ${t.normalMin} - ${t.normalMax} ${t.unit}</span>`;
+        label.appendChild(span);
+        testsListDiv.appendChild(label);
+      });
+    }
+
+    // initialize sample number on load
+    window.addEventListener('load', () => {
+      populateDepartments();
+      sampleInput.value = generateSampleNo();
     });
 
-    deptSelect.addEventListener("change", () => {
-      testSelect.innerHTML = "";
-      const selectedDept = deptSelect.value;
-      if (selectedDept && testData[selectedDept]) {
-        testData[selectedDept].forEach(test => {
-          const option = document.createElement("option");
-          option.value = test.name;
-          option.textContent = `${test.name} (Normal: ${test.normalRange})`;
-          testSelect.appendChild(option);
-        });
-      }
+    deptSelect.addEventListener('change', (e) => {
+      loadTestsForDept(e.target.value);
     });
 
-    // Save patient
-    document.getElementById("patientForm").addEventListener("submit", (e) => {
+    // save patient with assigned tests
+    document.getElementById('patientForm').addEventListener('submit', (e) => {
       e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const age = document.getElementById('age').value.trim();
+      const gender = document.getElementById('gender').value;
+      const phone = document.getElementById('phone').value.trim();
+      const address = document.getElementById('address').value.trim();
+      const department = deptSelect.value;
+      const sampleNo = sampleInput.value;
+
+      // collect selected tests
+      const checked = Array.from(testsListDiv.querySelectorAll('input[type=checkbox]:checked'));
+      if (checked.length === 0) {
+        if (!confirm('No tests selected. Save patient without tests?')) return;
+      }
+
+      const assignedTests = checked.map(cb => ({
+        id: cb.value,
+        name: cb.dataset.name,
+        parameter: cb.dataset.parameter,
+        normalMin: parseFloat(cb.dataset.normalMin),
+        normalMax: parseFloat(cb.dataset.normalMax),
+        unit: cb.dataset.unit,
+        description: window.testDescriptions ? (window.testDescriptions[cb.value] || '') : ''
+      }));
+
+      // build patient object
       const patient = {
-        name: document.getElementById("name").value,
-        age: document.getElementById("age").value,
-        gender: document.getElementById("gender").value,
-        department: document.getElementById("department").value,
-        tests: Array.from(testSelect.selectedOptions).map(o => o.value)
+        sampleNo,
+        name,
+        age,
+        gender,
+        phone,
+        address,
+        department,
+        tests: assignedTests,
+        createdAt: new Date().toISOString()
       };
 
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      // save in localStorage (patients array keyed by sampleNo)
+      let patients = JSON.parse(localStorage.getItem('patients_data') || '[]');
       patients.push(patient);
-      localStorage.setItem("patients", JSON.stringify(patients));
+      localStorage.setItem('patients_data', JSON.stringify(patients));
 
-      alert("Patient registered successfully!");
-      document.getElementById("patientForm").reset();
+      // open registration slip in new window with sampleNo param and auto-print
+      const url = `registration-slip.html?sample=${encodeURIComponent(sampleNo)}`;
+      const w = window.open(url, '_blank');
+      // in many browsers auto-print from new window may be blocked, but registration-slip.html includes auto-print behavior when sample param present
+      // reset form and generate new sampleNo for next patient
+      document.getElementById('patientForm').reset();
+      sampleInput.value = generateSampleNo();
+
+      alert('Patient saved. Registration slip opened for print (if blocked by browser, allow pop-ups).');
     });
   </script>
 </body>
