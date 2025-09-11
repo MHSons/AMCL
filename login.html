@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - User Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Alpha Med Lab</h1>
+    <h2>User Login</h2>
+
+    <form id="loginForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+      <label for="role">Select Role</label>
+      <select id="role" name="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="admin">Admin</option>
+        <option value="reception">Reception</option>
+        <option value="technician">Technician</option>
+      </select>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="note">Login with your role (Admin / Reception / Technician)</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
