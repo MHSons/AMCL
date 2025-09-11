@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - Registration Slip</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="slip-container">
+    <h1>Patient Registration Slip</h1>
+
+    <form id="slipForm">
+      <label for="patient">Select Patient</label>
+      <select id="patient" required></select>
+      <button type="submit">Generate Slip</button>
+    </form>
+
+    <div id="slip" class="slip" style="display:none;">
+      <h2>Alpha Med Lab</h2>
+      <p><b>Name:</b> <span id="sName"></span></p>
+      <p><b>Age:</b> <span id="sAge"></span></p>
+      <p><b>Gender:</b> <span id="sGender"></span></p>
+      <p><b>Department:</b> <span id="sDepartment"></span></p>
+      <p><b>Tests:</b></p>
+      <ul id="sTests"></ul>
+      <button onclick="window.print()">🖨 Print Slip</button>
+    </div>
+  </div>
+
+  <script>
+    const patientSelect = document.getElementById("patient");
+    const slipDiv = document.getElementById("slip");
+
+    let patients = JSON.parse(localStorage.getItem("patients")) || [];
+
+    // Load patients into dropdown
+    patients.forEach((p, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = `${p.name} (${p.department})`;
+      patientSelect.appendChild(option);
+    });
+
+    // Generate slip
+    document.getElementById("slipForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const patient = patients[patientSelect.value];
+
+      document.getElementById("sName").textContent = patient.name;
+      document.getElementById("sAge").textContent = patient.age;
+      document.getElementById("sGender").textContent = patient.gender;
+      document.getElementById("sDepartment").textContent = patient.department;
+
+      const testList = document.getElementById("sTests");
+      testList.innerHTML = "";
+      patient.tests.forEach(test => {
+        const li = document.createElement("li");
+        li.textContent = test;
+        testList.appendChild(li);
+      });
+
+      slipDiv.style.display = "block";
+    });
+  </script>
+</body>
+</html>
