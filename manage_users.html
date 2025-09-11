@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - Manage Users</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Manage Users</h1>
+
+    <form id="userForm">
+      <label for="username">Username</label>
+      <input type="text" id="username" placeholder="Enter username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter password" required>
+
+      <label for="role">Role</label>
+      <select id="role" required>
+        <option value="">-- Select Role --</option>
+        <option value="admin">Admin</option>
+        <option value="reception">Reception</option>
+        <option value="technician">Technician</option>
+      </select>
+
+      <button type="submit">Add User</button>
+    </form>
+
+    <h2>Existing Users</h2>
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Users will load here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const form = document.getElementById("userForm");
+    const tbody = document.querySelector("#userTable tbody");
+
+    function loadUsers() {
+      tbody.innerHTML = "";
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      users.forEach((u, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${u.username}</td>
+          <td>${u.role}</td>
+          <td><button onclick="deleteUser(${index})">❌ Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const user = {
+        username: document.getElementById("username").value,
+        password: document.getElementById("password").value,
+        role: document.getElementById("role").value,
+      };
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      users.push(user);
+      localStorage.setItem("users", JSON.stringify(users));
+      alert("User added successfully!");
+      form.reset();
+      loadUsers();
+    });
+
+    function deleteUser(index) {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      users.splice(index, 1);
+      localStorage.setItem("users", JSON.stringify(users));
+      loadUsers();
+    }
+
+    // Load users on page load
+    window.onload = loadUsers;
+  </script>
+</body>
+</html>
