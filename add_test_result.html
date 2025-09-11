@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - Add Test Result</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="form-container">
+    <h1>Add Test Result</h1>
+
+    <form id="resultForm">
+      <label for="patient">Select Patient</label>
+      <select id="patient" required></select>
+
+      <label for="test">Select Test</label>
+      <select id="test" required></select>
+
+      <label for="result">Result Value</label>
+      <input type="text" id="result" name="result" placeholder="Enter result value" required>
+
+      <button type="submit">Save Result</button>
+    </form>
+  </div>
+
+  <script>
+    const patientSelect = document.getElementById("patient");
+    const testSelect = document.getElementById("test");
+
+    // Load patients
+    let patients = JSON.parse(localStorage.getItem("patients")) || [];
+    patients.forEach((p, index) => {
+      const option = document.createElement("option");
+      option.value = index;
+      option.textContent = `${p.name} (${p.department})`;
+      patientSelect.appendChild(option);
+    });
+
+    // Load tests when patient is selected
+    patientSelect.addEventListener("change", () => {
+      testSelect.innerHTML = "";
+      const selectedPatient = patients[patientSelect.value];
+      if (selectedPatient) {
+        selectedPatient.tests.forEach(test => {
+          const option = document.createElement("option");
+          option.value = test;
+          option.textContent = test;
+          testSelect.appendChild(option);
+        });
+      }
+    });
+
+    // Save result
+    document.getElementById("resultForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const patientIndex = patientSelect.value;
+      const selectedTest = testSelect.value;
+      const resultValue = document.getElementById("result").value;
+
+      if (!patients[patientIndex].results) {
+        patients[patientIndex].results = [];
+      }
+
+      patients[patientIndex].results.push({
+        test: selectedTest,
+        value: resultValue
+      });
+
+      localStorage.setItem("patients", JSON.stringify(patients));
+      alert("Test result saved successfully!");
+      document.getElementById("resultForm").reset();
+    });
+  </script>
+</body>
+</html>
