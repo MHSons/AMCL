@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alpha Med Lab - View Reports</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="report-container">
+    <h1>Patient Reports</h1>
+
+    <table id="reportTable">
+      <thead>
+        <tr>
+          <th>Patient Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Department</th>
+          <th>Tests & Results</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Reports will load here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    let patients = JSON.parse(localStorage.getItem("patients")) || [];
+    const tbody = document.querySelector("#reportTable tbody");
+
+    patients.forEach((p) => {
+      const tr = document.createElement("tr");
+
+      const testsHtml = (p.results || [])
+        .map(r => `<div>${r.test}: <b>${r.value}</b></div>`)
+        .join("");
+
+      tr.innerHTML = `
+        <td>${p.name}</td>
+        <td>${p.age}</td>
+        <td>${p.gender}</td>
+        <td>${p.department}</td>
+        <td>${testsHtml || "Pending"}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>
