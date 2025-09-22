@@ -4,39 +4,31 @@
   <meta charset="UTF-8">
   <title>Register Patient - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <script src="qrcode.min.js"></script>
 </head>
 <body>
 
   <!-- Header -->
   <div class="header">
     <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Reception - Patient Registration</p>
+    <p>Patient Registration</p>
   </div>
 
-  <!-- Form -->
+  <!-- Register Form -->
   <div class="container">
-    <h2>Register New Patient</h2>
-    <form id="registerForm" onsubmit="return registerPatient(event)">
-      <div class="form-row">
-        <div class="col">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" required>
-        </div>
-        <div class="col">
-          <label for="age">Age</label>
-          <input type="number" id="age" required>
-        </div>
-        <div class="col">
-          <label for="gender">Gender</label>
-          <select id="gender" required>
-            <option value="">--Select--</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Other</option>
-          </select>
-        </div>
-      </div>
+    <h2>Patient Information</h2>
+    <form onsubmit="return registerPatient(event)">
+      <label for="pname">Patient Name</label>
+      <input type="text" id="pname" required>
+
+      <label for="age">Age</label>
+      <input type="number" id="age" required>
+
+      <label for="gender">Gender</label>
+      <select id="gender" required>
+        <option value="">--Select--</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
 
       <label for="department">Department</label>
       <select id="department" required>
@@ -44,41 +36,30 @@
         <option>Hematology</option>
         <option>Biochemistry</option>
         <option>Microbiology</option>
-        <option>Immunology</option>
         <option>Histopathology</option>
         <option>Molecular Biology</option>
-        <option>Radiology</option>
       </select>
 
-      <label for="tests">Select Tests (comma separated)</label>
-      <input type="text" id="tests" placeholder="CBC, Blood Sugar, Cholesterol" required>
-
-      <button type="submit" style="margin-top:15px;">Register & Generate Slip</button>
+      <button type="submit" style="margin-top:12px;">✅ Register</button>
     </form>
   </div>
 
   <script>
     function registerPatient(e){
       e.preventDefault();
-
-      const id = "P-" + Date.now();
-      const name = document.getElementById("name").value;
-      const age = document.getElementById("age").value;
-      const gender = document.getElementById("gender").value;
-      const department = document.getElementById("department").value;
-      const tests = document.getElementById("tests").value.split(",").map(t => t.trim());
-
-      const patient = {
-        id, name, age, gender, department, tests,
-        created: new Date().toISOString()
-      };
-
       let patients = JSON.parse(localStorage.getItem("patients") || "[]");
-      patients.push(patient);
+
+      let id = "P" + (patients.length + 1).toString().padStart(4,"0");
+      let name = document.getElementById("pname").value.trim();
+      let age = document.getElementById("age").value;
+      let gender = document.getElementById("gender").value;
+      let department = document.getElementById("department").value;
+
+      patients.push({id, name, age, gender, department});
       localStorage.setItem("patients", JSON.stringify(patients));
 
-      // Move to slip page
-      window.location.href = "registration-slip.html?id=" + id;
+      alert("Patient Registered Successfully! ID: " + id);
+      e.target.reset();
     }
   </script>
 
