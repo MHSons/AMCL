@@ -1,90 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Registration Slip - AlphaMed Clinical Laboratory</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <title>Registration Slip</title>
   <style>
-    .slip-container {
-      background: #1e1e1e;
-      color: #eee;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-      border: 1px solid #444;
-      border-radius: 8px;
-      position: relative;
-    }
-    .logo {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 100px;
-      opacity: 0.9;
-    }
-    .watermark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.07;
-      width: 300px;
-      z-index: 0;
-    }
-    .slip-content {
-      position: relative;
-      z-index: 1;
-    }
-    .qr {
-      float: left;
-      margin-right: 15px;
-    }
+    body { font-family: Arial, sans-serif; background:#fff; color:#000; padding:30px; }
+    .header { display:flex; justify-content:space-between; align-items:center; }
+    .header img { height:70px; }
+    h2 { text-align:center; margin:15px 0; color:#0066cc; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    td { padding:8px; border:1px solid #444; }
+    .btn { margin-top:20px; padding:10px 20px; background:#0066cc; color:#fff; border:none; cursor:pointer; border-radius:5px; }
+    .footer { margin-top:30px; font-size:12px; text-align:center; color:#555; }
+    #qrcode { margin-top:10px; }
   </style>
 </head>
 <body>
-
-  <div class="slip-container">
-    <img src="logo.png" class="logo" alt="Lab Logo">
-    <img src="logo.png" class="watermark" alt="Lab Watermark">
-
-    <div class="slip-content">
-      <canvas id="qr-code" class="qr"></canvas>
-
-      <h2>AlphaMed Clinical Laboratory</h2>
-      <p><strong>Registration Slip</strong></p>
-      <hr>
-
-      <p><b>ID:</b> <span id="pid"></span></p>
-      <p><b>Name:</b> <span id="pname"></span></p>
-      <p><b>Age:</b> <span id="age"></span></p>
-      <p><b>Gender:</b> <span id="gender"></span></p>
-      <p><b>Department:</b> <span id="department"></span></p>
-
-      <hr>
-      <p><i>Powered by AlphaMed Clinical Laboratory</i></p>
-    </div>
+  <div class="header">
+    <img src="logo.png" alt="Lab Logo">
+    <div id="qrcode"></div>
   </div>
 
+  <h2>Patient Registration Slip</h2>
+  <div id="slipContent"></div>
+
+  <button class="btn" onclick="window.print()">Print Slip</button>
+
+  <div class="footer">
+    <p>AlphaMed Clinical Laboratory - Quality Assurance Through Advance Technology</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script>
-    window.onload = function(){
-      let p = JSON.parse(localStorage.getItem("printPatient") || "{}");
-      if(!p.id){ document.body.innerHTML = "<h2 style='color:red;'>No patient data found!</h2>"; return; }
+    let patient = JSON.parse(localStorage.getItem("lastRegisteredPatient"));
 
-      document.getElementById("pid").innerText = p.id;
-      document.getElementById("pname").innerText = p.name;
-      document.getElementById("age").innerText = p.age;
-      document.getElementById("gender").innerText = p.gender;
-      document.getElementById("department").innerText = p.department;
+    if (!patient) {
+      document.body.innerHTML = "<h2>No patient found!</h2>";
+    } else {
+      let html = `
+        <table>
+          <tr><td><b>MRN:</b></td><td>${patient.mrn}</td></tr>
+          <tr><td><b>Name:</b></td><td>${patient.name}</td></tr>
+          <tr><td><b>Age / Gender:</b></td><td>${patient.age} / ${patient.gender}</td></tr>
+          <tr><td><b>Departments:</b></td><td>${patient.departments.join(", ")}</td></tr>
+          <tr><td><b>Tests:</b></td><td>${patient.tests.join(", ")}</td></tr>
+          <tr><td><b>Sample No:</b></td><td><input type="text" placeholder="Enter Sample No"></td></tr>
+        </table>
+      `;
+      document.getElementById("slipContent").innerHTML = html;
 
-      let qr = new QRious({
-        element: document.getElementById("qr-code"),
-        size: 120,
-        value: `Patient ID: ${p.id}\nName: ${p.name}\nAge: ${p.age}\nGender: ${p.gender}\nDepartment: ${p.department}`
+      new QRCode(document.getElementById("qrcode"), {
+        text: `MRN: ${patient.mrn} | Name: ${patient.name} | Dept: ${patient.departments.join(", ")} | Tests: ${patient.tests.join(", ")}`,
+        width: 100,
+        height: 100
       });
-      window.print();
     }
   </script>
-
 </body>
 </html>
