@@ -1,117 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Test Result - AlphaMed Clinical Laboratory</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Test Result</title>
+  <style>
+    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
+    h2 { color:#00bcd4; }
+    button { background:#00bcd4; border:none; padding:8px 15px; margin:5px;
+      border-radius:6px; cursor:pointer; color:#fff; font-weight:bold;}
+    button:hover { background:#0097a7; }
+  </style>
 </head>
-<body onload="loadPatient()">
-
-  <!-- Header -->
-  <div class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Add Test Result</p>
-  </div>
-
-  <div class="container">
-    <h2>Patient Info</h2>
-    <p><b>ID:</b> <span id="pid"></span></p>
-    <p><b>Name:</b> <span id="pname"></span></p>
-    <p><b>Department:</b> <span id="dept"></span></p>
-  </div>
-
-  <!-- Add Test Form -->
-  <div class="container">
-    <h2>Enter Test Result</h2>
-    <form onsubmit="return saveResult(event)">
-      <label for="testName">Test Name</label>
-      <input type="text" id="testName" required>
-
-      <label for="parameter">Parameter</label>
-      <input type="text" id="parameter" required>
-
-      <label for="result">Result</label>
-      <input type="text" id="result" required>
-
-      <label for="normal">Normal Range</label>
-      <input type="text" id="normal" required>
-
-      <button type="submit" style="margin-top:12px;">💾 Save Result</button>
-    </form>
-  </div>
-
-  <!-- Results Table -->
-  <div class="container">
-    <h2>Saved Results</h2>
-    <table border="1" width="100%" cellpadding="6" cellspacing="0" style="border-collapse:collapse; background:#2c2c2c; color:#eee;">
-      <thead>
-        <tr>
-          <th>Test</th>
-          <th>Parameter</th>
-          <th>Result</th>
-          <th>Normal Range</th>
-        </tr>
-      </thead>
-      <tbody id="results-list"></tbody>
-    </table>
-    <button onclick="finishReport()" style="margin-top:12px;">✅ Finalize Report</button>
-  </div>
+<body>
+  <h2>Add Test Results</h2>
+  <div id="patientList"></div>
 
   <script>
-    let patientIndex;
-    let patients;
+    document.addEventListener("DOMContentLoaded", function () {
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      const container = document.getElementById("patientList");
 
-    function loadPatient(){
-      patients = JSON.parse(localStorage.getItem("patients") || "[]");
-      patientIndex = localStorage.getItem("currentPatientIndex");
-
-      if(patientIndex === null){ 
-        document.body.innerHTML = "<h2 style='color:red;'>No patient selected!</h2>";
+      if (patients.length === 0) {
+        container.innerHTML = "<p style='color:red;'>No active patients found!</p>";
         return;
       }
 
-      let p = patients[patientIndex];
-      document.getElementById("pid").innerText = p.id;
-      document.getElementById("pname").innerText = p.name;
-      document.getElementById("dept").innerText = p.department;
+      let html = "<ul>";
+      patients.forEach(p => {
+        html += `<li>${p.name} (${p.age} yrs, ${p.gender}) - ${p.department} / ${p.test}
+          <button onclick="addResult(${p.id})">Add Result</button></li>`;
+      });
+      html += "</ul>";
+      container.innerHTML = html;
+    });
 
-      if(!p.results) p.results = [];
-      showResults(p.results);
-    }
+    function addResult(patientId) {
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      let patient = patients.find(p => p.id === patientId);
+      if (!patient) return alert("Patient not found!");
 
-    function saveResult(e){
-      e.preventDefault();
-      let p = patients[patientIndex];
-      if(!p.results) p.results = [];
+      let result = prompt(`Enter result for ${patient.name} (${patient.test}):`);
+      if (!result) return;
 
-      let testName = document.getElementById("testName").value.trim();
-      let parameter = document.getElementById("parameter").value.trim();
-      let result = document.getElementById("result").value.trim();
-      let normal = document.getElementById("normal").value.trim();
+      patient.results.push({
+        test: patient.test,
+        value: result,
+        date: new Date().toLocaleString()
+      });
 
-      p.results.push({testName, parameter, result, normal});
+      // Move to reports
+      reports.push(patient);
+      patients = patients.filter(p => p.id !== patientId);
+
       localStorage.setItem("patients", JSON.stringify(patients));
+      localStorage.setItem("reports", JSON.stringify(reports));
 
-      showResults(p.results);
-      e.target.reset();
-    }
-
-    function showResults(results){
-      document.getElementById("results-list").innerHTML = results.map(r => `
-        <tr>
-          <td>${r.testName}</td>
-          <td>${r.parameter}</td>
-          <td>${r.result}</td>
-          <td>${r.normal}</td>
-        </tr>
-      `).join("");
-    }
-
-    function finishReport(){
-      alert("Report finalized!");
-      window.location.href = "view_reports.html";
+      alert("Result saved and moved to reports!");
+      location.reload();
     }
   </script>
-
 </body>
 </html>
