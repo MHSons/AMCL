@@ -1,63 +1,65 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Registration Slip</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Patient Slip - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    .slip { max-width:700px; margin:20px auto; border:1px solid #ddd; padding:18px; background:white; }
-    .slip h2{ margin-top:0 }
-    .print-btn{ margin-bottom:10px; }
-    pre { background:#fafafa; padding:10px; border-radius:6px; }
-  </style>
+  <script src="qrcode.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div id="slipArea"></div>
-    <div style="text-align:center; margin-top:10px">
-      <button onclick="window.print()" class="btn">Print</button>
-      <a href="view_reports.html" class="btn alt">Back</a>
-    </div>
+
+  <div class="report-header">
+    <!-- QR Code Left -->
+    <div id="qrcode"></div>
+    <!-- Logo Right -->
+    <img src="logo.png" alt="AlphaMed Logo">
+    <h2 style="text-align:center; margin-top:60px;">AlphaMed Clinical Laboratory</h2>
+    <h4 style="text-align:center;">Quality Assurance Through Advanced Technology</h4>
   </div>
 
-  <script src="tests.js"></script>
-  <script>
-    function getParam(name) {
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
-    }
-    const id = getParam('id');
-    const view = getParam('view'); // optional to show results
-    const patients = JSON.parse(localStorage.getItem('patients')||'[]');
-    const p = patients.find(x => x.id === id);
-    const area = document.getElementById('slipArea');
-    if (!p) { area.innerHTML = '<div class="small">Patient not found</div>'; throw new Error('not found'); }
+  <div class="container">
+    <h2>Patient Registration Slip</h2>
+    <div id="slip-details"></div>
+    <button onclick="window.print()" style="margin-top:20px;">🖨 Print Slip</button>
+  </div>
 
-    let html = `<div class="slip"><h2>Registration Slip</h2><strong>${p.name}</strong> (${p.id})<div class="small">Age: ${p.age} | Gender: ${p.gender} | Phone: ${p.phone}</div><hr>`;
-    html += `<div><strong>Department:</strong> ${p.department}</div><div class="small">Tests requested: ${p.tests.length}</div>`;
-    if (p.tests && p.tests.length) {
-      html += '<ol>';
-      p.tests.forEach(tid => {
-        let meta = null;
-        departments.forEach(d => { if(!meta) meta = d.tests.find(tt => tt.id === tid) });
-        html += `<li>${meta ? meta.name : tid} <span class="small">(${meta ? meta.unit : ''})</span></li>`;
+  <script>
+    // Helper: get URL param
+    function getParam(name){
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    const id = getParam("id");
+    const patients = JSON.parse(localStorage.getItem("patients") || "[]");
+    const p = patients.find(x => x.id === id);
+
+    if(p){
+      document.getElementById("slip-details").innerHTML = `
+        <p><b>Patient ID:</b> ${p.id}</p>
+        <p><b>Name:</b> ${p.name}</p>
+        <p><b>Age:</b> ${p.age} | <b>Gender:</b> ${p.gender}</p>
+        <p><b>Department:</b> ${p.department}</p>
+        <p><b>Tests:</b> ${p.tests.join(", ")}</p>
+        <p><b>Date:</b> ${new Date(p.created).toLocaleString()}</p>
+      `;
+
+      // QR Code Generate
+      new QRCode(document.getElementById("qrcode"), {
+        text: `AlphaMed Clinical Laboratory
+Patient ID: ${p.id}
+Name: ${p.name}
+Age: ${p.age}, Gender: ${p.gender}
+Department: ${p.department}
+Tests: ${p.tests.join(", ")}
+Date: ${new Date(p.created).toLocaleString()}`,
+        width: 100,
+        height: 100
       });
-      html += '</ol>';
+    } else {
+      document.getElementById("slip-details").innerHTML = "<p style='color:red;'>Invalid or missing patient record!</p>";
     }
-    if (view === 'results') {
-      const results = JSON.parse(localStorage.getItem('results')||'[]').filter(r=>r.patientId===p.id);
-      if (results.length) {
-        html += '<hr><h3>Results</h3>';
-        results.forEach(r => {
-          html += `<div class="small">Entered: ${new Date(r.created).toLocaleString()} by ${r.enteredBy}</div><pre>${JSON.stringify(r.results, null, 2)}</pre>`;
-        });
-      } else {
-        html += '<div class="small">No results found for this patient.</div>';
-      }
-    }
-    html += '</div>';
-    area.innerHTML = html;
   </script>
+
 </body>
 </html>
