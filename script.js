@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const testDropdown = document.getElementById("test");
     const registerForm = document.getElementById("registerForm");
 
-    // ✅ Load departments dynamically
+    // ✅ Departments load
     if (typeof departmentsArray !== "undefined" && Array.isArray(departmentsArray)) {
         departmentsArray.forEach(dept => {
             let option = document.createElement("option");
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ✅ On form submit → save patient to localStorage
+    // ✅ Register patient
     registerForm?.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -52,12 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
             results: []
         };
 
-        // ✅ Save into "patients" (active patients)
+        // ✅ Save into patients
         let patients = JSON.parse(localStorage.getItem("patients")) || [];
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
 
-        // ✅ Save last registered patient for slip
+        // ✅ Save slip
         localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
 
         alert("Patient registered successfully!");
