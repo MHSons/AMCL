@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fff; color:#000; padding:20px; }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+    .header h2 { color:#0066cc; margin:0; }
+    .header img { height:70px; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th, td { border:1px solid #444; padding:8px; text-align:left; }
+    th { background:#0066cc; color:#fff; }
+    .btn { margin-top:20px; padding:10px 20px; background:#0066cc; color:#fff; border:none; cursor:pointer; border-radius:5px; }
+    .footer { margin-top:40px; font-size:12px; text-align:center; color:#555; }
+    #qrcode { margin-top:15px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>AlphaMed Clinical Laboratory</h2>
+    <img src="logo.png" alt="Lab Logo">
+  </div>
+
+  <div id="reportContent"></div>
+  <div id="qrcode"></div>
+
+  <button class="btn" onclick="window.print()">Print / Save PDF</button>
+
+  <div class="footer">
+    <p>AlphaMed Clinical Laboratory - Quality Assurance Through Advance Technology</p>
+  </div>
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <script>
+    function getQueryParam(param) {
+      let url = new URL(window.location.href);
+      return url.searchParams.get(param);
+    }
+
+    let id = getQueryParam("id");
+    let reports = JSON.parse(localStorage.getItem("reports")) || [];
+    let patient = reports.find(p => p.id == id);
+
+    if (!patient) {
+      document.body.innerHTML = "<h2>No report found!</h2>";
+    } else {
+      let html = `
+        <h3>Patient Information</h3>
+        <p><b>Name:</b> ${patient.name}</p>
+        <p><b>Age:</b> ${patient.age} | <b>Gender:</b> ${patient.gender}</p>
+        <p><b>Department:</b> ${patient.department}</p>
+
+        <h3>Test Results</h3>
+        <table>
+          <tr><th>Test</th><th>Result</th><th>Date</th></tr>
+      `;
+      patient.results.forEach(res => {
+        html += `<tr>
+          <td>${res.test}</td>
+          <td>${res.value}</td>
+          <td>${res.date}</td>
+        </tr>`;
+      });
+      html += "</table>";
+      document.getElementById("reportContent").innerHTML = html;
+
+      // ✅ Generate QR code with patient ID
+      new QRCode(document.getElementById("qrcode"), {
+        text: `Report ID: ${patient.id} - ${patient.name}`,
+        width: 120,
+        height: 120
+      });
+    }
+  </script>
+</body>
+</html>
