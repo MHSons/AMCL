@@ -5,26 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Report</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #fff; color:#000; padding:20px; }
-    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
-    .header h2 { color:#0066cc; margin:0; }
-    .header img { height:70px; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    body { font-family: Arial, sans-serif; background: #fff; color:#000; padding:40px; position:relative; }
+
+    /* 🔹 Watermark in center */
+    body::before {
+      content: "";
+      background: url('logo.png') no-repeat center center;
+      background-size: 300px;
+      opacity: 0.08;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+    }
+
+    .header { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
+    .header img { height:80px; }
+    #qrcode { width:120px; height:120px; }
+
+    h2 { color:#0066cc; margin:20px 0; position:relative; z-index:1; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; position:relative; z-index:1; }
     th, td { border:1px solid #444; padding:8px; text-align:left; }
     th { background:#0066cc; color:#fff; }
-    .btn { margin-top:20px; padding:10px 20px; background:#0066cc; color:#fff; border:none; cursor:pointer; border-radius:5px; }
-    .footer { margin-top:40px; font-size:12px; text-align:center; color:#555; }
-    #qrcode { margin-top:15px; }
+    .btn { margin-top:20px; padding:10px 20px; background:#0066cc; color:#fff; border:none; cursor:pointer; border-radius:5px; position:relative; z-index:1; }
+    .footer { margin-top:40px; font-size:12px; text-align:center; color:#555; position:relative; z-index:1; }
   </style>
 </head>
 <body>
+  <!-- 🔹 Header with Logo (left) and QR Code (right) -->
   <div class="header">
-    <h2>AlphaMed Clinical Laboratory</h2>
     <img src="logo.png" alt="Lab Logo">
+    <div id="qrcode"></div>
   </div>
 
+  <h2>AlphaMed Clinical Laboratory Report</h2>
   <div id="reportContent"></div>
-  <div id="qrcode"></div>
 
   <button class="btn" onclick="window.print()">Print / Save PDF</button>
 
@@ -67,7 +81,7 @@
       html += "</table>";
       document.getElementById("reportContent").innerHTML = html;
 
-      // ✅ Generate QR code with patient ID
+      // ✅ QR Code in header
       new QRCode(document.getElementById("qrcode"), {
         text: `Report ID: ${patient.id} - ${patient.name}`,
         width: 120,
