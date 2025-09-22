@@ -14,10 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ✅ On department change → load tests
-    deptDropdown.addEventListener("change", function () {
+    deptDropdown?.addEventListener("change", function () {
         let selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
-
-        // Clear previous test options
         testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
 
         if (selectedDept) {
@@ -30,23 +28,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ✅ On form submit → temporary save / show data
-    registerForm.addEventListener("submit", function (e) {
+    // ✅ On form submit → save patient to localStorage
+    registerForm?.addEventListener("submit", function (e) {
         e.preventDefault();
 
         const patientData = {
+            id: Date.now(),
             name: document.getElementById("patientName").value,
             age: document.getElementById("age").value,
             gender: document.getElementById("gender").value,
             department: deptDropdown.options[deptDropdown.selectedIndex].text,
-            test: testDropdown.options[testDropdown.selectedIndex].text
+            test: testDropdown.options[testDropdown.selectedIndex].text,
+            results: []
         };
 
-        console.log("Patient Registered:", patientData);
-        alert(`Patient Registered:\nName: ${patientData.name}\nDepartment: ${patientData.department}\nTest: ${patientData.test}`);
-        
-        // Reset form
-        registerForm.reset();
-        testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
+        let patients = JSON.parse(localStorage.getItem("patients")) || [];
+        patients.push(patientData);
+        localStorage.setItem("patients", JSON.stringify(patients));
+
+        alert(`Patient Registered: ${patientData.name}`);
+        window.location.href = "add_test_result.html";
     });
 });
