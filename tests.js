@@ -98,4 +98,54 @@ const biochemistry = {
 
 // Example: to integrate, push into your departments array like:
 // departmentsArray.push(biochemistry);
+// Microbiology — 40 tests
+const microbiology = {
+  id: "microbiology",
+  name: "Microbiology",
+  tests: [
+    { id: "micro_1", name: "Blood Culture", parameter: "Bacterial Growth", unit: "", normalMin: 0, normalMax: 0, description: "Detection of bacteria in blood" },
+    { id: "micro_2", name: "Urine Culture & Sensitivity", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Urine culture and antibiotic sensitivity" },
+    { id: "micro_3", name: "Stool Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Isolation of enteric pathogens" },
+    { id: "micro_4", name: "Sputum Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Respiratory culture for TB or bacteria" },
+    { id: "micro_5", name: "Throat Swab Culture", parameter: "Bacterial Growth", unit: "", normalMin: 0, normalMax: 0, description: "Throat swab culture" },
+    { id: "micro_6", name: "Wound Swab Culture", parameter: "Bacterial Growth", unit: "", normalMin: 0, normalMax: 0, description: "Wound pus culture" },
+    { id: "micro_7", name: "CSF Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Cerebrospinal fluid culture" },
+    { id: "micro_8", name: "Ear Swab Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Otitis media pathogens" },
+    { id: "micro_9", name: "Eye Swab Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Conjunctival swab culture" },
+    { id: "micro_10", name: "High Vaginal Swab (HVS) Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Vaginal swab for infections" },
+    { id: "micro_11", name: "Endocervical Swab Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "STD related bacteria" },
+    { id: "micro_12", name: "Anaerobic Culture", parameter: "Anaerobic Growth", unit: "", normalMin: 0, normalMax: 0, description: "Anaerobic bacteria isolation" },
+    { id: "micro_13", name: "Fungal Culture", parameter: "Fungal Growth", unit: "", normalMin: 0, normalMax: 0, description: "Detection of fungi" },
+    { id: "micro_14", name: "AFB Culture (Mycobacterium)", parameter: "AFB Growth", unit: "", normalMin: 0, normalMax: 0, description: "TB culture" },
+    { id: "micro_15", name: "AFB Smear (Ziehl-Neelsen)", parameter: "AFB Smear", unit: "", normalMin: 0, normalMax: 0, description: "Microscopy for acid-fast bacilli" },
+    { id: "micro_16", name: "Gram Stain (Microscopy)", parameter: "Gram Stain", unit: "", normalMin: 0, normalMax: 0, description: "Microscopic evaluation" },
+    { id: "micro_17", name: "KOH Preparation (Fungal)", parameter: "KOH Mount", unit: "", normalMin: 0, normalMax: 0, description: "Fungal microscopy" },
+    { id: "micro_18", name: "Malaria Parasite (MP) Smear", parameter: "Parasite Detection", unit: "", normalMin: 0, normalMax: 0, description: "Thick and thin smear" },
+    { id: "micro_19", name: "Blood Parasite Smear", parameter: "Parasite Detection", unit: "", normalMin: 0, normalMax: 0, description: "Blood protozoa" },
+    { id: "micro_20", name: "Wet Mount (Vaginal Swab)", parameter: "Parasite Detection", unit: "", normalMin: 0, normalMax: 0, description: "Trichomonas vaginalis" },
+    { id: "micro_21", name: "Salmonella Typhi Culture", parameter: "Typhoid Bacteria", unit: "", normalMin: 0, normalMax: 0, description: "Typhoid culture" },
+    { id: "micro_22", name: "Shigella Culture", parameter: "Shigella Bacteria", unit: "", normalMin: 0, normalMax: 0, description: "Shigella isolation" },
+    { id: "micro_23", name: "Vibrio Cholera Culture", parameter: "Vibrio Cholerae", unit: "", normalMin: 0, normalMax: 0, description: "Cholera isolation" },
+    { id: "micro_24", name: "E. coli Culture", parameter: "E. coli Growth", unit: "", normalMin: 0, normalMax: 0, description: "Urinary/GI pathogen" },
+    { id: "micro_25", name: "Staphylococcus aureus Culture", parameter: "S. aureus", unit: "", normalMin: 0, normalMax: 0, description: "MRSA detection" },
+    { id: "micro_26", name: "Streptococcus Culture", parameter: "Streptococcus spp.", unit: "", normalMin: 0, normalMax: 0, description: "Strep throat or systemic" },
+    { id: "micro_27", name: "Klebsiella Culture", parameter: "Klebsiella spp.", unit: "", normalMin: 0, normalMax: 0, description: "Klebsiella pneumoniae" },
+    { id: "micro_28", name: "Pseudomonas Culture", parameter: "Pseudomonas spp.", unit: "", normalMin: 0, normalMax: 0, description: "Pseudomonas aeruginosa" },
+    { id: "micro_29", name: "Candida Culture", parameter: "Candida spp.", unit: "", normalMin: 0, normalMax: 0, description: "Yeast/fungal infections" },
+    { id: "micro_30", name: "Helicobacter pylori (Culture)", parameter: "H. pylori", unit: "", normalMin: 0, normalMax: 0, description: "Stomach infection bacteria" },
+    { id: "micro_31", name: "Clostridium difficile (Culture)", parameter: "C. difficile", unit: "", normalMin: 0, normalMax: 0, description: "Antibiotic-associated diarrhea" },
+    { id: "micro_32", name: "Campylobacter Culture", parameter: "Campylobacter spp.", unit: "", normalMin: 0, normalMax: 0, description: "GI pathogen isolation" },
+    { id: "micro_33", name: "Legionella Culture", parameter: "Legionella spp.", unit: "", normalMin: 0, normalMax: 0, description: "Legionella pneumonia" },
+    { id: "micro_34", name: "Listeria Culture", parameter: "Listeria spp.", unit: "", normalMin: 0, normalMax: 0, description: "Listeriosis bacteria" },
+    { id: "micro_35", name: "Mycoplasma Culture", parameter: "Mycoplasma spp.", unit: "", normalMin: 0, normalMax: 0, description: "Mycoplasma pneumoniae" },
+    { id: "micro_36", name: "Ureaplasma Culture", parameter: "Ureaplasma spp.", unit: "", normalMin: 0, normalMax: 0, description: "STD associated" },
+    { id: "micro_37", name: "Chlamydia Culture", parameter: "Chlamydia spp.", unit: "", normalMin: 0, normalMax: 0, description: "Chlamydia trachomatis" },
+    { id: "micro_38", name: "Neisseria Culture", parameter: "Neisseria spp.", unit: "", normalMin: 0, normalMax: 0, description: "N. gonorrhoeae or N. meningitidis" },
+    { id: "micro_39", name: "Bordetella pertussis Culture", parameter: "B. pertussis", unit: "", normalMin: 0, normalMax: 0, description: "Whooping cough bacteria" },
+    { id: "micro_40", name: "Brucella Culture", parameter: "Brucella spp.", unit: "", normalMin: 0, normalMax: 0, description: "Brucellosis detection" }
+  ]
+};
+
+// Example: to integrate, push into your departments array like:
+// departmentsArray.push(microbiology);
 
