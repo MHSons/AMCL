@@ -1,53 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Alpha Med Lab - Login</title>
+  <meta charset="utf-8">
+  <title>Login - Alpha Lab</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="form-container">
-    <h1>Login</h1>
+  <div class="container" style="max-width:420px;margin-top:40px;">
+    <h2>Login</h2>
     <form id="loginForm">
-      <label for="username">Username</label>
-      <input type="text" id="username" required>
-
-      <label for="password">Password</label>
-      <input type="password" id="password" required>
-
-      <button type="submit">Login</button>
+      <label for="user">Username</label>
+      <input id="user" required>
+      <label for="pass">Password</label>
+      <input id="pass" type="password" required>
+      <div style="margin-top:12px">
+        <button class="btn" type="submit">Login</button>
+      </div>
     </form>
+    <p class="small">Default demo admin: <strong>admin / admin</strong></p>
   </div>
 
   <script>
-    const form = document.getElementById("loginForm");
-
-    // Create default users if none exist
-    if (!localStorage.getItem("users")) {
-      const defaultUsers = [
-        { username: "Admin", password: "Admin123", role: "admin" },
-        { username: "Reception", password: "Reception123", role: "reception" },
-        { username: "Technician", password: "Technician123", role: "technician" }
-      ];
-      localStorage.setItem("users", JSON.stringify(defaultUsers));
-    }
-
-    form.addEventListener("submit", (e) => {
+    // simple client-side login for demo
+    document.getElementById('loginForm').addEventListener('submit', function(e){
       e.preventDefault();
-
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      const users = JSON.parse(localStorage.getItem("users")) || [];
-      const user = users.find(u => u.username === username && u.password === password);
-
-      if (user) {
-        localStorage.setItem("loggedInUser", JSON.stringify(user));
-        if (user.role === "admin") window.location.href = "admin.html";
-        if (user.role === "reception") window.location.href = "reception.html";
-        if (user.role === "technician") window.location.href = "technician.html";
+      const u = document.getElementById('user').value.trim();
+      const p = document.getElementById('pass').value;
+      // demo credentials (replace with secure server-side auth)
+      if ((u === 'admin' && p === 'admin') || (u === 'tech' && p === 'tech')) {
+        localStorage.setItem('lab_user', JSON.stringify({username:u, role: u==='admin'?'admin':'tech'}));
+        alert('Login successful as ' + u);
+        window.location = 'admin.html';
       } else {
-        alert("Invalid username or password!");
+        alert('Invalid credentials (demo only). Use admin/admin or tech/tech.');
       }
     });
   </script>
