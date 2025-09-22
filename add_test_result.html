@@ -70,7 +70,7 @@
       let patient = patients.find(p => p.id === patientId);
       if (!patient) return alert("Patient not found!");
 
-      patient.results = []; // reset and re-save all results
+      patient.results = []; // reset and re-save
       patient.tests.forEach(testName => {
         let val = document.getElementById(`result-${patient.id}-${testName}`).value.trim();
         if (val) {
