@@ -1,67 +1,86 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Register Patient - Alpha Med Lab</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* small adjustments for selection list */
-    #tests-list { max-height: 300px; overflow:auto; border:1px solid #ddd; padding:8px; }
-    #tests-list label { display:block; margin-bottom:6px; }
-    .small { font-size:0.9em; color:#555; }
-  </style>
-</head>
+<html><head><meta charset="utf-8"><title>Register Patient</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="form-container">
+  <div class="header"><h2>Alpha-like Diagnostic Lab</h2></div>
+  <div class="container">
+    <div class="nav"><a href="index.html">Home</a> <a href="view_reports.html">View Reports</a> <a href="admin.html">Admin</a></div>
     <h1>Register New Patient</h1>
-
     <form id="patientForm">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" required>
-
-      <label for="age">Age</label>
-      <input type="number" id="age" required>
-
-      <label for="gender">Gender</label>
-      <select id="gender" required>
-        <option value="">--Select--</option>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </select>
-
-      <label for="phone">Phone</label>
-      <input type="text" id="phone" required>
-
-      <!-- ✅ FIXED Department Dropdown -->
+      <div class="form-row">
+        <div class="col">
+          <label for="name">Full Name</label>
+          <input id="name" required>
+        </div>
+        <div class="col">
+          <label for="age">Age</label>
+          <input id="age" type="number" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col">
+          <label for="gender">Gender</label>
+          <select id="gender" required><option value="">--Select--</option><option>Male</option><option>Female</option><option>Other</option></select>
+        </div>
+        <div class="col">
+          <label for="phone">Phone</label>
+          <input id="phone" required>
+        </div>
+      </div>
       <label for="department">Department</label>
-      <select id="department" required>
-        <option value="">-- Select Department --</option>
-      </select>
-
+      <select id="department" required><option value="">-- Select Department --</option></select>
+      <label>Available Tests <span class="small"> (choose tests to request)</span></label>
       <div id="tests-list"></div>
-
-      <button type="submit">Register Patient</button>
+      <div style="margin-top:12px">
+        <button type="submit">Register & Save</button>
+      </div>
     </form>
+    <div class="footer">Patient data saved to browser localStorage for demo purposes.</div>
   </div>
 
-  <!-- ✅ Ensure correct script order -->
-  <script src="tests.js"></script>
-  <script>
-    // Populate departments from tests.js
-    const deptSelect = document.getElementById('department');
+<script src="tests.js"></script>
+<script>
+// populate departments dropdown
+const deptSelect = document.getElementById('department');
+departments.forEach(d=>{
+  const opt = document.createElement('option');
+  opt.value = d.id; opt.textContent = d.name; deptSelect.appendChild(opt);
+});
 
-    function populateDepartments() {
-      departments.forEach(dept => {
-        const option = document.createElement("option");
-        option.value = dept.id;
-        option.textContent = dept.name;
-        deptSelect.appendChild(option);
-      });
-    }
+const testsList = document.getElementById('tests-list');
+deptSelect.addEventListener('change', ()=>{
+  const dept = departments.find(x=>x.id===deptSelect.value);
+  testsList.innerHTML='';
+  if(!dept) return;
+  dept.tests.forEach(t=>{
+    const div = document.createElement('div');
+    div.className='test-item';
+    const left = document.createElement('div');
+    left.innerHTML = '<label><input type="checkbox" data-testid="'+t.id+'"> '+t.name+'</label><div class="small">'+t.parameter+' ('+t.unit+')</div>';
+    const right = document.createElement('div');
+    right.className='small';
+    right.textContent = t.normalMin + ' - ' + t.normalMax + ' ' + t.unit;
+    div.appendChild(left); div.appendChild(right);
+    testsList.appendChild(div);
+  });
+});
 
-    populateDepartments();
-  </script>
-  <script src="script.js"></script>
-</body>
-</html>
+// handle form submit - save patient and selected tests to localStorage
+document.getElementById('patientForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const age = document.getElementById('age').value;
+  const gender = document.getElementById('gender').value;
+  const phone = document.getElementById('phone').value.trim();
+  const dept = deptSelect.value;
+  const checked = Array.from(document.querySelectorAll('#tests-list input[type=checkbox]:checked')).map(cb=>cb.getAttribute('data-testid'));
+  if(!name||!age||!dept){ alert('Please fill name, age and department'); return; }
+  const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+  const id = 'P'+Date.now();
+  patients.push({id,name,age,gender,phone,department:dept,tests:checked,created:new Date().toISOString()});
+  localStorage.setItem('patients', JSON.stringify(patients));
+  alert('Patient saved. ID: '+id);
+  this.reset();
+  testsList.innerHTML='';
+});
+</script>
+</body></html>

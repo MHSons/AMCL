@@ -1,37 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Alpha Med Lab - Admin Dashboard</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Admin</title><link rel="stylesheet" href="style.css"></head>
 <body>
-  <div class="dashboard-container">
-    <header>
-      <h1>Admin Dashboard</h1>
-      <button onclick="logout()">Logout</button>
-    </header>
-
-    <nav>
-      <ul>
-        <li><a href="manage_users.html">👥 Manage Users</a></li>
-        <li><a href="register_patient.html">➕ Register Patient</a></li>
-        <li><a href="view_reports.html">📑 View Reports</a></li>
-        <li><a href="settings.html">⚙️ Settings</a></li>
-      </ul>
-    </nav>
-
-    <main>
-      <h2>Welcome, Admin!</h2>
-      <p>Use the menu to manage your lab system.</p>
-    </main>
+  <div class="header"><h2>Admin - Alpha-like Lab</h2></div>
+  <div class="container">
+    <div class="nav"><a href="index.html">Home</a> <a href="register_patient.html">Register Patient</a> <a href="view_reports.html">View Reports</a></div>
+    <h1>Departments & Patients</h1>
+    <div id="depts"></div>
+    <h2>Saved Patients</h2>
+    <div id="patients"></div>
+    <div class="footer"></div>
   </div>
-
-  <script>
-    function logout() {
-      localStorage.removeItem("loggedInUser");
-      window.location.href = "login.html";
-    }
-  </script>
-</body>
-</html>
+<script src="tests.js"></script>
+<script>
+const deptsDiv = document.getElementById('depts');
+departments.forEach(d=>{
+  const box = document.createElement('div');
+  box.style.padding='8px'; box.style.border='1px solid #eee'; box.style.marginBottom='6px';
+  box.innerHTML = '<strong>'+d.name+'</strong> ('+d.tests.length+' tests)';
+  deptsDiv.appendChild(box);
+});
+const patientsDiv = document.getElementById('patients');
+function renderPatients(){
+  const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+  patientsDiv.innerHTML = patients.length ? patients.map(p=>'<div style="padding:8px;border-bottom:1px solid #f0f0f0">ID:'+p.id+' <strong>'+p.name+'</strong> - '+p.department+' - '+p.tests.length+' tests</div>').join('') : '<div class="small">No patients saved</div>';
+}
+renderPatients();
+</script>
+</body></html>
