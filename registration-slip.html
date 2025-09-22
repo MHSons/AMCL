@@ -1,123 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Registration Slip - Alpha Med Lab</title>
+  <meta charset="utf-8">
+  <title>Registration Slip</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      position: relative;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid #000;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-    }
-
-    .header .lab-info {
-      text-align: right;
-    }
-
-    .watermark {
-      position: fixed;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.08;
-      z-index: -1;
-    }
-
-    .patient-info, .test-list {
-      margin-bottom: 20px;
-    }
-
-    .test-list ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .qr {
-      width: 100px;
-      height: 100px;
-    }
-
-    .footer {
-      border-top: 1px solid #000;
-      margin-top: 20px;
-      padding-top: 10px;
-      text-align: center;
-      font-size: 0.9em;
-    }
+    .slip { max-width:700px; margin:20px auto; border:1px solid #ddd; padding:18px; background:white; }
+    .slip h2{ margin-top:0 }
+    .print-btn{ margin-bottom:10px; }
+    pre { background:#fafafa; padding:10px; border-radius:6px; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <canvas id="qrcode"></canvas>
-    <div class="lab-info">
-      <h2>Alpha Med Lab</h2>
-      <p>Trusted Diagnostic Services</p>
-      <p>Phone: +92-300-1234567</p>
+  <div class="container">
+    <div id="slipArea"></div>
+    <div style="text-align:center; margin-top:10px">
+      <button onclick="window.print()" class="btn">Print</button>
+      <a href="view_reports.html" class="btn alt">Back</a>
     </div>
   </div>
 
-  <img src="logo.png" class="watermark" width="300" alt="Lab Logo">
-
-  <div class="patient-info" id="patientInfo"></div>
-  <div class="test-list" id="testList"></div>
-
-  <div class="footer">
-    <p>This slip is computer generated. Please bring it along with you for test sample submission.</p>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/qrious/dist/qrious.min.js"></script>
+  <script src="tests.js"></script>
   <script>
-    // get sample number from query
-    const urlParams = new URLSearchParams(window.location.search);
-    const sampleNo = urlParams.get('sample');
-
-    const patients = JSON.parse(localStorage.getItem('patients_data') || '[]');
-    const patient = patients.find(p => p.sampleNo === sampleNo);
-
-    if (patient) {
-      // fill patient info
-      document.getElementById('patientInfo').innerHTML = `
-        <h3>Patient Information</h3>
-        <p><strong>Sample No:</strong> ${patient.sampleNo}</p>
-        <p><strong>Name:</strong> ${patient.name}</p>
-        <p><strong>Age/Gender:</strong> ${patient.age} / ${patient.gender}</p>
-        <p><strong>Phone:</strong> ${patient.phone}</p>
-        <p><strong>Address:</strong> ${patient.address}</p>
-        <p><strong>Department:</strong> ${patient.department}</p>
-      `;
-
-      // fill test list
-      let testHTML = "<h3>Selected Tests</h3><ul>";
-      patient.tests.forEach(t => {
-        testHTML += `<li>${t.name} (${t.parameter}, Normal: ${t.normalMin}-${t.normalMax} ${t.unit})</li>`;
-      });
-      testHTML += "</ul>";
-      document.getElementById('testList').innerHTML = testHTML;
-
-      // generate QR code with sampleNo
-      const qr = new QRious({
-        element: document.getElementById('qrcode'),
-        value: `Alpha Med Lab | Sample No: ${patient.sampleNo}`,
-        size: 100
-      });
-
-      // auto print if opened with ?sample
-      setTimeout(() => {
-        window.print();
-      }, 800);
-    } else {
-      document.body.innerHTML = "<h2>❌ Patient not found.</h2>";
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
     }
+    const id = getParam('id');
+    const view = getParam('view'); // optional to show results
+    const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+    const p = patients.find(x => x.id === id);
+    const area = document.getElementById('slipArea');
+    if (!p) { area.innerHTML = '<div class="small">Patient not found</div>'; throw new Error('not found'); }
+
+    let html = `<div class="slip"><h2>Registration Slip</h2><strong>${p.name}</strong> (${p.id})<div class="small">Age: ${p.age} | Gender: ${p.gender} | Phone: ${p.phone}</div><hr>`;
+    html += `<div><strong>Department:</strong> ${p.department}</div><div class="small">Tests requested: ${p.tests.length}</div>`;
+    if (p.tests && p.tests.length) {
+      html += '<ol>';
+      p.tests.forEach(tid => {
+        let meta = null;
+        departments.forEach(d => { if(!meta) meta = d.tests.find(tt => tt.id === tid) });
+        html += `<li>${meta ? meta.name : tid} <span class="small">(${meta ? meta.unit : ''})</span></li>`;
+      });
+      html += '</ol>';
+    }
+    if (view === 'results') {
+      const results = JSON.parse(localStorage.getItem('results')||'[]').filter(r=>r.patientId===p.id);
+      if (results.length) {
+        html += '<hr><h3>Results</h3>';
+        results.forEach(r => {
+          html += `<div class="small">Entered: ${new Date(r.created).toLocaleString()} by ${r.enteredBy}</div><pre>${JSON.stringify(r.results, null, 2)}</pre>`;
+        });
+      } else {
+        html += '<div class="small">No results found for this patient.</div>';
+      }
+    }
+    html += '</div>';
+    area.innerHTML = html;
   </script>
 </body>
 </html>
