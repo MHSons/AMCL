@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Result</title>
+  <title>Add Test Results</title>
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
     h2 { color:#00bcd4; }
-    button { background:#00bcd4; border:none; padding:8px 15px; margin:5px;
-      border-radius:6px; cursor:pointer; color:#fff; font-weight:bold;}
+    .patient-card {
+      background:#1e1e1e; padding:15px; border-radius:8px; margin-bottom:20px;
+      box-shadow:0 0 8px rgba(0,0,0,0.4);
+    }
+    .patient-card h3 { margin:0 0 10px; color:#00e5ff; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { border:1px solid #444; padding:8px; text-align:left; }
+    th { background:#00bcd4; color:#fff; }
+    input { width:95%; padding:5px; border-radius:5px; border:none; background:#2c2c2c; color:#fff; }
+    button {
+      margin-top:10px; padding:8px 15px; background:#00bcd4; border:none; border-radius:6px;
+      cursor:pointer; color:#fff; font-weight:bold;
+    }
     button:hover { background:#0097a7; }
   </style>
 </head>
@@ -19,7 +30,6 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
       const container = document.getElementById("patientList");
 
       if (patients.length === 0) {
@@ -27,29 +37,54 @@
         return;
       }
 
-      let html = "<ul>";
       patients.forEach(p => {
-        html += `<li>${p.name} (${p.age} yrs, ${p.gender}) - ${p.department} / ${p.test}
-          <button onclick="addResult(${p.id})">Add Result</button></li>`;
+        let html = `<div class="patient-card">
+          <h3>${p.name} (${p.age} yrs, ${p.gender})</h3>
+          <p><b>MRN:</b> ${p.mrn}</p>
+          <p><b>Departments:</b> ${p.departments.join(", ")}</p>
+          <table>
+            <tr><th>Test</th><th>Result</th></tr>
+        `;
+
+        p.tests.forEach(testName => {
+          let existing = p.results.find(r => r.test === testName);
+          html += `<tr>
+            <td>${testName}</td>
+            <td>
+              <input type="text" id="result-${p.id}-${testName}" value="${existing ? existing.value : ''}" placeholder="Enter result">
+            </td>
+          </tr>`;
+        });
+
+        html += `</table>
+          <button onclick="saveResults(${p.id})">Save Results</button>
+        </div>`;
+
+        container.innerHTML += html;
       });
-      html += "</ul>";
-      container.innerHTML = html;
     });
 
-    function addResult(patientId) {
+    function saveResults(patientId) {
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
       let reports = JSON.parse(localStorage.getItem("reports")) || [];
       let patient = patients.find(p => p.id === patientId);
       if (!patient) return alert("Patient not found!");
 
-      let result = prompt(`Enter result for ${patient.name} (${patient.test}):`);
-      if (!result) return;
-
-      patient.results.push({
-        test: patient.test,
-        value: result,
-        date: new Date().toLocaleString()
+      patient.results = []; // reset and re-save all results
+      patient.tests.forEach(testName => {
+        let val = document.getElementById(`result-${patient.id}-${testName}`).value.trim();
+        if (val) {
+          patient.results.push({
+            test: testName,
+            value: val,
+            date: new Date().toLocaleString()
+          });
+        }
       });
+
+      if (patient.results.length === 0) {
+        return alert("Please enter at least one result.");
+      }
 
       // Move to reports
       reports.push(patient);
@@ -58,7 +93,7 @@
       localStorage.setItem("patients", JSON.stringify(patients));
       localStorage.setItem("reports", JSON.stringify(reports));
 
-      alert("Result saved and moved to reports!");
+      alert("Results saved and patient moved to reports!");
       location.reload();
     }
   </script>
