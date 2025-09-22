@@ -1,19 +1,55 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>View Reports</title><link rel="stylesheet" href="style.css"></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>View Reports</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <div class="header"><h2>View Reports</h2></div>
-  <div class="container">
-    <div class="nav"><a href="index.html">Home</a> <a href="register_patient.html">Register Patient</a> <a href="admin.html">Admin</a></div>
-    <h1>Saved Patients</h1>
-    <div id="patients"></div>
-  </div>
-<script>
-function renderPatients(){
-  const patients = JSON.parse(localStorage.getItem('patients')||'[]');
-  const patientsDiv = document.getElementById('patients');
-  if(!patients.length){ patientsDiv.innerHTML='<div class="small">No patients saved</div>'; return; }
-  patientsDiv.innerHTML = patients.map(p=>'<div style="padding:8px;border-bottom:1px solid #eee"><strong>'+p.name+'</strong> ('+p.id+') <div class="small">Dept: '+p.department+' | Tests: '+p.tests.length+' | '+new Date(p.created).toLocaleString()+'</div></div>').join('');
-}
-renderPatients();
-</script>
-</body></html>
+  <header class="header smallbar">
+    <div class="brand"><img src="logo.svg" class="logo"><h1 class="small">Reports</h1></div>
+    <nav class="nav"><a href="index.html">Home</a> <a href="register_patient.html">Register</a> <a href="admin.html">Admin</a></nav>
+  </header>
+
+  <main class="container">
+    <h2>Saved Patients</h2>
+    <div id="patientsList"></div>
+    <h2 style="margin-top:18px">Saved Results</h2>
+    <div id="resultsList"></div>
+  </main>
+
+  <script src="tests.js"></script>
+  <script>
+    function renderPatients(){
+      const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+      const div = document.getElementById('patientsList');
+      if (!patients.length) { div.innerHTML = '<div class="small">No patients saved</div>'; return; }
+      div.innerHTML = patients.map(p => {
+        return `<div class="list-item"><strong>${p.name}</strong> (${p.id}) <div class="small">Dept: ${p.department} | Tests: ${p.tests.length} | Registered: ${new Date(p.created).toLocaleString()}</div>
+                <div style="margin-top:6px"><a class="btn" href="registration-slip.html?id=${p.id}" target="_blank">Print Slip</a> <a class="btn alt" href="#" data-id="${p.id}" onclick="openReport(event)">View Report</a></div>
+                </div>`;
+      }).join('');
+    }
+
+    function renderResults(){
+      const results = JSON.parse(localStorage.getItem('results')||'[]');
+      const div = document.getElementById('resultsList');
+      if (!results.length) { div.innerHTML = '<div class="small">No results saved</div>'; return; }
+      div.innerHTML = results.slice().reverse().map(r => {
+        return `<div class="list-item"><strong>Patient:</strong> ${r.patientId} <div class="small">Entered: ${new Date(r.created).toLocaleString()} by ${r.enteredBy}</div>
+                <pre class="small">${JSON.stringify(r.results, null, 2)}</pre></div>`;
+      }).join('');
+    }
+
+    function openReport(e){
+      e.preventDefault();
+      const id = e.currentTarget.getAttribute('data-id');
+      window.open('registration-slip.html?id=' + id + '&view=results', '_blank');
+    }
+
+    renderPatients();
+    renderResults();
+  </script>
+</body>
+</html>
