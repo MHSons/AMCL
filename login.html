@@ -1,41 +1,47 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Login - Alpha Lab</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Login - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container" style="max-width:420px;margin-top:40px;">
+
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Secure Access Portal</p>
+  </div>
+
+  <div class="container" style="max-width:400px; text-align:center;">
     <h2>Login</h2>
-    <form id="loginForm">
-      <label for="user">Username</label>
-      <input id="user" required>
-      <label for="pass">Password</label>
-      <input id="pass" type="password" required>
-      <div style="margin-top:12px">
-        <button class="btn" type="submit">Login</button>
-      </div>
+    <form onsubmit="return loginUser(event)">
+      <label for="username">Username</label>
+      <input type="text" id="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+
+      <button type="submit" style="margin-top:15px;">Login</button>
     </form>
-    <p class="small">Default demo admin: <strong>admin / admin</strong></p>
+    <p class="small" style="margin-top:12px;">
+      Please login with your assigned credentials.
+    </p>
   </div>
 
   <script>
-    // simple client-side login for demo
-    document.getElementById('loginForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const u = document.getElementById('user').value.trim();
-      const p = document.getElementById('pass').value;
-      // demo credentials (replace with secure server-side auth)
-      if ((u === 'admin' && p === 'admin') || (u === 'tech' && p === 'tech')) {
-        localStorage.setItem('lab_user', JSON.stringify({username:u, role: u==='admin'?'admin':'tech'}));
-        alert('Login successful as ' + u);
-        window.location = 'admin.html';
+    function loginUser(event){
+      event.preventDefault();
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      // Default demo admin (replace with DB/backend later)
+      if(user === "admin" && pass === "1234"){
+        window.location.href = "index.html";
       } else {
-        alert('Invalid credentials (demo only). Use admin/admin or tech/tech.');
+        alert("Invalid username or password!");
       }
-    });
+    }
   </script>
+
 </body>
 </html>
