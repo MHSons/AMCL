@@ -44,11 +44,6 @@ const hematology = {
     { id: "hematology_39", name: "Absolute Blast Count", parameter: "Blasts", unit: "cells/µL", normalMin: 0, normalMax: 0, description: "Blast cells (if suspected leukemia) - specialist reporting" },
     { id: "hematology_40", name: "Bone Marrow Examination (Report)", parameter: "Bone Marrow", unit: "", normalMin: 0, normalMax: 0, description: "Bone marrow aspirate/biopsy report (morphology & cellularity) - specialist test" }
   ]
-};
-
-// Example: to integrate, push into your departments array like:
-// departmentsArray.push(hematology);
-// Biochemistry / Clinical Chemistry — 40 tests
 const biochemistry = {
   id: "biochemistry",
   name: "Biochemistry / Clinical Chemistry",
@@ -94,11 +89,6 @@ const biochemistry = {
     { id: "biochem_39", name: "Troponin I (Qualitative)", parameter: "Troponin I", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" },
     { id: "biochem_40", name: "Troponin T (Qualitative)", parameter: "Troponin T", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" }
   ]
-};
-
-// Example: to integrate, push into your departments array like:
-// departmentsArray.push(biochemistry);
-// Microbiology — 40 tests
 const microbiology = {
   id: "microbiology",
   name: "Microbiology",
@@ -144,11 +134,6 @@ const microbiology = {
     { id: "micro_39", name: "Bordetella pertussis Culture", parameter: "B. pertussis", unit: "", normalMin: 0, normalMax: 0, description: "Whooping cough bacteria" },
     { id: "micro_40", name: "Brucella Culture", parameter: "Brucella spp.", unit: "", normalMin: 0, normalMax: 0, description: "Brucellosis detection" }
   ]
-};
-
-// Example: to integrate, push into your departments array like:
-// departmentsArray.push(microbiology);
-// Serology — 40 tests
 const serology = {
   id: "serology",
   name: "Serology",
@@ -194,11 +179,6 @@ const serology = {
     { id: "sero_39", name: "H. pylori IgG", parameter: "H. pylori IgG", unit: "", normalMin: 0, normalMax: 0, description: "Past H. pylori infection" },
     { id: "sero_40", name: "ANA (Antinuclear Antibody)", parameter: "ANA", unit: "", normalMin: 0, normalMax: 0, description: "Autoimmune disease marker" }
   ]
-};
-
-// Example: to integrate, push into your departments array like:
-// departmentsArray.push(serology);
-// Immunology — 40 tests
 const immunology = {
   id: "immunology",
   name: "Immunology",
@@ -244,11 +224,6 @@ const immunology = {
     { id: "immuno_39", name: "Anti-CCP", parameter: "Anti-cyclic citrullinated peptide", unit: "U/mL", normalMin: 0, normalMax: 20, description: "Rheumatoid arthritis marker" },
     { id: "immuno_40", name: "HLA Typing", parameter: "HLA alleles", unit: "", normalMin: 0, normalMax: 0, description: "Genetic immune typing" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(immunology);
-// Histopathology & Cytology — 40 tests
 const histopathology = {
   id: "histopathology",
   name: "Histopathology & Cytology",
@@ -294,11 +269,6 @@ const histopathology = {
     { id: "histo_39", name: "Eye Biopsy", parameter: "Ocular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Retinoblastoma, melanoma" },
     { id: "histo_40", name: "Testicular Biopsy", parameter: "Testicular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Infertility, malignancy" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(histopathology);
-// Endocrinology (Hormones) — 40 tests
 const endocrinology = {
   id: "endocrinology",
   name: "Endocrinology / Hormones",
@@ -344,11 +314,6 @@ const endocrinology = {
     { id: "endo_39", name: "Vasopressin (ADH)", parameter: "Antidiuretic Hormone", unit: "pg/mL", normalMin: 1, normalMax: 5, description: "Water balance hormone" },
     { id: "endo_40", name: "Epinephrine/Norepinephrine", parameter: "Catecholamines", unit: "pg/mL", normalMin: 10, normalMax: 100, description: "Adrenal medulla hormones" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(endocrinology);
-// Molecular Biology / PCR — 40 tests
 const molecularBiology = {
   id: "molecular_biology",
   name: "Molecular Biology / PCR",
@@ -394,11 +359,6 @@ const molecularBiology = {
     { id: "mol_39", name: "EGFR Mutation PCR", parameter: "EGFR Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Lung cancer marker" },
     { id: "mol_40", name: "BCR-ABL PCR", parameter: "BCR-ABL Fusion Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "CML diagnosis" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(molecularBiology);
-// Toxicology — 40 tests
 const toxicology = {
   id: "toxicology",
   name: "Toxicology / Drug & Poison Screening",
@@ -444,11 +404,6 @@ const toxicology = {
     { id: "tox_39", name: "Therapeutic Drug Panel", parameter: "Multiple Drugs", unit: "Quantitative", normalMin: 0, normalMax: 0, description: "Routine drug monitoring" },
     { id: "tox_40", name: "Comprehensive Drug Abuse Panel", parameter: "Multi-drug", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse screen (10–20 drugs)" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(toxicology);
-// Genetics / DNA Testing — 40 tests
 const genetics = {
   id: "genetics",
   name: "Genetics / DNA Testing",
@@ -494,11 +449,6 @@ const genetics = {
     { id: "gen_39", name: "Whole Exome Sequencing (WES)", parameter: "Exons", unit: "Variants", normalMin: 0, normalMax: 0, description: "Protein-coding gene analysis" },
     { id: "gen_40", name: "Whole Genome Sequencing (WGS)", parameter: "Genome", unit: "Variants", normalMin: 0, normalMax: 0, description: "Complete genome analysis" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(genetics);
-// General Pathology — 40 tests
 const pathology = {
   id: "pathology",
   name: "General Pathology",
@@ -544,11 +494,6 @@ const pathology = {
     { id: "path_39", name: "Colonic Biopsy", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Colorectal cancer evaluation" },
     { id: "path_40", name: "Bladder Biopsy", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Bladder cancer evaluation" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(pathology);
-// Urinalysis — 40 tests
 const urinalysis = {
   id: "urinalysis",
   name: "Urinalysis",
@@ -594,11 +539,6 @@ const urinalysis = {
     { id: "urine_39", name: "24-Hour Urine Volume", parameter: "Volume", unit: "mL/24h", normalMin: 800, normalMax: 2000, description: "Daily urine output" },
     { id: "urine_40", name: "24-Hour Urine Protein", parameter: "Protein", unit: "mg/24h", normalMin: 0, normalMax: 150, description: "Proteinuria quantification" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(urinalysis);
-// Stool / Parasitology — 40 tests
 const stoolParasitology = {
   id: "stool_parasitology",
   name: "Stool / Parasitology",
@@ -644,11 +584,6 @@ const stoolParasitology = {
     { id: "stool_39", name: "Stool Norovirus PCR", parameter: "Norovirus", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Viral diarrhea detection" },
     { id: "stool_40", name: "Stool H. pylori Antigen", parameter: "Helicobacter pylori", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Peptic ulcer marker" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(stoolParasitology);
-// Microbiology — 40 tests
 const microbiology = {
   id: "microbiology",
   name: "Microbiology",
@@ -694,11 +629,6 @@ const microbiology = {
     { id: "micro_39", name: "Chlamydia Culture", parameter: "Chlamydia spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "STI detection" },
     { id: "micro_40", name: "Antibiotic Sensitivity Testing (AST)", parameter: "MIC/Zone of Inhibition", unit: "Report", normalMin: 0, normalMax: 0, description: "Antibiotic susceptibility" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(microbiology);
-// Virology — 40 tests
 const virology = {
   id: "virology",
   name: "Virology",
@@ -744,11 +674,6 @@ const virology = {
     { id: "vir_39", name: "Dengue IgG", parameter: "Dengue IgG", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Past Dengue infection" },
     { id: "vir_40", name: "Zika Virus PCR", parameter: "Zika RNA", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Zika virus detection" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(virology);
-// Blood Bank / Transfusion Medicine — 40 tests
 const bloodBank = {
   id: "blood_bank",
   name: "Blood Bank & Transfusion Medicine",
@@ -794,11 +719,6 @@ const bloodBank = {
     { id: "bb_39", name: "Cryoglobulin Test", parameter: "Cryoglobulins", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Cryoglobulinemia" },
     { id: "bb_40", name: "Cold Agglutinin Test", parameter: "Cold Agglutinin", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Autoimmune hemolysis" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(bloodBank);
-// Toxicology & Drug Monitoring — 40 tests
 const toxicology = {
   id: "toxicology",
   name: "Toxicology & Drug Monitoring",
@@ -844,11 +764,7 @@ const toxicology = {
     { id: "tox_39", name: "Urine Drug Analysis (Comprehensive)", parameter: "Multiple Drugs", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse detection" },
     { id: "tox_40", name: "Poison Panel (Comprehensive)", parameter: "Multiple Toxins", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Toxicology screen" }
   ]
-};
 
-// Example: add to departments array
-// departmentsArray.push(toxicology);
-// Genetics — 40 tests
 const genetics = {
   id: "genetics",
   name: "Genetics",
@@ -894,11 +810,6 @@ const genetics = {
     { id: "gen_39", name: "Newborn Screening Panel (Genetic)", parameter: "Multiple Genes", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Genetic disorders in newborns" },
     { id: "gen_40", name: "Pharmacogenetic Drug Response Panel", parameter: "CYP450 Genes", unit: "Variants", normalMin: 0, normalMax: 0, description: "Drug response prediction" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(genetics);
-// Histopathology — 40 tests
 const histopathology = {
   id: "histopathology",
   name: "Histopathology",
@@ -944,11 +855,6 @@ const histopathology = {
     { id: "his_39", name: "Immunofluorescence (Indirect)", parameter: "Antigen-Antibody", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Systemic autoimmune diseases" },
     { id: "his_40", name: "Electron Microscopy (Tissue)", parameter: "Ultra-structure", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detailed tissue analysis" }
   ]
-};
-
-// Example: add to departments array
-// departmentsArray.push(histopathology);
-// Miscellaneous / Specialized Tests — 40 tests
 const miscellaneous = {
   id: "miscellaneous",
   name: "Miscellaneous / Specialized Tests",
@@ -996,6 +902,4 @@ const miscellaneous = {
   ]
 };
 
-// Example: add to departments array
-// departmentsArray.push(miscellaneous);
 
