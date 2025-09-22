@@ -1,4 +1,26 @@
-// Hematology department — 40 tests
+// Collect all departments into one array
+const departmentsArray = [
+  hematology,
+  biochemistry,
+  microbiology,
+  serology,
+  immunology,
+  histopathology,
+  endocrinology,
+  molecularBiology,
+  pathology, 
+  urinalysis,
+  stoolParasitology,
+  infectiousDiseases,
+  virology,
+  bloodBank,
+  toxicology,
+  genetics,
+  miscellaneous
+];
+
+// Expose for other scripts
+window.departmentsArray = departmentsArray;
 const hematology = {
   id: "hematology",
   name: "Hematology",
