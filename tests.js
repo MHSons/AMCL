@@ -1,31 +1,11 @@
-// Collect all departments into one array
-const departmentsArray = [
-  hematology,
-  biochemistry,
-  microbiology,
-  serology,
-  immunology,
-  histopathology,
-  endocrinology,
-  molecularBiology,
-  pathology, 
-  urinalysis,
-  stoolParasitology,
-  infectiousDiseases,
-  virology,
-  bloodBank,
-  toxicology,
-  genetics,
-  miscellaneous
-];
+// =================== Departments ===================
 
-// Expose for other scripts
-window.departmentsArray = departmentsArray;
+// Hematology
 const hematology = {
   id: "hematology",
   name: "Hematology",
   tests: [
-    { id: "hematology_1",  name: "Hemoglobin", parameter: "Hemoglobin", unit: "g/dL", normalMin: 13.5, normalMax: 17.5, description: "Hemoglobin concentration (adult male ref range)" },
+    //  { id: "hematology_1",  name: "Hemoglobin", parameter: "Hemoglobin", unit: "g/dL", normalMin: 13.5, normalMax: 17.5, description: "Hemoglobin concentration (adult male ref range)" },
     { id: "hematology_2",  name: "RBC Count", parameter: "RBC", unit: "million/µL", normalMin: 4.5, normalMax: 6.0, description: "Red blood cell count" },
     { id: "hematology_3",  name: "WBC Count", parameter: "WBC", unit: "cells/µL", normalMin: 4000, normalMax: 11000, description: "White blood cell count" },
     { id: "hematology_4",  name: "Platelet Count", parameter: "Platelets", unit: "cells/µL", normalMin: 150000, normalMax: 450000, description: "Platelet count" },
@@ -65,12 +45,16 @@ const hematology = {
     { id: "hematology_38", name: "Peripheral Smear - Malaria Parasite", parameter: "Malaria Smear", unit: "", normalMin: 0, normalMax: 0, description: "Microscopy for malaria parasites (thick/thin films)" },
     { id: "hematology_39", name: "Absolute Blast Count", parameter: "Blasts", unit: "cells/µL", normalMin: 0, normalMax: 0, description: "Blast cells (if suspected leukemia) - specialist reporting" },
     { id: "hematology_40", name: "Bone Marrow Examination (Report)", parameter: "Bone Marrow", unit: "", normalMin: 0, normalMax: 0, description: "Bone marrow aspirate/biopsy report (morphology & cellularity) - specialist test" }
+
   ]
+};
+
+// Biochemistry / Clinical Chemistry
 const biochemistry = {
   id: "biochemistry",
   name: "Biochemistry / Clinical Chemistry",
   tests: [
-    { id: "biochem_1",  name: "Fasting Blood Sugar (FBS)", parameter: "Glucose (Fasting)", unit: "mg/dL", normalMin: 70, normalMax: 100, description: "Fasting glucose level" },
+    //  { id: "biochem_1",  name: "Fasting Blood Sugar (FBS)", parameter: "Glucose (Fasting)", unit: "mg/dL", normalMin: 70, normalMax: 100, description: "Fasting glucose level" },
     { id: "biochem_2",  name: "Random Blood Sugar (RBS)", parameter: "Glucose (Random)", unit: "mg/dL", normalMin: 70, normalMax: 140, description: "Random glucose level" },
     { id: "biochem_3",  name: "HbA1c (Glycated Hemoglobin)", parameter: "HbA1c", unit: "%", normalMin: 4, normalMax: 5.6, description: "Average blood glucose (3 months)" },
     { id: "biochem_4",  name: "Glucose Tolerance Test (GTT)", parameter: "Glucose 2h", unit: "mg/dL", normalMin: 70, normalMax: 140, description: "Oral glucose tolerance test" },
@@ -111,11 +95,14 @@ const biochemistry = {
     { id: "biochem_39", name: "Troponin I (Qualitative)", parameter: "Troponin I", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" },
     { id: "biochem_40", name: "Troponin T (Qualitative)", parameter: "Troponin T", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" }
   ]
+};
+
+// Microbiology
 const microbiology = {
   id: "microbiology",
   name: "Microbiology",
   tests: [
-    { id: "micro_1", name: "Blood Culture", parameter: "Bacterial Growth", unit: "", normalMin: 0, normalMax: 0, description: "Detection of bacteria in blood" },
+    //{ id: "micro_1", name: "Blood Culture", parameter: "Bacterial Growth", unit: "", normalMin: 0, normalMax: 0, description: "Detection of bacteria in blood" },
     { id: "micro_2", name: "Urine Culture & Sensitivity", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Urine culture and antibiotic sensitivity" },
     { id: "micro_3", name: "Stool Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Isolation of enteric pathogens" },
     { id: "micro_4", name: "Sputum Culture", parameter: "Pathogen Growth", unit: "", normalMin: 0, normalMax: 0, description: "Respiratory culture for TB or bacteria" },
@@ -156,11 +143,14 @@ const microbiology = {
     { id: "micro_39", name: "Bordetella pertussis Culture", parameter: "B. pertussis", unit: "", normalMin: 0, normalMax: 0, description: "Whooping cough bacteria" },
     { id: "micro_40", name: "Brucella Culture", parameter: "Brucella spp.", unit: "", normalMin: 0, normalMax: 0, description: "Brucellosis detection" }
   ]
+};
+
+// Serology
 const serology = {
   id: "serology",
   name: "Serology",
   tests: [
-    { id: "sero_1", name: "Widal Test", parameter: "S. Typhi Antibodies", unit: "titer", normalMin: 0, normalMax: 1, description: "Typhoid fever screening" },
+    // { id: "sero_1", name: "Widal Test", parameter: "S. Typhi Antibodies", unit: "titer", normalMin: 0, normalMax: 1, description: "Typhoid fever screening" },
     { id: "sero_2", name: "ASO Titer", parameter: "Anti-streptolysin O", unit: "IU/mL", normalMin: 0, normalMax: 200, description: "Streptococcal infection marker" },
     { id: "sero_3", name: "Rheumatoid Factor (RF)", parameter: "RF", unit: "IU/mL", normalMin: 0, normalMax: 14, description: "Rheumatoid arthritis marker" },
     { id: "sero_4", name: "CRP (C-Reactive Protein)", parameter: "CRP", unit: "mg/L", normalMin: 0, normalMax: 5, description: "Inflammatory marker" },
@@ -201,11 +191,14 @@ const serology = {
     { id: "sero_39", name: "H. pylori IgG", parameter: "H. pylori IgG", unit: "", normalMin: 0, normalMax: 0, description: "Past H. pylori infection" },
     { id: "sero_40", name: "ANA (Antinuclear Antibody)", parameter: "ANA", unit: "", normalMin: 0, normalMax: 0, description: "Autoimmune disease marker" }
   ]
+};
+
+// Immunology
 const immunology = {
   id: "immunology",
   name: "Immunology",
   tests: [
-    { id: "immuno_1", name: "IgG", parameter: "Immunoglobulin G", unit: "mg/dL", normalMin: 700, normalMax: 1600, description: "Major circulating antibody" },
+    // { id: "immuno_1", name: "IgG", parameter: "Immunoglobulin G", unit: "mg/dL", normalMin: 700, normalMax: 1600, description: "Major circulating antibody" },
     { id: "immuno_2", name: "IgA", parameter: "Immunoglobulin A", unit: "mg/dL", normalMin: 70, normalMax: 400, description: "Mucosal immunity antibody" },
     { id: "immuno_3", name: "IgM", parameter: "Immunoglobulin M", unit: "mg/dL", normalMin: 40, normalMax: 230, description: "Primary immune response antibody" },
     { id: "immuno_4", name: "IgE", parameter: "Immunoglobulin E", unit: "IU/mL", normalMin: 0, normalMax: 100, description: "Allergy marker antibody" },
@@ -246,236 +239,14 @@ const immunology = {
     { id: "immuno_39", name: "Anti-CCP", parameter: "Anti-cyclic citrullinated peptide", unit: "U/mL", normalMin: 0, normalMax: 20, description: "Rheumatoid arthritis marker" },
     { id: "immuno_40", name: "HLA Typing", parameter: "HLA alleles", unit: "", normalMin: 0, normalMax: 0, description: "Genetic immune typing" }
   ]
-const histopathology = {
-  id: "histopathology",
-  name: "Histopathology & Cytology",
-  tests: [
-    { id: "histo_1", name: "Fine Needle Aspiration Cytology (FNAC)", parameter: "Cytology", unit: "", normalMin: 0, normalMax: 0, description: "Microscopic exam of aspirated cells" },
-    { id: "histo_2", name: "Pap Smear", parameter: "Cervical cytology", unit: "", normalMin: 0, normalMax: 0, description: "Screening for cervical cancer" },
-    { id: "histo_3", name: "Urine Cytology", parameter: "Urinary cells", unit: "", normalMin: 0, normalMax: 0, description: "Detect malignancy in urinary tract" },
-    { id: "histo_4", name: "Sputum Cytology", parameter: "Respiratory cells", unit: "", normalMin: 0, normalMax: 0, description: "Lung cancer screening" },
-    { id: "histo_5", name: "Pleural Fluid Cytology", parameter: "Pleural cells", unit: "", normalMin: 0, normalMax: 0, description: "Detect malignant effusion" },
-    { id: "histo_6", name: "Ascitic Fluid Cytology", parameter: "Ascitic cells", unit: "", normalMin: 0, normalMax: 0, description: "Malignancy detection in ascites" },
-    { id: "histo_7", name: "CSF Cytology", parameter: "Cerebrospinal fluid cells", unit: "", normalMin: 0, normalMax: 0, description: "CNS malignancy/metastasis" },
-    { id: "histo_8", name: "Bone Marrow Aspiration Cytology", parameter: "Marrow cells", unit: "", normalMin: 0, normalMax: 0, description: "Leukemia & marrow disorders" },
-    { id: "histo_9", name: "Bone Marrow Biopsy", parameter: "Core biopsy", unit: "", normalMin: 0, normalMax: 0, description: "Histology of marrow architecture" },
-    { id: "histo_10", name: "Endometrial Biopsy", parameter: "Endometrial tissue", unit: "", normalMin: 0, normalMax: 0, description: "Evaluate abnormal uterine bleeding" },
-    { id: "histo_11", name: "Skin Biopsy", parameter: "Skin lesion tissue", unit: "", normalMin: 0, normalMax: 0, description: "Dermatological malignancy diagnosis" },
-    { id: "histo_12", name: "Liver Biopsy", parameter: "Liver tissue", unit: "", normalMin: 0, normalMax: 0, description: "Cirrhosis, hepatitis, tumors" },
-    { id: "histo_13", name: "Kidney Biopsy", parameter: "Renal tissue", unit: "", normalMin: 0, normalMax: 0, description: "Glomerulonephritis, nephropathy" },
-    { id: "histo_14", name: "Lung Biopsy", parameter: "Lung tissue", unit: "", normalMin: 0, normalMax: 0, description: "Lung cancer diagnosis" },
-    { id: "histo_15", name: "Breast Biopsy", parameter: "Breast tissue", unit: "", normalMin: 0, normalMax: 0, description: "Benign/malignant breast lesions" },
-    { id: "histo_16", name: "Prostate Biopsy", parameter: "Prostate tissue", unit: "", normalMin: 0, normalMax: 0, description: "Prostate cancer evaluation" },
-    { id: "histo_17", name: "Cervical Biopsy", parameter: "Cervical tissue", unit: "", normalMin: 0, normalMax: 0, description: "Cervical dysplasia/cancer" },
-    { id: "histo_18", name: "Lymph Node Biopsy", parameter: "Lymph node tissue", unit: "", normalMin: 0, normalMax: 0, description: "Lymphoma & metastasis diagnosis" },
-    { id: "histo_19", name: "Gastrointestinal Biopsy", parameter: "GI mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Gastritis, IBD, carcinoma" },
-    { id: "histo_20", name: "Esophageal Biopsy", parameter: "Esophageal tissue", unit: "", normalMin: 0, normalMax: 0, description: "GERD, Barrett’s, carcinoma" },
-    { id: "histo_21", name: "Stomach Biopsy", parameter: "Gastric tissue", unit: "", normalMin: 0, normalMax: 0, description: "Ulcer, carcinoma" },
-    { id: "histo_22", name: "Small Intestine Biopsy", parameter: "Intestinal mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Celiac disease, IBD" },
-    { id: "histo_23", name: "Colon Biopsy", parameter: "Colonic mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Polyps, carcinoma" },
-    { id: "histo_24", name: "Rectal Biopsy", parameter: "Rectal mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Rectal carcinoma" },
-    { id: "histo_25", name: "Pancreatic Biopsy", parameter: "Pancreatic tissue", unit: "", normalMin: 0, normalMax: 0, description: "Pancreatitis, carcinoma" },
-    { id: "histo_26", name: "Thyroid Biopsy", parameter: "Thyroid tissue", unit: "", normalMin: 0, normalMax: 0, description: "Nodules, thyroid cancer" },
-    { id: "histo_27", name: "Salivary Gland Biopsy", parameter: "Salivary tissue", unit: "", normalMin: 0, normalMax: 0, description: "Sjögren’s, tumors" },
-    { id: "histo_28", name: "Oral Cavity Biopsy", parameter: "Oral mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Oral cancer screening" },
-    { id: "histo_29", name: "Tongue Biopsy", parameter: "Tongue tissue", unit: "", normalMin: 0, normalMax: 0, description: "Oral cancer, lesions" },
-    { id: "histo_30", name: "Bladder Biopsy", parameter: "Bladder tissue", unit: "", normalMin: 0, normalMax: 0, description: "Bladder carcinoma" },
-    { id: "histo_31", name: "Endoscopic Biopsy", parameter: "GI tract tissue", unit: "", normalMin: 0, normalMax: 0, description: "Endoscopy guided biopsy" },
-    { id: "histo_32", name: "Frozen Section", parameter: "Intraoperative biopsy", unit: "", normalMin: 0, normalMax: 0, description: "Immediate surgical diagnosis" },
-    { id: "histo_33", name: "Immunohistochemistry (IHC)", parameter: "Protein markers", unit: "", normalMin: 0, normalMax: 0, description: "Cancer & tumor typing" },
-    { id: "histo_34", name: "Special Stains", parameter: "Histological stains", unit: "", normalMin: 0, normalMax: 0, description: "Pathology tissue differentiation" },
-    { id: "histo_35", name: "Cytogenetics (FISH)", parameter: "Chromosomal analysis", unit: "", normalMin: 0, normalMax: 0, description: "Leukemia, lymphoma markers" },
-    { id: "histo_36", name: "Bone Tumor Biopsy", parameter: "Bone tissue", unit: "", normalMin: 0, normalMax: 0, description: "Osteosarcoma, metastasis" },
-    { id: "histo_37", name: "Soft Tissue Tumor Biopsy", parameter: "Soft tissue", unit: "", normalMin: 0, normalMax: 0, description: "Sarcomas diagnosis" },
-    { id: "histo_38", name: "Brain Biopsy", parameter: "Brain tissue", unit: "", normalMin: 0, normalMax: 0, description: "Tumors, infections" },
-    { id: "histo_39", name: "Eye Biopsy", parameter: "Ocular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Retinoblastoma, melanoma" },
-    { id: "histo_40", name: "Testicular Biopsy", parameter: "Testicular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Infertility, malignancy" }
-  ]
-const endocrinology = {
-  id: "endocrinology",
-  name: "Endocrinology / Hormones",
-  tests: [
-    { id: "endo_1", name: "Thyroid Stimulating Hormone (TSH)", parameter: "TSH", unit: "µIU/mL", normalMin: 0.4, normalMax: 4.0, description: "Primary thyroid function test" },
-    { id: "endo_2", name: "Free T4 (Thyroxine)", parameter: "Free T4", unit: "ng/dL", normalMin: 0.8, normalMax: 1.8, description: "Thyroid hormone" },
-    { id: "endo_3", name: "Free T3 (Triiodothyronine)", parameter: "Free T3", unit: "pg/mL", normalMin: 2.3, normalMax: 4.2, description: "Thyroid hormone" },
-    { id: "endo_4", name: "Total T4", parameter: "T4", unit: "µg/dL", normalMin: 4.5, normalMax: 11.2, description: "Total thyroxine" },
-    { id: "endo_5", name: "Total T3", parameter: "T3", unit: "ng/dL", normalMin: 80, normalMax: 200, description: "Total triiodothyronine" },
-    { id: "endo_6", name: "Reverse T3", parameter: "rT3", unit: "ng/dL", normalMin: 10, normalMax: 24, description: "Inactive thyroid hormone" },
-    { id: "endo_7", name: "Thyroglobulin", parameter: "Tg", unit: "ng/mL", normalMin: 0, normalMax: 55, description: "Thyroid tumor marker" },
-    { id: "endo_8", name: "Calcitonin", parameter: "Calcitonin", unit: "pg/mL", normalMin: 0, normalMax: 10, description: "Medullary thyroid carcinoma marker" },
-    { id: "endo_9", name: "Parathyroid Hormone (PTH)", parameter: "PTH", unit: "pg/mL", normalMin: 10, normalMax: 65, description: "Calcium metabolism" },
-    { id: "endo_10", name: "Vitamin D (25-OH)", parameter: "25-Hydroxy Vitamin D", unit: "ng/mL", normalMin: 30, normalMax: 100, description: "Bone health marker" },
-    { id: "endo_11", name: "Vitamin D (1,25-OH)", parameter: "Calcitriol", unit: "pg/mL", normalMin: 18, normalMax: 78, description: "Active Vitamin D" },
-    { id: "endo_12", name: "Cortisol (AM)", parameter: "Cortisol", unit: "µg/dL", normalMin: 6, normalMax: 23, description: "Adrenal function" },
-    { id: "endo_13", name: "Cortisol (PM)", parameter: "Cortisol", unit: "µg/dL", normalMin: 3, normalMax: 16, description: "Adrenal function (evening)" },
-    { id: "endo_14", name: "ACTH", parameter: "Adrenocorticotropic Hormone", unit: "pg/mL", normalMin: 10, normalMax: 60, description: "Pituitary-adrenal axis" },
-    { id: "endo_15", name: "DHEA-S", parameter: "Dehydroepiandrosterone sulfate", unit: "µg/dL", normalMin: 35, normalMax: 430, description: "Adrenal androgen" },
-    { id: "endo_16", name: "Aldosterone", parameter: "Aldosterone", unit: "ng/dL", normalMin: 4, normalMax: 31, description: "Adrenal hormone" },
-    { id: "endo_17", name: "Renin Activity", parameter: "Renin", unit: "ng/mL/hr", normalMin: 0.5, normalMax: 3.3, description: "RAAS system marker" },
-    { id: "endo_18", name: "Prolactin", parameter: "Prolactin", unit: "ng/mL", normalMin: 4.8, normalMax: 23, description: "Pituitary hormone" },
-    { id: "endo_19", name: "FSH", parameter: "Follicle Stimulating Hormone", unit: "mIU/mL", normalMin: 3, normalMax: 12, description: "Reproductive hormone" },
-    { id: "endo_20", name: "LH", parameter: "Luteinizing Hormone", unit: "mIU/mL", normalMin: 2, normalMax: 12, description: "Reproductive hormone" },
-    { id: "endo_21", name: "Estradiol (E2)", parameter: "Estrogen", unit: "pg/mL", normalMin: 15, normalMax: 350, description: "Female reproductive hormone" },
-    { id: "endo_22", name: "Progesterone", parameter: "Progesterone", unit: "ng/mL", normalMin: 0.2, normalMax: 25, description: "Pregnancy hormone" },
-    { id: "endo_23", name: "Testosterone (Total)", parameter: "Testosterone", unit: "ng/dL", normalMin: 300, normalMax: 1000, description: "Male reproductive hormone" },
-    { id: "endo_24", name: "Free Testosterone", parameter: "Free Testosterone", unit: "pg/mL", normalMin: 50, normalMax: 210, description: "Bioavailable testosterone" },
-    { id: "endo_25", name: "Sex Hormone Binding Globulin (SHBG)", parameter: "SHBG", unit: "nmol/L", normalMin: 10, normalMax: 57, description: "Hormone transport protein" },
-    { id: "endo_26", name: "Insulin (Fasting)", parameter: "Insulin", unit: "µIU/mL", normalMin: 2, normalMax: 25, description: "Glucose metabolism" },
-    { id: "endo_27", name: "C-Peptide", parameter: "C-Peptide", unit: "ng/mL", normalMin: 0.5, normalMax: 2.0, description: "Insulin secretion marker" },
-    { id: "endo_28", name: "Growth Hormone (GH)", parameter: "GH", unit: "ng/mL", normalMin: 0, normalMax: 10, description: "Pituitary hormone" },
-    { id: "endo_29", name: "IGF-1", parameter: "Insulin-like Growth Factor-1", unit: "ng/mL", normalMin: 100, normalMax: 300, description: "Growth marker" },
-    { id: "endo_30", name: "IGFBP-3", parameter: "IGF Binding Protein-3", unit: "µg/mL", normalMin: 3, normalMax: 7, description: "Growth hormone activity" },
-    { id: "endo_31", name: "Human Chorionic Gonadotropin (hCG)", parameter: "hCG", unit: "mIU/mL", normalMin: 0, normalMax: 5, description: "Pregnancy hormone" },
-    { id: "endo_32", name: "Anti-Müllerian Hormone (AMH)", parameter: "AMH", unit: "ng/mL", normalMin: 1, normalMax: 10, description: "Ovarian reserve marker" },
-    { id: "endo_33", name: "Inhibin B", parameter: "Inhibin B", unit: "pg/mL", normalMin: 20, normalMax: 350, description: "Fertility marker" },
-    { id: "endo_34", name: "Leptin", parameter: "Leptin", unit: "ng/mL", normalMin: 0.5, normalMax: 15, description: "Energy balance hormone" },
-    { id: "endo_35", name: "Adiponectin", parameter: "Adiponectin", unit: "µg/mL", normalMin: 4, normalMax: 26, description: "Metabolic marker" },
-    { id: "endo_36", name: "Ghrelin", parameter: "Ghrelin", unit: "pg/mL", normalMin: 100, normalMax: 1200, description: "Hunger hormone" },
-    { id: "endo_37", name: "Melatonin", parameter: "Melatonin", unit: "pg/mL", normalMin: 10, normalMax: 80, description: "Sleep cycle hormone" },
-    { id: "endo_38", name: "Oxytocin", parameter: "Oxytocin", unit: "pg/mL", normalMin: 1, normalMax: 20, description: "Social bonding hormone" },
-    { id: "endo_39", name: "Vasopressin (ADH)", parameter: "Antidiuretic Hormone", unit: "pg/mL", normalMin: 1, normalMax: 5, description: "Water balance hormone" },
-    { id: "endo_40", name: "Epinephrine/Norepinephrine", parameter: "Catecholamines", unit: "pg/mL", normalMin: 10, normalMax: 100, description: "Adrenal medulla hormones" }
-  ]
-const molecularBiology = {
-  id: "molecular_biology",
-  name: "Molecular Biology / PCR",
-  tests: [
-    { id: "mol_1", name: "COVID-19 PCR", parameter: "SARS-CoV-2 RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Real-time PCR for COVID-19" },
-    { id: "mol_2", name: "Influenza A PCR", parameter: "Influenza A RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "PCR for influenza A" },
-    { id: "mol_3", name: "Influenza B PCR", parameter: "Influenza B RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "PCR for influenza B" },
-    { id: "mol_4", name: "RSV PCR", parameter: "RSV RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Respiratory syncytial virus" },
-    { id: "mol_5", name: "Hepatitis B PCR (HBV DNA)", parameter: "HBV DNA", unit: "IU/mL", normalMin: 0, normalMax: 0, description: "Quantitative viral load" },
-    { id: "mol_6", name: "Hepatitis C PCR (HCV RNA)", parameter: "HCV RNA", unit: "IU/mL", normalMin: 0, normalMax: 0, description: "Quantitative viral load" },
-    { id: "mol_7", name: "HIV PCR (HIV RNA)", parameter: "HIV RNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "HIV viral load" },
-    { id: "mol_8", name: "CMV PCR", parameter: "Cytomegalovirus DNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "Cytomegalovirus detection" },
-    { id: "mol_9", name: "EBV PCR", parameter: "Epstein-Barr Virus DNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "EBV viral load" },
-    { id: "mol_10", name: "HSV-1 PCR", parameter: "HSV-1 DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Herpes Simplex Virus type 1" },
-    { id: "mol_11", name: "HSV-2 PCR", parameter: "HSV-2 DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Herpes Simplex Virus type 2" },
-    { id: "mol_12", name: "HPV PCR (High-Risk)", parameter: "HPV DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Human Papillomavirus high risk types" },
-    { id: "mol_13", name: "Mycobacterium Tuberculosis PCR", parameter: "TB DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "GeneXpert MTB/RIF assay" },
-    { id: "mol_14", name: "Chlamydia trachomatis PCR", parameter: "Chlamydia DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "STI detection" },
-    { id: "mol_15", name: "Neisseria gonorrhoeae PCR", parameter: "Gonorrhea DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "STI detection" },
-    { id: "mol_16", name: "HPV Genotyping", parameter: "HPV DNA", unit: "Type Specific", normalMin: 0, normalMax: 0, description: "HPV strain detection" },
-    { id: "mol_17", name: "Zika Virus PCR", parameter: "Zika RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Zika virus detection" },
-    { id: "mol_18", name: "Dengue PCR", parameter: "Dengue RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Early dengue virus detection" },
-    { id: "mol_19", name: "Malaria PCR", parameter: "Plasmodium DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Molecular malaria test" },
-    { id: "mol_20", name: "Leishmania PCR", parameter: "Leishmania DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Leishmaniasis diagnosis" },
-    { id: "mol_21", name: "Toxoplasma PCR", parameter: "Toxoplasma DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Toxoplasmosis detection" },
-    { id: "mol_22", name: "Rubella PCR", parameter: "Rubella RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Congenital rubella detection" },
-    { id: "mol_23", name: "Measles PCR", parameter: "Measles RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Measles virus detection" },
-    { id: "mol_24", name: "Mumps PCR", parameter: "Mumps RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Mumps virus detection" },
-    { id: "mol_25", name: "Adenovirus PCR", parameter: "Adenovirus DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Respiratory adenovirus" },
-    { id: "mol_26", name: "Enterovirus PCR", parameter: "Enterovirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Polio/Echo viruses" },
-    { id: "mol_27", name: "Norovirus PCR", parameter: "Norovirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Gastroenteritis virus" },
-    { id: "mol_28", name: "Rotavirus PCR", parameter: "Rotavirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Childhood gastroenteritis" },
-    { id: "mol_29", name: "Parvovirus B19 PCR", parameter: "Parvovirus DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Parvovirus detection" },
-    { id: "mol_30", name: "Bordetella pertussis PCR", parameter: "Pertussis DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Whooping cough detection" },
-    { id: "mol_31", name: "H. pylori PCR", parameter: "H. pylori DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Stomach infection" },
-    { id: "mol_32", name: "Clostridium difficile PCR", parameter: "C. diff DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Antibiotic-associated diarrhea" },
-    { id: "mol_33", name: "MRSA PCR", parameter: "MRSA DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Methicillin-resistant Staphylococcus aureus" },
-    { id: "mol_34", name: "VRE PCR", parameter: "VRE DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Vancomycin-resistant Enterococcus" },
-    { id: "mol_35", name: "Carbapenemase Genes PCR", parameter: "Resistance Genes", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Antibiotic resistance" },
-    { id: "mol_36", name: "BRCA1 Mutation PCR", parameter: "BRCA1 Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast cancer gene" },
-    { id: "mol_37", name: "BRCA2 Mutation PCR", parameter: "BRCA2 Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast cancer gene" },
-    { id: "mol_38", name: "KRAS Mutation PCR", parameter: "KRAS Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Colon/lung cancer marker" },
-    { id: "mol_39", name: "EGFR Mutation PCR", parameter: "EGFR Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Lung cancer marker" },
-    { id: "mol_40", name: "BCR-ABL PCR", parameter: "BCR-ABL Fusion Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "CML diagnosis" }
-  ]
-const toxicology = {
-  id: "toxicology",
-  name: "Toxicology / Drug & Poison Screening",
-  tests: [
-    { id: "tox_1", name: "Alcohol (Ethanol) Level", parameter: "Ethanol", unit: "mg/dL", normalMin: 0, normalMax: 10, description: "Alcohol intoxication test" },
-    { id: "tox_2", name: "Methanol Level", parameter: "Methanol", unit: "mg/dL", normalMin: 0, normalMax: 0, description: "Methanol poisoning" },
-    { id: "tox_3", name: "Isopropanol Level", parameter: "Isopropanol", unit: "mg/dL", normalMin: 0, normalMax: 0, description: "Toxic alcohol screen" },
-    { id: "tox_4", name: "Acetaminophen (Paracetamol)", parameter: "Acetaminophen", unit: "µg/mL", normalMin: 10, normalMax: 30, description: "Overdose detection" },
-    { id: "tox_5", name: "Salicylates (Aspirin)", parameter: "Salicylate", unit: "mg/dL", normalMin: 10, normalMax: 30, description: "Aspirin toxicity" },
-    { id: "tox_6", name: "Barbiturates Screen", parameter: "Barbiturates", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse screen" },
-    { id: "tox_7", name: "Benzodiazepines Screen", parameter: "Benzodiazepines", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse screen" },
-    { id: "tox_8", name: "Cannabinoids (THC)", parameter: "THC", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Marijuana detection" },
-    { id: "tox_9", name: "Cocaine", parameter: "Cocaine", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Cocaine detection" },
-    { id: "tox_10", name: "Opiates", parameter: "Morphine/Codeine", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Opiate detection" },
-    { id: "tox_11", name: "Methadone", parameter: "Methadone", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Synthetic opioid detection" },
-    { id: "tox_12", name: "Amphetamines", parameter: "Amphetamines", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Stimulant detection" },
-    { id: "tox_13", name: "MDMA (Ecstasy)", parameter: "MDMA", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Ecstasy detection" },
-    { id: "tox_14", name: "Phencyclidine (PCP)", parameter: "PCP", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Hallucinogen detection" },
-    { id: "tox_15", name: "Synthetic Cannabinoids (Spice/K2)", parameter: "Synthetic THC", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Designer drug detection" },
-    { id: "tox_16", name: "Fentanyl", parameter: "Fentanyl", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Synthetic opioid detection" },
-    { id: "tox_17", name: "Tricyclic Antidepressants", parameter: "TCA", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Overdose detection" },
-    { id: "tox_18", name: "Carbamazepine", parameter: "Carbamazepine", unit: "µg/mL", normalMin: 4, normalMax: 12, description: "Toxicity monitoring" },
-    { id: "tox_19", name: "Phenytoin", parameter: "Phenytoin", unit: "µg/mL", normalMin: 10, normalMax: 20, description: "Toxicity monitoring" },
-    { id: "tox_20", name: "Valproic Acid", parameter: "Valproate", unit: "µg/mL", normalMin: 50, normalMax: 100, description: "Therapeutic drug monitoring" },
-    { id: "tox_21", name: "Lithium", parameter: "Lithium", unit: "mEq/L", normalMin: 0.6, normalMax: 1.2, description: "Mood stabilizer monitoring" },
-    { id: "tox_22", name: "Digoxin", parameter: "Digoxin", unit: "ng/mL", normalMin: 0.8, normalMax: 2.0, description: "Cardiac drug monitoring" },
-    { id: "tox_23", name: "Theophylline", parameter: "Theophylline", unit: "µg/mL", normalMin: 10, normalMax: 20, description: "Drug toxicity screen" },
-    { id: "tox_24", name: "Gentamicin", parameter: "Gentamicin", unit: "µg/mL", normalMin: 5, normalMax: 10, description: "Antibiotic monitoring" },
-    { id: "tox_25", name: "Amikacin", parameter: "Amikacin", unit: "µg/mL", normalMin: 15, normalMax: 25, description: "Antibiotic monitoring" },
-    { id: "tox_26", name: "Vancomycin", parameter: "Vancomycin", unit: "µg/mL", normalMin: 10, normalMax: 20, description: "Antibiotic monitoring" },
-    { id: "tox_27", name: "Lead (Pb)", parameter: "Lead", unit: "µg/dL", normalMin: 0, normalMax: 5, description: "Heavy metal poisoning" },
-    { id: "tox_28", name: "Mercury (Hg)", parameter: "Mercury", unit: "µg/L", normalMin: 0, normalMax: 10, description: "Toxic element detection" },
-    { id: "tox_29", name: "Arsenic (As)", parameter: "Arsenic", unit: "µg/L", normalMin: 0, normalMax: 10, description: "Toxic element detection" },
-    { id: "tox_30", name: "Cadmium (Cd)", parameter: "Cadmium", unit: "µg/L", normalMin: 0, normalMax: 5, description: "Heavy metal detection" },
-    { id: "tox_31", name: "Cyanide", parameter: "Cyanide", unit: "µg/L", normalMin: 0, normalMax: 0, description: "Acute poisoning test" },
-    { id: "tox_32", name: "Carbon Monoxide (Carboxyhemoglobin)", parameter: "COHb", unit: "%", normalMin: 0, normalMax: 5, description: "Toxic gas exposure" },
-    { id: "tox_33", name: "Organophosphate Pesticides", parameter: "Cholinesterase Activity", unit: "U/L", normalMin: 4000, normalMax: 12000, description: "Pesticide poisoning" },
-    { id: "tox_34", name: "Herbicide (Paraquat)", parameter: "Paraquat", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Toxic herbicide test" },
-    { id: "tox_35", name: "Insecticide (DDT)", parameter: "DDT", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Banned chemical detection" },
-    { id: "tox_36", name: "Mushroom Poisoning Panel", parameter: "Amatoxins", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Toxic mushroom toxins" },
-    { id: "tox_37", name: "Snake Venom Detection", parameter: "Venom Antigen", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Envenomation test" },
-    { id: "tox_38", name: "Scorpion Venom Detection", parameter: "Venom Antigen", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Envenomation test" },
-    { id: "tox_39", name: "Therapeutic Drug Panel", parameter: "Multiple Drugs", unit: "Quantitative", normalMin: 0, normalMax: 0, description: "Routine drug monitoring" },
-    { id: "tox_40", name: "Comprehensive Drug Abuse Panel", parameter: "Multi-drug", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse screen (10–20 drugs)" }
-  ]
-const genetics = {
-  id: "genetics",
-  name: "Genetics / DNA Testing",
-  tests: [
-    { id: "gen_1", name: "Karyotyping", parameter: "Chromosome Analysis", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects chromosomal abnormalities" },
-    { id: "gen_2", name: "FISH Test", parameter: "Fluorescence In Situ Hybridization", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Gene rearrangement detection" },
-    { id: "gen_3", name: "Down Syndrome Screening (Trisomy 21)", parameter: "Chromosome 21", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Genetic disorder detection" },
-    { id: "gen_4", name: "Turner Syndrome (XO)", parameter: "Sex Chromosome", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Female chromosomal abnormality" },
-    { id: "gen_5", name: "Klinefelter Syndrome (XXY)", parameter: "Sex Chromosome", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Male chromosomal abnormality" },
-    { id: "gen_6", name: "BRCA1 Gene Mutation", parameter: "BRCA1", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast/ovarian cancer risk" },
-    { id: "gen_7", name: "BRCA2 Gene Mutation", parameter: "BRCA2", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast/ovarian cancer risk" },
-    { id: "gen_8", name: "CFTR Gene (Cystic Fibrosis)", parameter: "CFTR Mutation", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Cystic fibrosis diagnosis" },
-    { id: "gen_9", name: "Sickle Cell Mutation (HbS)", parameter: "HBB Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Sickle cell anemia detection" },
-    { id: "gen_10", name: "Thalassemia Mutation Panel", parameter: "HBB Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Beta thalassemia mutation detection" },
-    { id: "gen_11", name: "Fragile X Syndrome", parameter: "FMR1 Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Genetic intellectual disability" },
-    { id: "gen_12", name: "Huntington’s Disease Gene Test", parameter: "HTT Gene", unit: "CAG Repeats", normalMin: 0, normalMax: 35, description: "Neurodegenerative disease" },
-    { id: "gen_13", name: "Alzheimer’s APOE Genotyping", parameter: "APOE Gene", unit: "Alleles", normalMin: 0, normalMax: 0, description: "Alzheimer’s risk factor" },
-    { id: "gen_14", name: "Parkinson’s LRRK2 Mutation", parameter: "LRRK2 Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Genetic Parkinson’s disease" },
-    { id: "gen_15", name: "Spinal Muscular Atrophy (SMA)", parameter: "SMN1 Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Neuromuscular disorder" },
-    { id: "gen_16", name: "Duchenne Muscular Dystrophy (DMD)", parameter: "DMD Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Muscle degeneration disorder" },
-    { id: "gen_17", name: "Hemophilia A (Factor VIII Gene)", parameter: "F8 Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Blood clotting disorder" },
-    { id: "gen_18", name: "Hemophilia B (Factor IX Gene)", parameter: "F9 Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Blood clotting disorder" },
-    { id: "gen_19", name: "Wilson’s Disease Gene", parameter: "ATP7B Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Copper metabolism disorder" },
-    { id: "gen_20", name: "Marfan Syndrome Gene", parameter: "FBN1 Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Connective tissue disorder" },
-    { id: "gen_21", name: "Polycystic Kidney Disease (PKD1/PKD2)", parameter: "PKD Genes", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Inherited kidney disease" },
-    { id: "gen_22", name: "Hereditary Hemochromatosis", parameter: "HFE Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Iron overload disorder" },
-    { id: "gen_23", name: "Tay-Sachs Disease", parameter: "HEXA Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Lysosomal storage disorder" },
-    { id: "gen_24", name: "G6PD Deficiency DNA Test", parameter: "G6PD Gene", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Hemolytic anemia risk" },
-    { id: "gen_25", name: "Color Blindness DNA Test", parameter: "OPN1LW/OPN1MW Genes", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Genetic vision disorder" },
-    { id: "gen_26", name: "Genetic Deafness Panel", parameter: "GJB2 & Others", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Hereditary hearing loss" },
-    { id: "gen_27", name: "Celiac Disease Gene Test", parameter: "HLA-DQ2/DQ8", unit: "Alleles", normalMin: 0, normalMax: 0, description: "Celiac disease susceptibility" },
-    { id: "gen_28", name: "Multiple Sclerosis Gene Panel", parameter: "HLA-DRB1", unit: "Alleles", normalMin: 0, normalMax: 0, description: "MS genetic risk" },
-    { id: "gen_29", name: "Obesity Gene Panel", parameter: "MC4R, FTO", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Obesity risk detection" },
-    { id: "gen_30", name: "Diabetes Genetic Risk Panel", parameter: "TCF7L2, KCNJ11", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Type 1 & 2 diabetes risk" },
-    { id: "gen_31", name: "Hypertension Genetic Risk Panel", parameter: "ACE, AGT", unit: "Mutation", normalMin: 0, normalMax: 0, description: "High BP genetic predisposition" },
-    { id: "gen_32", name: "Coronary Artery Disease Panel", parameter: "9p21, APOE", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Heart disease risk" },
-    { id: "gen_33", name: "Thrombophilia Panel", parameter: "Factor V Leiden, Prothrombin", unit: "Mutation", normalMin: 0, normalMax: 0, description: "Clotting disorder risk" },
-    { id: "gen_34", name: "Warfarin Sensitivity Test", parameter: "CYP2C9, VKORC1", unit: "Genotype", normalMin: 0, normalMax: 0, description: "Drug response genetics" },
-    { id: "gen_35", name: "Pharmacogenomic Panel", parameter: "CYP450 Genes", unit: "Genotype", normalMin: 0, normalMax: 0, description: "Drug metabolism testing" },
-    { id: "gen_36", name: "Forensic DNA Profiling", parameter: "STR Markers", unit: "Profile", normalMin: 0, normalMax: 0, description: "Individual identification" },
-    { id: "gen_37", name: "Paternity Test", parameter: "STR Markers", unit: "Match/Non-Match", normalMin: 0, normalMax: 0, description: "Parental identification" },
-    { id: "gen_38", name: "Ancestry DNA Test", parameter: "Genome-Wide SNPs", unit: "Profile", normalMin: 0, normalMax: 0, description: "Genetic ancestry analysis" },
-    { id: "gen_39", name: "Whole Exome Sequencing (WES)", parameter: "Exons", unit: "Variants", normalMin: 0, normalMax: 0, description: "Protein-coding gene analysis" },
-    { id: "gen_40", name: "Whole Genome Sequencing (WGS)", parameter: "Genome", unit: "Variants", normalMin: 0, normalMax: 0, description: "Complete genome analysis" }
-  ]
+};
+
+// Pathology
 const pathology = {
   id: "pathology",
-  name: "General Pathology",
+  name: "Pathology",
   tests: [
-    { id: "path_1", name: "Complete Urinalysis", parameter: "Color, pH, Protein, Glucose", unit: "Various", normalMin: 0, normalMax: 0, description: "Routine urine test" },
+    // { id: "path_1", name: "Complete Urinalysis", parameter: "Color, pH, Protein, Glucose", unit: "Various", normalMin: 0, normalMax: 0, description: "Routine urine test" },
     { id: "path_2", name: "Stool Routine Examination", parameter: "Parasites, Blood, Mucus", unit: "Presence/Absence", normalMin: 0, normalMax: 0, description: "Intestinal infection check" },
     { id: "path_3", name: "Stool Occult Blood", parameter: "Hemoglobin", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Hidden GI bleeding detection" },
     { id: "path_4", name: "Pregnancy Test (Urine hCG)", parameter: "hCG Hormone", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Pregnancy confirmation" },
@@ -516,11 +287,158 @@ const pathology = {
     { id: "path_39", name: "Colonic Biopsy", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Colorectal cancer evaluation" },
     { id: "path_40", name: "Bladder Biopsy", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Bladder cancer evaluation" }
   ]
+};
+
+// Endocrinology
+const endocrinology = {
+  id: "endocrinology",
+  name: "Endocrinology",
+  tests: [
+    //  { id: "endo_1", name: "Thyroid Stimulating Hormone (TSH)", parameter: "TSH", unit: "µIU/mL", normalMin: 0.4, normalMax: 4.0, description: "Primary thyroid function test" },
+    { id: "endo_2", name: "Free T4 (Thyroxine)", parameter: "Free T4", unit: "ng/dL", normalMin: 0.8, normalMax: 1.8, description: "Thyroid hormone" },
+    { id: "endo_3", name: "Free T3 (Triiodothyronine)", parameter: "Free T3", unit: "pg/mL", normalMin: 2.3, normalMax: 4.2, description: "Thyroid hormone" },
+    { id: "endo_4", name: "Total T4", parameter: "T4", unit: "µg/dL", normalMin: 4.5, normalMax: 11.2, description: "Total thyroxine" },
+    { id: "endo_5", name: "Total T3", parameter: "T3", unit: "ng/dL", normalMin: 80, normalMax: 200, description: "Total triiodothyronine" },
+    { id: "endo_6", name: "Reverse T3", parameter: "rT3", unit: "ng/dL", normalMin: 10, normalMax: 24, description: "Inactive thyroid hormone" },
+    { id: "endo_7", name: "Thyroglobulin", parameter: "Tg", unit: "ng/mL", normalMin: 0, normalMax: 55, description: "Thyroid tumor marker" },
+    { id: "endo_8", name: "Calcitonin", parameter: "Calcitonin", unit: "pg/mL", normalMin: 0, normalMax: 10, description: "Medullary thyroid carcinoma marker" },
+    { id: "endo_9", name: "Parathyroid Hormone (PTH)", parameter: "PTH", unit: "pg/mL", normalMin: 10, normalMax: 65, description: "Calcium metabolism" },
+    { id: "endo_10", name: "Vitamin D (25-OH)", parameter: "25-Hydroxy Vitamin D", unit: "ng/mL", normalMin: 30, normalMax: 100, description: "Bone health marker" },
+    { id: "endo_11", name: "Vitamin D (1,25-OH)", parameter: "Calcitriol", unit: "pg/mL", normalMin: 18, normalMax: 78, description: "Active Vitamin D" },
+    { id: "endo_12", name: "Cortisol (AM)", parameter: "Cortisol", unit: "µg/dL", normalMin: 6, normalMax: 23, description: "Adrenal function" },
+    { id: "endo_13", name: "Cortisol (PM)", parameter: "Cortisol", unit: "µg/dL", normalMin: 3, normalMax: 16, description: "Adrenal function (evening)" },
+    { id: "endo_14", name: "ACTH", parameter: "Adrenocorticotropic Hormone", unit: "pg/mL", normalMin: 10, normalMax: 60, description: "Pituitary-adrenal axis" },
+    { id: "endo_15", name: "DHEA-S", parameter: "Dehydroepiandrosterone sulfate", unit: "µg/dL", normalMin: 35, normalMax: 430, description: "Adrenal androgen" },
+    { id: "endo_16", name: "Aldosterone", parameter: "Aldosterone", unit: "ng/dL", normalMin: 4, normalMax: 31, description: "Adrenal hormone" },
+    { id: "endo_17", name: "Renin Activity", parameter: "Renin", unit: "ng/mL/hr", normalMin: 0.5, normalMax: 3.3, description: "RAAS system marker" },
+    { id: "endo_18", name: "Prolactin", parameter: "Prolactin", unit: "ng/mL", normalMin: 4.8, normalMax: 23, description: "Pituitary hormone" },
+    { id: "endo_19", name: "FSH", parameter: "Follicle Stimulating Hormone", unit: "mIU/mL", normalMin: 3, normalMax: 12, description: "Reproductive hormone" },
+    { id: "endo_20", name: "LH", parameter: "Luteinizing Hormone", unit: "mIU/mL", normalMin: 2, normalMax: 12, description: "Reproductive hormone" },
+    { id: "endo_21", name: "Estradiol (E2)", parameter: "Estrogen", unit: "pg/mL", normalMin: 15, normalMax: 350, description: "Female reproductive hormone" },
+    { id: "endo_22", name: "Progesterone", parameter: "Progesterone", unit: "ng/mL", normalMin: 0.2, normalMax: 25, description: "Pregnancy hormone" },
+    { id: "endo_23", name: "Testosterone (Total)", parameter: "Testosterone", unit: "ng/dL", normalMin: 300, normalMax: 1000, description: "Male reproductive hormone" },
+    { id: "endo_24", name: "Free Testosterone", parameter: "Free Testosterone", unit: "pg/mL", normalMin: 50, normalMax: 210, description: "Bioavailable testosterone" },
+    { id: "endo_25", name: "Sex Hormone Binding Globulin (SHBG)", parameter: "SHBG", unit: "nmol/L", normalMin: 10, normalMax: 57, description: "Hormone transport protein" },
+    { id: "endo_26", name: "Insulin (Fasting)", parameter: "Insulin", unit: "µIU/mL", normalMin: 2, normalMax: 25, description: "Glucose metabolism" },
+    { id: "endo_27", name: "C-Peptide", parameter: "C-Peptide", unit: "ng/mL", normalMin: 0.5, normalMax: 2.0, description: "Insulin secretion marker" },
+    { id: "endo_28", name: "Growth Hormone (GH)", parameter: "GH", unit: "ng/mL", normalMin: 0, normalMax: 10, description: "Pituitary hormone" },
+    { id: "endo_29", name: "IGF-1", parameter: "Insulin-like Growth Factor-1", unit: "ng/mL", normalMin: 100, normalMax: 300, description: "Growth marker" },
+    { id: "endo_30", name: "IGFBP-3", parameter: "IGF Binding Protein-3", unit: "µg/mL", normalMin: 3, normalMax: 7, description: "Growth hormone activity" },
+    { id: "endo_31", name: "Human Chorionic Gonadotropin (hCG)", parameter: "hCG", unit: "mIU/mL", normalMin: 0, normalMax: 5, description: "Pregnancy hormone" },
+    { id: "endo_32", name: "Anti-Müllerian Hormone (AMH)", parameter: "AMH", unit: "ng/mL", normalMin: 1, normalMax: 10, description: "Ovarian reserve marker" },
+    { id: "endo_33", name: "Inhibin B", parameter: "Inhibin B", unit: "pg/mL", normalMin: 20, normalMax: 350, description: "Fertility marker" },
+    { id: "endo_34", name: "Leptin", parameter: "Leptin", unit: "ng/mL", normalMin: 0.5, normalMax: 15, description: "Energy balance hormone" },
+    { id: "endo_35", name: "Adiponectin", parameter: "Adiponectin", unit: "µg/mL", normalMin: 4, normalMax: 26, description: "Metabolic marker" },
+    { id: "endo_36", name: "Ghrelin", parameter: "Ghrelin", unit: "pg/mL", normalMin: 100, normalMax: 1200, description: "Hunger hormone" },
+    { id: "endo_37", name: "Melatonin", parameter: "Melatonin", unit: "pg/mL", normalMin: 10, normalMax: 80, description: "Sleep cycle hormone" },
+    { id: "endo_38", name: "Oxytocin", parameter: "Oxytocin", unit: "pg/mL", normalMin: 1, normalMax: 20, description: "Social bonding hormone" },
+    { id: "endo_39", name: "Vasopressin (ADH)", parameter: "Antidiuretic Hormone", unit: "pg/mL", normalMin: 1, normalMax: 5, description: "Water balance hormone" },
+    { id: "endo_40", name: "Epinephrine/Norepinephrine", parameter: "Catecholamines", unit: "pg/mL", normalMin: 10, normalMax: 100, description: "Adrenal medulla hormones" }
+  ]
+};
+
+// Molecular Biology / PCR
+const molecularBiology = {
+  id: "molecularBiology",
+  name: "Molecular Biology / PCR",
+  tests: [
+    //  { id: "mol_1", name: "COVID-19 PCR", parameter: "SARS-CoV-2 RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Real-time PCR for COVID-19" },
+    { id: "mol_2", name: "Influenza A PCR", parameter: "Influenza A RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "PCR for influenza A" },
+    { id: "mol_3", name: "Influenza B PCR", parameter: "Influenza B RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "PCR for influenza B" },
+    { id: "mol_4", name: "RSV PCR", parameter: "RSV RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Respiratory syncytial virus" },
+    { id: "mol_5", name: "Hepatitis B PCR (HBV DNA)", parameter: "HBV DNA", unit: "IU/mL", normalMin: 0, normalMax: 0, description: "Quantitative viral load" },
+    { id: "mol_6", name: "Hepatitis C PCR (HCV RNA)", parameter: "HCV RNA", unit: "IU/mL", normalMin: 0, normalMax: 0, description: "Quantitative viral load" },
+    { id: "mol_7", name: "HIV PCR (HIV RNA)", parameter: "HIV RNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "HIV viral load" },
+    { id: "mol_8", name: "CMV PCR", parameter: "Cytomegalovirus DNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "Cytomegalovirus detection" },
+    { id: "mol_9", name: "EBV PCR", parameter: "Epstein-Barr Virus DNA", unit: "copies/mL", normalMin: 0, normalMax: 0, description: "EBV viral load" },
+    { id: "mol_10", name: "HSV-1 PCR", parameter: "HSV-1 DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Herpes Simplex Virus type 1" },
+    { id: "mol_11", name: "HSV-2 PCR", parameter: "HSV-2 DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Herpes Simplex Virus type 2" },
+    { id: "mol_12", name: "HPV PCR (High-Risk)", parameter: "HPV DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Human Papillomavirus high risk types" },
+    { id: "mol_13", name: "Mycobacterium Tuberculosis PCR", parameter: "TB DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "GeneXpert MTB/RIF assay" },
+    { id: "mol_14", name: "Chlamydia trachomatis PCR", parameter: "Chlamydia DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "STI detection" },
+    { id: "mol_15", name: "Neisseria gonorrhoeae PCR", parameter: "Gonorrhea DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "STI detection" },
+    { id: "mol_16", name: "HPV Genotyping", parameter: "HPV DNA", unit: "Type Specific", normalMin: 0, normalMax: 0, description: "HPV strain detection" },
+    { id: "mol_17", name: "Zika Virus PCR", parameter: "Zika RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Zika virus detection" },
+    { id: "mol_18", name: "Dengue PCR", parameter: "Dengue RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Early dengue virus detection" },
+    { id: "mol_19", name: "Malaria PCR", parameter: "Plasmodium DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Molecular malaria test" },
+    { id: "mol_20", name: "Leishmania PCR", parameter: "Leishmania DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Leishmaniasis diagnosis" },
+    { id: "mol_21", name: "Toxoplasma PCR", parameter: "Toxoplasma DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Toxoplasmosis detection" },
+    { id: "mol_22", name: "Rubella PCR", parameter: "Rubella RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Congenital rubella detection" },
+    { id: "mol_23", name: "Measles PCR", parameter: "Measles RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Measles virus detection" },
+    { id: "mol_24", name: "Mumps PCR", parameter: "Mumps RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Mumps virus detection" },
+    { id: "mol_25", name: "Adenovirus PCR", parameter: "Adenovirus DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Respiratory adenovirus" },
+    { id: "mol_26", name: "Enterovirus PCR", parameter: "Enterovirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Polio/Echo viruses" },
+    { id: "mol_27", name: "Norovirus PCR", parameter: "Norovirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Gastroenteritis virus" },
+    { id: "mol_28", name: "Rotavirus PCR", parameter: "Rotavirus RNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Childhood gastroenteritis" },
+    { id: "mol_29", name: "Parvovirus B19 PCR", parameter: "Parvovirus DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Parvovirus detection" },
+    { id: "mol_30", name: "Bordetella pertussis PCR", parameter: "Pertussis DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Whooping cough detection" },
+    { id: "mol_31", name: "H. pylori PCR", parameter: "H. pylori DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Stomach infection" },
+    { id: "mol_32", name: "Clostridium difficile PCR", parameter: "C. diff DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Antibiotic-associated diarrhea" },
+    { id: "mol_33", name: "MRSA PCR", parameter: "MRSA DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Methicillin-resistant Staphylococcus aureus" },
+    { id: "mol_34", name: "VRE PCR", parameter: "VRE DNA", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Vancomycin-resistant Enterococcus" },
+    { id: "mol_35", name: "Carbapenemase Genes PCR", parameter: "Resistance Genes", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Antibiotic resistance" },
+    { id: "mol_36", name: "BRCA1 Mutation PCR", parameter: "BRCA1 Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast cancer gene" },
+    { id: "mol_37", name: "BRCA2 Mutation PCR", parameter: "BRCA2 Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Breast cancer gene" },
+    { id: "mol_38", name: "KRAS Mutation PCR", parameter: "KRAS Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Colon/lung cancer marker" },
+    { id: "mol_39", name: "EGFR Mutation PCR", parameter: "EGFR Gene", unit: "Mutation Detected/Not Detected", normalMin: 0, normalMax: 0, description: "Lung cancer marker" },
+    { id: "mol_40", name: "BCR-ABL PCR", parameter: "BCR-ABL Fusion Gene", unit: "Detected/Not Detected", normalMin: 0, normalMax: 0, description: "CML diagnosis" }
+  ]
+};
+
+// Histopathology & Cytology
+const histopathology = {
+  id: "histopathology",
+  name: "Histopathology & Cytology",
+  tests: [
+    //  { id: "histo_1", name: "Fine Needle Aspiration Cytology (FNAC)", parameter: "Cytology", unit: "", normalMin: 0, normalMax: 0, description: "Microscopic exam of aspirated cells" },
+    { id: "histo_2", name: "Pap Smear", parameter: "Cervical cytology", unit: "", normalMin: 0, normalMax: 0, description: "Screening for cervical cancer" },
+    { id: "histo_3", name: "Urine Cytology", parameter: "Urinary cells", unit: "", normalMin: 0, normalMax: 0, description: "Detect malignancy in urinary tract" },
+    { id: "histo_4", name: "Sputum Cytology", parameter: "Respiratory cells", unit: "", normalMin: 0, normalMax: 0, description: "Lung cancer screening" },
+    { id: "histo_5", name: "Pleural Fluid Cytology", parameter: "Pleural cells", unit: "", normalMin: 0, normalMax: 0, description: "Detect malignant effusion" },
+    { id: "histo_6", name: "Ascitic Fluid Cytology", parameter: "Ascitic cells", unit: "", normalMin: 0, normalMax: 0, description: "Malignancy detection in ascites" },
+    { id: "histo_7", name: "CSF Cytology", parameter: "Cerebrospinal fluid cells", unit: "", normalMin: 0, normalMax: 0, description: "CNS malignancy/metastasis" },
+    { id: "histo_8", name: "Bone Marrow Aspiration Cytology", parameter: "Marrow cells", unit: "", normalMin: 0, normalMax: 0, description: "Leukemia & marrow disorders" },
+    { id: "histo_9", name: "Bone Marrow Biopsy", parameter: "Core biopsy", unit: "", normalMin: 0, normalMax: 0, description: "Histology of marrow architecture" },
+    { id: "histo_10", name: "Endometrial Biopsy", parameter: "Endometrial tissue", unit: "", normalMin: 0, normalMax: 0, description: "Evaluate abnormal uterine bleeding" },
+    { id: "histo_11", name: "Skin Biopsy", parameter: "Skin lesion tissue", unit: "", normalMin: 0, normalMax: 0, description: "Dermatological malignancy diagnosis" },
+    { id: "histo_12", name: "Liver Biopsy", parameter: "Liver tissue", unit: "", normalMin: 0, normalMax: 0, description: "Cirrhosis, hepatitis, tumors" },
+    { id: "histo_13", name: "Kidney Biopsy", parameter: "Renal tissue", unit: "", normalMin: 0, normalMax: 0, description: "Glomerulonephritis, nephropathy" },
+    { id: "histo_14", name: "Lung Biopsy", parameter: "Lung tissue", unit: "", normalMin: 0, normalMax: 0, description: "Lung cancer diagnosis" },
+    { id: "histo_15", name: "Breast Biopsy", parameter: "Breast tissue", unit: "", normalMin: 0, normalMax: 0, description: "Benign/malignant breast lesions" },
+    { id: "histo_16", name: "Prostate Biopsy", parameter: "Prostate tissue", unit: "", normalMin: 0, normalMax: 0, description: "Prostate cancer evaluation" },
+    { id: "histo_17", name: "Cervical Biopsy", parameter: "Cervical tissue", unit: "", normalMin: 0, normalMax: 0, description: "Cervical dysplasia/cancer" },
+    { id: "histo_18", name: "Lymph Node Biopsy", parameter: "Lymph node tissue", unit: "", normalMin: 0, normalMax: 0, description: "Lymphoma & metastasis diagnosis" },
+    { id: "histo_19", name: "Gastrointestinal Biopsy", parameter: "GI mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Gastritis, IBD, carcinoma" },
+    { id: "histo_20", name: "Esophageal Biopsy", parameter: "Esophageal tissue", unit: "", normalMin: 0, normalMax: 0, description: "GERD, Barrett’s, carcinoma" },
+    { id: "histo_21", name: "Stomach Biopsy", parameter: "Gastric tissue", unit: "", normalMin: 0, normalMax: 0, description: "Ulcer, carcinoma" },
+    { id: "histo_22", name: "Small Intestine Biopsy", parameter: "Intestinal mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Celiac disease, IBD" },
+    { id: "histo_23", name: "Colon Biopsy", parameter: "Colonic mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Polyps, carcinoma" },
+    { id: "histo_24", name: "Rectal Biopsy", parameter: "Rectal mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Rectal carcinoma" },
+    { id: "histo_25", name: "Pancreatic Biopsy", parameter: "Pancreatic tissue", unit: "", normalMin: 0, normalMax: 0, description: "Pancreatitis, carcinoma" },
+    { id: "histo_26", name: "Thyroid Biopsy", parameter: "Thyroid tissue", unit: "", normalMin: 0, normalMax: 0, description: "Nodules, thyroid cancer" },
+    { id: "histo_27", name: "Salivary Gland Biopsy", parameter: "Salivary tissue", unit: "", normalMin: 0, normalMax: 0, description: "Sjögren’s, tumors" },
+    { id: "histo_28", name: "Oral Cavity Biopsy", parameter: "Oral mucosa", unit: "", normalMin: 0, normalMax: 0, description: "Oral cancer screening" },
+    { id: "histo_29", name: "Tongue Biopsy", parameter: "Tongue tissue", unit: "", normalMin: 0, normalMax: 0, description: "Oral cancer, lesions" },
+    { id: "histo_30", name: "Bladder Biopsy", parameter: "Bladder tissue", unit: "", normalMin: 0, normalMax: 0, description: "Bladder carcinoma" },
+    { id: "histo_31", name: "Endoscopic Biopsy", parameter: "GI tract tissue", unit: "", normalMin: 0, normalMax: 0, description: "Endoscopy guided biopsy" },
+    { id: "histo_32", name: "Frozen Section", parameter: "Intraoperative biopsy", unit: "", normalMin: 0, normalMax: 0, description: "Immediate surgical diagnosis" },
+    { id: "histo_33", name: "Immunohistochemistry (IHC)", parameter: "Protein markers", unit: "", normalMin: 0, normalMax: 0, description: "Cancer & tumor typing" },
+    { id: "histo_34", name: "Special Stains", parameter: "Histological stains", unit: "", normalMin: 0, normalMax: 0, description: "Pathology tissue differentiation" },
+    { id: "histo_35", name: "Cytogenetics (FISH)", parameter: "Chromosomal analysis", unit: "", normalMin: 0, normalMax: 0, description: "Leukemia, lymphoma markers" },
+    { id: "histo_36", name: "Bone Tumor Biopsy", parameter: "Bone tissue", unit: "", normalMin: 0, normalMax: 0, description: "Osteosarcoma, metastasis" },
+    { id: "histo_37", name: "Soft Tissue Tumor Biopsy", parameter: "Soft tissue", unit: "", normalMin: 0, normalMax: 0, description: "Sarcomas diagnosis" },
+    { id: "histo_38", name: "Brain Biopsy", parameter: "Brain tissue", unit: "", normalMin: 0, normalMax: 0, description: "Tumors, infections" },
+    { id: "histo_39", name: "Eye Biopsy", parameter: "Ocular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Retinoblastoma, melanoma" },
+    { id: "histo_40", name: "Testicular Biopsy", parameter: "Testicular tissue", unit: "", normalMin: 0, normalMax: 0, description: "Infertility, malignancy" }
+  ]
+};
+
+// Urinalysis
 const urinalysis = {
   id: "urinalysis",
   name: "Urinalysis",
   tests: [
-    { id: "urine_1", name: "Urine Color", parameter: "Color", unit: "Yellow/Amber/Clear", normalMin: 0, normalMax: 0, description: "Normal pale yellow" },
+    // { id: "urine_1", name: "Urine Color", parameter: "Color", unit: "Yellow/Amber/Clear", normalMin: 0, normalMax: 0, description: "Normal pale yellow" },
     { id: "urine_2", name: "Urine Appearance", parameter: "Clarity", unit: "Clear/Turbid", normalMin: 0, normalMax: 0, description: "Cloudiness may indicate infection" },
     { id: "urine_3", name: "Urine Specific Gravity", parameter: "Specific Gravity", unit: "", normalMin: 1.005, normalMax: 1.030, description: "Urine concentration" },
     { id: "urine_4", name: "Urine pH", parameter: "pH", unit: "", normalMin: 4.5, normalMax: 8.0, description: "Urine acidity/alkalinity" },
@@ -561,11 +479,14 @@ const urinalysis = {
     { id: "urine_39", name: "24-Hour Urine Volume", parameter: "Volume", unit: "mL/24h", normalMin: 800, normalMax: 2000, description: "Daily urine output" },
     { id: "urine_40", name: "24-Hour Urine Protein", parameter: "Protein", unit: "mg/24h", normalMin: 0, normalMax: 150, description: "Proteinuria quantification" }
   ]
+};
+
+// Stool / Parasitology
 const stoolParasitology = {
-  id: "stool_parasitology",
+  id: "stoolParasitology",
   name: "Stool / Parasitology",
   tests: [
-    { id: "stool_1", name: "Stool Color", parameter: "Color", unit: "Brown/Yellow/Clay/Black", normalMin: 0, normalMax: 0, description: "Normal is brown" },
+    // { id: "stool_1", name: "Stool Color", parameter: "Color", unit: "Brown/Yellow/Clay/Black", normalMin: 0, normalMax: 0, description: "Normal is brown" },
     { id: "stool_2", name: "Stool Consistency", parameter: "Consistency", unit: "Formed/Loose/Watery", normalMin: 0, normalMax: 0, description: "Consistency of stool" },
     { id: "stool_3", name: "Stool Mucus", parameter: "Mucus Presence", unit: "Present/Absent", normalMin: 0, normalMax: 0, description: "Excess may indicate infection" },
     { id: "stool_4", name: "Stool Blood", parameter: "Occult Blood", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Hidden blood detection" },
@@ -606,56 +527,23 @@ const stoolParasitology = {
     { id: "stool_39", name: "Stool Norovirus PCR", parameter: "Norovirus", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Viral diarrhea detection" },
     { id: "stool_40", name: "Stool H. pylori Antigen", parameter: "Helicobacter pylori", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Peptic ulcer marker" }
   ]
-const microbiology = {
-  id: "microbiology",
-  name: "Microbiology",
+};
+
+// Infectious Diseases
+const infectiousDiseases = {
+  id: "infectiousDiseases",
+  name: "Infectious Diseases",
   tests: [
-    { id: "micro_1", name: "Blood Culture (Aerobic)", parameter: "Growth/No Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Detection of bloodstream infections" },
-    { id: "micro_2", name: "Blood Culture (Anaerobic)", parameter: "Growth/No Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Anaerobic bacterial infections" },
-    { id: "micro_3", name: "Urine Culture", parameter: "CFU/mL", unit: "Report", normalMin: 0, normalMax: 10000, description: "UTI detection" },
-    { id: "micro_4", name: "Sputum Culture", parameter: "Growth Pattern", unit: "Report", normalMin: 0, normalMax: 0, description: "Respiratory infections" },
-    { id: "micro_5", name: "Throat Swab Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Pharyngitis, tonsillitis" },
-    { id: "micro_6", name: "Ear Swab Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Otitis externa/media" },
-    { id: "micro_7", name: "Wound Swab Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Wound/abscess infections" },
-    { id: "micro_8", name: "Stool Culture", parameter: "Pathogen Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "GI pathogens" },
-    { id: "micro_9", name: "CSF Culture", parameter: "Growth/No Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Meningitis diagnosis" },
-    { id: "micro_10", name: "Pleural Fluid Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Pleural infection" },
-    { id: "micro_11", name: "Peritoneal Fluid Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Ascitic infection" },
-    { id: "micro_12", name: "Synovial Fluid Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Joint infection" },
-    { id: "micro_13", name: "Bone Marrow Culture", parameter: "Bacterial Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Hematologic infection" },
-    { id: "micro_14", name: "Mycobacterium Culture (AFB)", parameter: "AFB Growth", unit: "Report", normalMin: 0, normalMax: 0, description: "Tuberculosis detection" },
-    { id: "micro_15", name: "AFB Smear (Ziehl-Neelsen)", parameter: "AFB Presence", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "TB smear" },
-    { id: "micro_16", name: "MRSA Screening", parameter: "MRSA", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Methicillin-resistant Staphylococcus aureus" },
-    { id: "micro_17", name: "VRE Screening", parameter: "VRE", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Vancomycin-resistant Enterococcus" },
-    { id: "micro_18", name: "Candida Culture", parameter: "Candida spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Fungal infections" },
-    { id: "micro_19", name: "Cryptococcus Antigen", parameter: "Cryptococcus", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Cryptococcal meningitis" },
-    { id: "micro_20", name: "Aspergillus Antigen (Galactomannan)", parameter: "Galactomannan", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Aspergillosis" },
-    { id: "micro_21", name: "Staphylococcus Aureus Culture", parameter: "S. aureus", unit: "Report", normalMin: 0, normalMax: 0, description: "Skin/soft tissue infections" },
-    { id: "micro_22", name: "Streptococcus Culture", parameter: "Streptococcus spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Throat/wound infection" },
-    { id: "micro_23", name: "E. coli Culture", parameter: "E. coli", unit: "Report", normalMin: 0, normalMax: 0, description: "UTI / diarrhea" },
-    { id: "micro_24", name: "Salmonella Typhi Culture", parameter: "S. typhi", unit: "Report", normalMin: 0, normalMax: 0, description: "Typhoid fever" },
-    { id: "micro_25", name: "Shigella Culture", parameter: "Shigella spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Dysentery" },
-    { id: "micro_26", name: "Vibrio Cholerae Culture", parameter: "V. cholerae", unit: "Report", normalMin: 0, normalMax: 0, description: "Cholera diagnosis" },
-    { id: "micro_27", name: "Campylobacter Culture", parameter: "Campylobacter", unit: "Report", normalMin: 0, normalMax: 0, description: "GI infection" },
-    { id: "micro_28", name: "Helicobacter pylori Culture", parameter: "H. pylori", unit: "Report", normalMin: 0, normalMax: 0, description: "Peptic ulcer disease" },
-    { id: "micro_29", name: "Listeria Culture", parameter: "Listeria", unit: "Report", normalMin: 0, normalMax: 0, description: "Listeriosis" },
-    { id: "micro_30", name: "Klebsiella Culture", parameter: "Klebsiella spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Pneumonia/UTI" },
-    { id: "micro_31", name: "Pseudomonas Culture", parameter: "Pseudomonas spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Hospital-acquired infections" },
-    { id: "micro_32", name: "Proteus Culture", parameter: "Proteus spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "UTI/stone formation" },
-    { id: "micro_33", name: "Haemophilus Influenzae Culture", parameter: "H. influenzae", unit: "Report", normalMin: 0, normalMax: 0, description: "Respiratory infections" },
-    { id: "micro_34", name: "Neisseria Gonorrhoeae Culture", parameter: "N. gonorrhoeae", unit: "Report", normalMin: 0, normalMax: 0, description: "Gonorrhea diagnosis" },
-    { id: "micro_35", name: "Neisseria Meningitidis Culture", parameter: "N. meningitidis", unit: "Report", normalMin: 0, normalMax: 0, description: "Meningitis diagnosis" },
-    { id: "micro_36", name: "Anaerobic Culture", parameter: "Anaerobes", unit: "Report", normalMin: 0, normalMax: 0, description: "Anaerobic infections" },
-    { id: "micro_37", name: "Fungal Culture", parameter: "Fungi", unit: "Report", normalMin: 0, normalMax: 0, description: "Dermatophytes/systemic fungi" },
-    { id: "micro_38", name: "Mycoplasma Culture", parameter: "Mycoplasma spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "Atypical pneumonia" },
-    { id: "micro_39", name: "Chlamydia Culture", parameter: "Chlamydia spp.", unit: "Report", normalMin: 0, normalMax: 0, description: "STI detection" },
-    { id: "micro_40", name: "Antibiotic Sensitivity Testing (AST)", parameter: "MIC/Zone of Inhibition", unit: "Report", normalMin: 0, normalMax: 0, description: "Antibiotic susceptibility" }
+    // yahan Infectious Diseases ke tests add kardo
   ]
+};
+
+// Virology
 const virology = {
   id: "virology",
   name: "Virology",
   tests: [
-    { id: "vir_1", name: "Hepatitis A IgM", parameter: "HAV IgM", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Acute Hepatitis A detection" },
+    // { id: "vir_1", name: "Hepatitis A IgM", parameter: "HAV IgM", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Acute Hepatitis A detection" },
     { id: "vir_2", name: "Hepatitis B Surface Antigen (HBsAg)", parameter: "HBsAg", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Hepatitis B infection" },
     { id: "vir_3", name: "Hepatitis B Surface Antibody (Anti-HBs)", parameter: "Anti-HBs", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Immunity to Hepatitis B" },
     { id: "vir_4", name: "Hepatitis B Core IgM", parameter: "Anti-HBc IgM", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Acute Hepatitis B" },
@@ -696,11 +584,14 @@ const virology = {
     { id: "vir_39", name: "Dengue IgG", parameter: "Dengue IgG", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Past Dengue infection" },
     { id: "vir_40", name: "Zika Virus PCR", parameter: "Zika RNA", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Zika virus detection" }
   ]
+};
+
+// Blood Bank & Transfusion Medicine
 const bloodBank = {
-  id: "blood_bank",
+  id: "bloodBank",
   name: "Blood Bank & Transfusion Medicine",
   tests: [
-    { id: "bb_1", name: "ABO Grouping", parameter: "Blood Group", unit: "A/B/AB/O", normalMin: 0, normalMax: 0, description: "Blood group determination" },
+    //  id: "bb_1", name: "ABO Grouping", parameter: "Blood Group", unit: "A/B/AB/O", normalMin: 0, normalMax: 0, description: "Blood group determination" },
     { id: "bb_2", name: "Rh Typing (D Antigen)", parameter: "Rh Factor", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Rh compatibility" },
     { id: "bb_3", name: "Direct Antiglobulin Test (DAT/Coombs)", parameter: "DAT", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Autoimmune hemolysis" },
     { id: "bb_4", name: "Indirect Antiglobulin Test (IAT)", parameter: "IAT", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Antibody screening" },
@@ -741,11 +632,14 @@ const bloodBank = {
     { id: "bb_39", name: "Cryoglobulin Test", parameter: "Cryoglobulins", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Cryoglobulinemia" },
     { id: "bb_40", name: "Cold Agglutinin Test", parameter: "Cold Agglutinin", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Autoimmune hemolysis" }
   ]
+};
+
+// Toxicology & Drug Monitoring
 const toxicology = {
   id: "toxicology",
   name: "Toxicology & Drug Monitoring",
   tests: [
-    { id: "tox_1", name: "Acetaminophen Level", parameter: "Paracetamol", unit: "µg/mL", normalMin: 10, normalMax: 20, description: "Therapeutic drug monitoring" },
+    //  { id: "tox_1", name: "Acetaminophen Level", parameter: "Paracetamol", unit: "µg/mL", normalMin: 10, normalMax: 20, description: "Therapeutic drug monitoring" },
     { id: "tox_2", name: "Salicylate Level", parameter: "Aspirin", unit: "mg/dL", normalMin: 15, normalMax: 30, description: "Toxicology screen" },
     { id: "tox_3", name: "Ethanol Level", parameter: "Alcohol", unit: "mg/dL", normalMin: 0, normalMax: 10, description: "Alcohol intoxication" },
     { id: "tox_4", name: "Methanol Level", parameter: "Methanol", unit: "mg/dL", normalMin: 0, normalMax: 0, description: "Methanol poisoning" },
@@ -786,12 +680,14 @@ const toxicology = {
     { id: "tox_39", name: "Urine Drug Analysis (Comprehensive)", parameter: "Multiple Drugs", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Drug abuse detection" },
     { id: "tox_40", name: "Poison Panel (Comprehensive)", parameter: "Multiple Toxins", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Toxicology screen" }
   ]
+};
 
+// Genetics
 const genetics = {
   id: "genetics",
   name: "Genetics",
   tests: [
-    { id: "gen_1", name: "Karyotyping", parameter: "Chromosome Analysis", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects chromosomal abnormalities" },
+    // { id: "gen_1", name: "Karyotyping", parameter: "Chromosome Analysis", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects chromosomal abnormalities" },
     { id: "gen_2", name: "FISH (Fluorescence In Situ Hybridization)", parameter: "Chromosomal Regions", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects specific genetic abnormalities" },
     { id: "gen_3", name: "Array CGH (Comparative Genomic Hybridization)", parameter: "Genome-Wide", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects copy number variations" },
     { id: "gen_4", name: "Whole Genome Sequencing", parameter: "DNA", unit: "Variants", normalMin: 0, normalMax: 0, description: "Comprehensive genetic analysis" },
@@ -832,56 +728,14 @@ const genetics = {
     { id: "gen_39", name: "Newborn Screening Panel (Genetic)", parameter: "Multiple Genes", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Genetic disorders in newborns" },
     { id: "gen_40", name: "Pharmacogenetic Drug Response Panel", parameter: "CYP450 Genes", unit: "Variants", normalMin: 0, normalMax: 0, description: "Drug response prediction" }
   ]
-const histopathology = {
-  id: "histopathology",
-  name: "Histopathology",
-  tests: [
-    { id: "his_1", name: "Biopsy - Skin", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Microscopic skin tissue examination" },
-    { id: "his_2", name: "Biopsy - Liver", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Evaluates liver pathology" },
-    { id: "his_3", name: "Biopsy - Kidney", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Glomerular & tubular evaluation" },
-    { id: "his_4", name: "Biopsy - Lung", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects lung pathology" },
-    { id: "his_5", name: "Biopsy - Stomach", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Gastric pathology" },
-    { id: "his_6", name: "Biopsy - Colon", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Colon tissue abnormalities" },
-    { id: "his_7", name: "Biopsy - Breast", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Breast carcinoma detection" },
-    { id: "his_8", name: "Biopsy - Cervix", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Cervical intraepithelial neoplasia" },
-    { id: "his_9", name: "Biopsy - Prostate", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Prostate cancer detection" },
-    { id: "his_10", name: "Biopsy - Bone Marrow", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Leukemia, anemia evaluation" },
-    { id: "his_11", name: "Endometrial Curettage", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Endometrial abnormalities" },
-    { id: "his_12", name: "Chorionic Villus Sampling (CVS)", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Prenatal tissue analysis" },
-    { id: "his_13", name: "Frozen Section", parameter: "Histology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Intraoperative tissue diagnosis" },
-    { id: "his_14", name: "Pap Smear", parameter: "Cervical Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Cervical cancer screening" },
-    { id: "his_15", name: "Fine Needle Aspiration Cytology (FNAC)", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Cancer cytology" },
-    { id: "his_16", name: "Pleural Fluid Cytology", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detects malignant cells" },
-    { id: "his_17", name: "Ascitic Fluid Cytology", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Peritoneal malignancy detection" },
-    { id: "his_18", name: "Urine Cytology", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Bladder carcinoma screening" },
-    { id: "his_19", name: "Sputum Cytology", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Lung cancer diagnosis" },
-    { id: "his_20", name: "CSF Cytology", parameter: "Cytology", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Leptomeningeal carcinomatosis" },
-    { id: "his_21", name: "Immunohistochemistry - ER/PR", parameter: "Receptor Status", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Breast cancer profiling" },
-    { id: "his_22", name: "Immunohistochemistry - HER2", parameter: "Receptor Status", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Targeted therapy marker" },
-    { id: "his_23", name: "Immunohistochemistry - Ki-67", parameter: "Proliferation Index", unit: "%", normalMin: 0, normalMax: 20, description: "Tumor growth marker" },
-    { id: "his_24", name: "Immunohistochemistry - p53", parameter: "Tumor Suppressor", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Tumor suppressor mutation" },
-    { id: "his_25", name: "Special Stain - PAS", parameter: "Glycogen Detection", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Fungal infections & glycogen" },
-    { id: "his_26", name: "Special Stain - Ziehl-Neelsen", parameter: "AFB Detection", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Tuberculosis bacilli" },
-    { id: "his_27", name: "Special Stain - Giemsa", parameter: "Parasites", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Blood parasites & H. pylori" },
-    { id: "his_28", name: "Special Stain - Masson’s Trichrome", parameter: "Fibrosis", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Fibrosis & collagen" },
-    { id: "his_29", name: "Special Stain - Reticulin", parameter: "Reticulin Fibers", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Bone marrow fibrosis" },
-    { id: "his_30", name: "Special Stain - Alcian Blue", parameter: "Mucin Detection", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Mucin-producing tumors" },
-    { id: "his_31", name: "Special Stain - Congo Red", parameter: "Amyloid", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Amyloidosis" },
-    { id: "his_32", name: "Special Stain - Silver Stain", parameter: "Fungi & Bacteria", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Pneumocystis & fungi" },
-    { id: "his_33", name: "Special Stain - Gram Stain (Tissue)", parameter: "Bacteria", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Bacterial infections" },
-    { id: "his_34", name: "Special Stain - Oil Red O", parameter: "Fat", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Lipid storage diseases" },
-    { id: "his_35", name: "Special Stain - Perls’ Prussian Blue", parameter: "Iron", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Iron overload" },
-    { id: "his_36", name: "Special Stain - Van Gieson", parameter: "Collagen", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Fibrosis" },
-    { id: "his_37", name: "Special Stain - Toluidine Blue", parameter: "Mast Cells", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Mast cell tumors" },
-    { id: "his_38", name: "Immunofluorescence (Direct)", parameter: "Antigen-Antibody", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Autoimmune skin diseases" },
-    { id: "his_39", name: "Immunofluorescence (Indirect)", parameter: "Antigen-Antibody", unit: "Positive/Negative", normalMin: 0, normalMax: 0, description: "Systemic autoimmune diseases" },
-    { id: "his_40", name: "Electron Microscopy (Tissue)", parameter: "Ultra-structure", unit: "Normal/Abnormal", normalMin: 0, normalMax: 0, description: "Detailed tissue analysis" }
-  ]
+};
+
+// Miscellaneous / Specialized Tests
 const miscellaneous = {
   id: "miscellaneous",
   name: "Miscellaneous / Specialized Tests",
   tests: [
-    { id: "misc_1", name: "Vitamin D (25-OH)", parameter: "Serum 25-OH Vitamin D", unit: "ng/mL", normalMin: 30, normalMax: 100, description: "Vitamin D deficiency or toxicity" },
+    // { id: "misc_1", name: "Vitamin D (25-OH)", parameter: "Serum 25-OH Vitamin D", unit: "ng/mL", normalMin: 30, normalMax: 100, description: "Vitamin D deficiency or toxicity" },
     { id: "misc_2", name: "Vitamin B12", parameter: "Serum Vitamin B12", unit: "pg/mL", normalMin: 200, normalMax: 900, description: "B12 deficiency anemia" },
     { id: "misc_3", name: "Folate", parameter: "Serum Folate", unit: "ng/mL", normalMin: 3, normalMax: 17, description: "Folate deficiency anemia" },
     { id: "misc_4", name: "Ferritin", parameter: "Serum Ferritin", unit: "ng/mL", normalMin: 20, normalMax: 250, description: "Iron stores evaluation" },
@@ -924,4 +778,27 @@ const miscellaneous = {
   ]
 };
 
+// =================== Departments Array ===================
 
+const departmentsArray = [
+  hematology,
+  biochemistry,
+  microbiology,
+  serology,
+  immunology,
+  pathology,
+  endocrinology,
+  molecularBiology,
+  histopathology,
+  urinalysis,
+  stoolParasitology,
+  infectiousDiseases,
+  virology,
+  bloodBank,
+  toxicology,
+  genetics,
+  miscellaneous
+];
+
+// ✅ Make it available globally
+window.departmentsArray = departmentsArray;
