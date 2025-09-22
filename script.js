@@ -13,32 +13,42 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ✅ On department change → load tests
+    // ✅ On department change → load tests (multi)
     deptDropdown?.addEventListener("change", function () {
-        let selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
         testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
 
-        if (selectedDept) {
-            selectedDept.tests.forEach(test => {
-                let option = document.createElement("option");
-                option.value = test.id;
-                option.textContent = test.name;
-                testDropdown.appendChild(option);
-            });
-        }
+        let selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
+
+        selectedDepts.forEach(deptId => {
+            let dept = departmentsArray.find(d => d.id === deptId);
+            if (dept) {
+                dept.tests.forEach(test => {
+                    let option = document.createElement("option");
+                    option.value = test.id;
+                    option.textContent = test.name;
+                    testDropdown.appendChild(option);
+                });
+            }
+        });
     });
 
     // ✅ On form submit → save patient to localStorage
     registerForm?.addEventListener("submit", function (e) {
         e.preventDefault();
 
+        const mrn = "MRN-" + Date.now();
+
+        let selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.text);
+        let selectedTests = Array.from(testDropdown.selectedOptions).map(opt => opt.text);
+
         const patientData = {
             id: Date.now(),
+            mrn: mrn,
             name: document.getElementById("patientName").value,
             age: document.getElementById("age").value,
             gender: document.getElementById("gender").value,
-            department: deptDropdown.options[deptDropdown.selectedIndex].text,
-            test: testDropdown.options[testDropdown.selectedIndex].text,
+            departments: selectedDepts,
+            tests: selectedTests,
             results: []
         };
 
@@ -46,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
 
-        alert(`Patient Registered: ${patientData.name}`);
-        window.location.href = "add_test_result.html";
+        localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
+
+        window.location.href = "registration-slip.html";
     });
 });
