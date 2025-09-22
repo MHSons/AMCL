@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const testDropdown = document.getElementById("test");
     const registerForm = document.getElementById("registerForm");
 
-    // ✅ Departments load
+    // ✅ Load departments
     if (typeof departmentsArray !== "undefined" && Array.isArray(departmentsArray)) {
         departmentsArray.forEach(dept => {
             let option = document.createElement("option");
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ✅ On department change → load tests
+    // ✅ Department change → load tests
     deptDropdown?.addEventListener("change", function () {
         testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
 
@@ -52,15 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
             results: []
         };
 
-        // ✅ Save into patients
+        // ✅ Save into patients list
         let patients = JSON.parse(localStorage.getItem("patients")) || [];
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
 
-        // ✅ Save slip
+        // ✅ For slip
         localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
 
         alert("Patient registered successfully!");
-        window.location.href = "registration-slip.html";
+        window.location.href = "registration-slip.html"; 
     });
 });
