@@ -778,8 +778,7 @@ const miscellaneous = {
   ]
 };
 
-// =================== Departments Array ===================
-
+// ✅ Collect all departments in one array
 const departmentsArray = [
   hematology,
   biochemistry,
