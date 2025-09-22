@@ -1,85 +1,101 @@
-/* departments + tests database (structured) */
-const departments = [
-  {
-    "id":"hematology",
-    "name":"Hematology",
-    "tests":[
-      {"id":"hematology_hb","name":"Hemoglobin","parameter":"Hemoglobin","unit":"g/dL","normalMin":12,"normalMax":17.5,"description":"Hemoglobin concentration"},
-      {"id":"hematology_rbc","name":"RBC Count","parameter":"RBC","unit":"million/µL","normalMin":4.0,"normalMax":6.0,"description":"Red blood cell count"},
-      {"id":"hematology_wbc","name":"WBC Count","parameter":"WBC","unit":"cells/µL","normalMin":4000,"normalMax":11000,"description":"White blood cell count"},
-      {"id":"hematology_platelets","name":"Platelets","parameter":"Platelet Count","unit":"cells/µL","normalMin":150000,"normalMax":450000,"description":"Platelet count"}
-    ]
-  },
-  {
-    "id":"clinical_chemistry",
-    "name":"Clinical Chemistry",
-    "tests":[
-      {"id":"chem_glucose","name":"Glucose (Fasting)","parameter":"Glucose","unit":"mg/dL","normalMin":70,"normalMax":99,"description":"Fasting blood glucose"},
-      {"id":"chem_urea","name":"Urea","parameter":"Urea","unit":"mg/dL","normalMin":7,"normalMax":20,"description":"Blood urea"},
-      {"id":"chem_creatinine","name":"Creatinine","parameter":"Creatinine","unit":"mg/dL","normalMin":0.6,"normalMax":1.3,"description":"Serum creatinine"},
-      {"id":"chem_alt","name":"ALT (SGPT)","parameter":"ALT","unit":"U/L","normalMin":0,"normalMax":45,"description":"Alanine transaminase"}
-    ]
-  },
-  {
-    "id":"microbiology",
-    "name":"Microbiology",
-    "tests":[
-      {"id":"micro_culture","name":"Culture & Sensitivity","parameter":"Culture","unit":"","normalMin":0,"normalMax":0,"description":"Microbial culture & sensitivity"},
-      {"id":"micro_gram","name":"Gram Stain","parameter":"Gram Stain","unit":"","normalMin":0,"normalMax":0,"description":"Gram stain result"}
-    ]
-  },
-  {
-    "id":"immunology",
-    "name":"Immunology / Serology",
-    "tests":[
-      {"id":"sero_hiv","name":"HIV (Screen)","parameter":"HIV","unit":"","normalMin":0,"normalMax":0,"description":"HIV screening test"},
-      {"id":"sero_hbsag","name":"HBsAg","parameter":"HBsAg","unit":"","normalMin":0,"normalMax":0,"description":"Hepatitis B surface antigen"}
-    ]
-  },
-  {
-    "id":"urinalysis",
-    "name":"Urinalysis",
-    "tests":[
-      {"id":"urine_ph","name":"Urine pH","parameter":"pH","unit":"","normalMin":4.6,"normalMax":8.0,"description":"Urine acidity"},
-      {"id":"urine_glucose","name":"Urine Glucose","parameter":"Glucose","unit":"","normalMin":0,"normalMax":0,"description":"Urine glucose presence"}
-    ]
-  },
-  {
-    "id":"histopathology",
-    "name":"Histopathology",
-    "tests":[
-      {"id":"histo_biopsy","name":"Biopsy - Histology","parameter":"Biopsy","unit":"","normalMin":0,"normalMax":0,"description":"Histopathological exam"}
-    ]
-  },
-  {
-    "id":"molecular",
-    "name":"Molecular Diagnostics (PCR)",
-    "tests":[
-      {"id":"pcr_sarscov2","name":"SARS-CoV-2 PCR","parameter":"PCR","unit":"copies/mL","normalMin":0,"normalMax":0,"description":"PCR for COVID-19"}
-    ]
-  },
-  {
-    "id":"endocrinology",
-    "name":"Endocrinology / Hormones",
-    "tests":[
-      {"id":"endo_tsh","name":"TSH","parameter":"TSH","unit":"µIU/mL","normalMin":0.4,"normalMax":4.0,"description":"Thyroid stimulating hormone"},
-      {"id":"endo_t4","name":"Free T4","parameter":"Free T4","unit":"ng/dL","normalMin":0.8,"normalMax":1.8,"description":"Free thyroxine"}
-    ]
-  },
-  {
-    "id":"blood_bank",
-    "name":"Blood Bank / Transfusion",
-    "tests":[
-      {"id":"bb_group","name":"Blood Group & RH","parameter":"Blood Group","unit":"","normalMin":0,"normalMax":0,"description":"ABO and Rh grouping"},
-      {"id":"bb_crossmatch","name":"Crossmatch","parameter":"Crossmatch","unit":"","normalMin":0,"normalMax":0,"description":"Compatibility testing"}
-    ]
-  },
-  {
-    "id":"cardiac",
-    "name":"Cardiac Markers / Lipids",
-    "tests":[
-      {"id":"card_troponin","name":"Troponin I/T","parameter":"Troponin","unit":"ng/mL","normalMin":0,"normalMax":0.04,"description":"Cardiac troponin"},
-      {"id":"card_ckmb","name":"CK-MB","parameter":"CK-MB","unit":"U/L","normalMin":0,"normalMax":5,"description":"Creatine kinase MB"}
-    ]
-  }
-];
+// Hematology department — 40 tests
+const hematology = {
+  id: "hematology",
+  name: "Hematology",
+  tests: [
+    { id: "hematology_1",  name: "Hemoglobin", parameter: "Hemoglobin", unit: "g/dL", normalMin: 13.5, normalMax: 17.5, description: "Hemoglobin concentration (adult male ref range)" },
+    { id: "hematology_2",  name: "RBC Count", parameter: "RBC", unit: "million/µL", normalMin: 4.5, normalMax: 6.0, description: "Red blood cell count" },
+    { id: "hematology_3",  name: "WBC Count", parameter: "WBC", unit: "cells/µL", normalMin: 4000, normalMax: 11000, description: "White blood cell count" },
+    { id: "hematology_4",  name: "Platelet Count", parameter: "Platelets", unit: "cells/µL", normalMin: 150000, normalMax: 450000, description: "Platelet count" },
+    { id: "hematology_5",  name: "Hematocrit (PCV)", parameter: "Hct", unit: "%", normalMin: 40, normalMax: 52, description: "Packed cell volume / hematocrit (adult male typical range)" },
+    { id: "hematology_6",  name: "MCV (Mean Corpuscular Volume)", parameter: "MCV", unit: "fL", normalMin: 80, normalMax: 100, description: "Average red cell volume" },
+    { id: "hematology_7",  name: "MCH (Mean Corpuscular Hemoglobin)", parameter: "MCH", unit: "pg", normalMin: 27, normalMax: 33, description: "Average hemoglobin per red cell" },
+    { id: "hematology_8",  name: "MCHC (Mean Corpuscular Hemoglobin Concentration)", parameter: "MCHC", unit: "g/dL", normalMin: 32, normalMax: 36, description: "Hemoglobin concentration in red cells" },
+    { id: "hematology_9",  name: "RDW (Red Cell Distribution Width)", parameter: "RDW", unit: "%", normalMin: 11.5, normalMax: 14.5, description: "Variation in red cell size" },
+    { id: "hematology_10", name: "Peripheral Blood Film", parameter: "Morphology", unit: "", normalMin: 0, normalMax: 0, description: "Microscopy report: RBC/WBC/platelet morphology" },
+    { id: "hematology_11", name: "ESR (Erythrocyte Sedimentation Rate)", parameter: "ESR", unit: "mm/hr", normalMin: 0, normalMax: 20, description: "Inflammation marker (adult reference: men 0-15, women 0-20 mm/hr)" },
+    { id: "hematology_12", name: "Reticulocyte Count", parameter: "Reticulocytes", unit: "%", normalMin: 0.5, normalMax: 1.5, description: "Young red blood cells percentage" },
+    { id: "hematology_13", name: "MPV (Mean Platelet Volume)", parameter: "MPV", unit: "fL", normalMin: 7.5, normalMax: 11.5, description: "Average platelet size" },
+    { id: "hematology_14", name: "PDW (Platelet Distribution Width)", parameter: "PDW", unit: "%", normalMin: 9, normalMax: 17, description: "Variation in platelet size" },
+    { id: "hematology_15", name: "Absolute Neutrophil Count (ANC)", parameter: "ANC", unit: "cells/µL", normalMin: 1500, normalMax: 8000, description: "Absolute neutrophil count" },
+    { id: "hematology_16", name: "Absolute Lymphocyte Count", parameter: "ALC", unit: "cells/µL", normalMin: 1000, normalMax: 4800, description: "Absolute lymphocyte count" },
+    { id: "hematology_17", name: "Absolute Monocyte Count", parameter: "AMC", unit: "cells/µL", normalMin: 200, normalMax: 1000, description: "Absolute monocyte count" },
+    { id: "hematology_18", name: "Absolute Eosinophil Count", parameter: "AEC", unit: "cells/µL", normalMin: 30, normalMax: 350, description: "Absolute eosinophil count" },
+    { id: "hematology_19", name: "Neutrophils (%)", parameter: "Neutrophils", unit: "%", normalMin: 40, normalMax: 70, description: "Percentage of neutrophils" },
+    { id: "hematology_20", name: "Lymphocytes (%)", parameter: "Lymphocytes", unit: "%", normalMin: 20, normalMax: 45, description: "Percentage of lymphocytes" },
+    { id: "hematology_21", name: "Monocytes (%)", parameter: "Monocytes", unit: "%", normalMin: 2, normalMax: 8, description: "Percentage of monocytes" },
+    { id: "hematology_22", name: "Eosinophils (%)", parameter: "Eosinophils", unit: "%", normalMin: 1, normalMax: 4, description: "Percentage of eosinophils" },
+    { id: "hematology_23", name: "Basophils (%)", parameter: "Basophils", unit: "%", normalMin: 0, normalMax: 1, description: "Percentage of basophils" },
+    { id: "hematology_24", name: "Bleeding Time", parameter: "Bleeding Time", unit: "min", normalMin: 2, normalMax: 7, description: "Primary hemostasis test (Ivy method typical range)" },
+    { id: "hematology_25", name: "Clotting Time", parameter: "Clotting Time", unit: "min", normalMin: 5, normalMax: 15, description: "Clot formation time (capillary/venous methods vary)" },
+    { id: "hematology_26", name: "Prothrombin Time (PT)", parameter: "PT", unit: "sec", normalMin: 11, normalMax: 13.5, description: "Extrinsic pathway coagulation time" },
+    { id: "hematology_27", name: "INR", parameter: "INR", unit: "", normalMin: 0.8, normalMax: 1.2, description: "International Normalized Ratio" },
+    { id: "hematology_28", name: "Activated Partial Thromboplastin Time (APTT)", parameter: "APTT", unit: "sec", normalMin: 25, normalMax: 35, description: "Intrinsic pathway coagulation time" },
+    { id: "hematology_29", name: "Fibrinogen", parameter: "Fibrinogen", unit: "mg/dL", normalMin: 200, normalMax: 400, description: "Plasma fibrinogen concentration" },
+    { id: "hematology_30", name: "D-Dimer", parameter: "D-Dimer", unit: "ng/mL", normalMin: 0, normalMax: 500, description: "Fibrin degradation product (venous thromboembolism screening)" },
+    { id: "hematology_31", name: "Direct Coombs Test (DAT)", parameter: "Direct Coombs", unit: "", normalMin: 0, normalMax: 0, description: "Detects antibodies/complement on RBCs (positive/negative)" },
+    { id: "hematology_32", name: "Indirect Coombs Test (IAT)", parameter: "Indirect Coombs", unit: "", normalMin: 0, normalMax: 0, description: "Antibody screening for transfusion compatibility" },
+    { id: "hematology_33", name: "Blood Group (ABO)", parameter: "ABO Group", unit: "", normalMin: 0, normalMax: 0, description: "ABO blood grouping" },
+    { id: "hematology_34", name: "Rh Typing", parameter: "Rh (D)", unit: "", normalMin: 0, normalMax: 0, description: "Rhesus D antigen typing" },
+    { id: "hematology_35", name: "Crossmatch", parameter: "Crossmatch", unit: "", normalMin: 0, normalMax: 0, description: "Compatibility testing for transfusion" },
+    { id: "hematology_36", name: "Sickle Cell Screening (Dithionate / Sickling Test)", parameter: "Sickle Screen", unit: "", normalMin: 0, normalMax: 0, description: "Sickle cell trait/disease screening (pos/neg)" },
+    { id: "hematology_37", name: "Hemoglobin Electrophoresis", parameter: "Hb Electrophoresis", unit: "", normalMin: 0, normalMax: 0, description: "Hemoglobin variant analysis (HbA,HbS,HbF etc.)" },
+    { id: "hematology_38", name: "Peripheral Smear - Malaria Parasite", parameter: "Malaria Smear", unit: "", normalMin: 0, normalMax: 0, description: "Microscopy for malaria parasites (thick/thin films)" },
+    { id: "hematology_39", name: "Absolute Blast Count", parameter: "Blasts", unit: "cells/µL", normalMin: 0, normalMax: 0, description: "Blast cells (if suspected leukemia) - specialist reporting" },
+    { id: "hematology_40", name: "Bone Marrow Examination (Report)", parameter: "Bone Marrow", unit: "", normalMin: 0, normalMax: 0, description: "Bone marrow aspirate/biopsy report (morphology & cellularity) - specialist test" }
+  ]
+};
+
+// Example: to integrate, push into your departments array like:
+// departmentsArray.push(hematology);
+// Biochemistry / Clinical Chemistry — 40 tests
+const biochemistry = {
+  id: "biochemistry",
+  name: "Biochemistry / Clinical Chemistry",
+  tests: [
+    { id: "biochem_1",  name: "Fasting Blood Sugar (FBS)", parameter: "Glucose (Fasting)", unit: "mg/dL", normalMin: 70, normalMax: 100, description: "Fasting glucose level" },
+    { id: "biochem_2",  name: "Random Blood Sugar (RBS)", parameter: "Glucose (Random)", unit: "mg/dL", normalMin: 70, normalMax: 140, description: "Random glucose level" },
+    { id: "biochem_3",  name: "HbA1c (Glycated Hemoglobin)", parameter: "HbA1c", unit: "%", normalMin: 4, normalMax: 5.6, description: "Average blood glucose (3 months)" },
+    { id: "biochem_4",  name: "Glucose Tolerance Test (GTT)", parameter: "Glucose 2h", unit: "mg/dL", normalMin: 70, normalMax: 140, description: "Oral glucose tolerance test" },
+    { id: "biochem_5",  name: "Serum Cholesterol (Total)", parameter: "Cholesterol", unit: "mg/dL", normalMin: 125, normalMax: 200, description: "Total serum cholesterol" },
+    { id: "biochem_6",  name: "HDL Cholesterol", parameter: "HDL-C", unit: "mg/dL", normalMin: 40, normalMax: 60, description: "High-density lipoprotein cholesterol" },
+    { id: "biochem_7",  name: "LDL Cholesterol", parameter: "LDL-C", unit: "mg/dL", normalMin: 0, normalMax: 100, description: "Low-density lipoprotein cholesterol" },
+    { id: "biochem_8",  name: "Triglycerides", parameter: "Triglycerides", unit: "mg/dL", normalMin: 0, normalMax: 150, description: "Serum triglycerides" },
+    { id: "biochem_9",  name: "Liver Function Test - ALT (SGPT)", parameter: "ALT", unit: "U/L", normalMin: 7, normalMax: 56, description: "Alanine transaminase" },
+    { id: "biochem_10", name: "Liver Function Test - AST (SGOT)", parameter: "AST", unit: "U/L", normalMin: 10, normalMax: 40, description: "Aspartate transaminase" },
+    { id: "biochem_11", name: "Alkaline Phosphatase (ALP)", parameter: "ALP", unit: "U/L", normalMin: 44, normalMax: 147, description: "Bone & liver enzyme" },
+    { id: "biochem_12", name: "Gamma GT (GGT)", parameter: "GGT", unit: "U/L", normalMin: 9, normalMax: 48, description: "Gamma-glutamyl transferase" },
+    { id: "biochem_13", name: "Total Bilirubin", parameter: "Bilirubin (Total)", unit: "mg/dL", normalMin: 0.3, normalMax: 1.2, description: "Total bilirubin" },
+    { id: "biochem_14", name: "Direct Bilirubin", parameter: "Bilirubin (Direct)", unit: "mg/dL", normalMin: 0, normalMax: 0.3, description: "Direct bilirubin" },
+    { id: "biochem_15", name: "Indirect Bilirubin", parameter: "Bilirubin (Indirect)", unit: "mg/dL", normalMin: 0.2, normalMax: 0.9, description: "Indirect bilirubin" },
+    { id: "biochem_16", name: "Serum Albumin", parameter: "Albumin", unit: "g/dL", normalMin: 3.4, normalMax: 5.4, description: "Plasma albumin" },
+    { id: "biochem_17", name: "Serum Globulin", parameter: "Globulin", unit: "g/dL", normalMin: 2, normalMax: 3.5, description: "Serum globulin proteins" },
+    { id: "biochem_18", name: "Albumin/Globulin Ratio", parameter: "A/G Ratio", unit: "", normalMin: 1, normalMax: 2, description: "A/G ratio" },
+    { id: "biochem_19", name: "Serum Total Protein", parameter: "Total Protein", unit: "g/dL", normalMin: 6, normalMax: 8.3, description: "Total serum protein" },
+    { id: "biochem_20", name: "Urea", parameter: "Urea", unit: "mg/dL", normalMin: 10, normalMax: 50, description: "Serum urea" },
+    { id: "biochem_21", name: "Serum Creatinine", parameter: "Creatinine", unit: "mg/dL", normalMin: 0.6, normalMax: 1.3, description: "Renal function marker" },
+    { id: "biochem_22", name: "Uric Acid", parameter: "Uric Acid", unit: "mg/dL", normalMin: 3.5, normalMax: 7.2, description: "Serum uric acid" },
+    { id: "biochem_23", name: "Serum Calcium", parameter: "Calcium", unit: "mg/dL", normalMin: 8.5, normalMax: 10.5, description: "Calcium in blood" },
+    { id: "biochem_24", name: "Serum Phosphorus", parameter: "Phosphorus", unit: "mg/dL", normalMin: 2.5, normalMax: 4.5, description: "Inorganic phosphorus" },
+    { id: "biochem_25", name: "Serum Magnesium", parameter: "Magnesium", unit: "mg/dL", normalMin: 1.7, normalMax: 2.2, description: "Magnesium in serum" },
+    { id: "biochem_26", name: "Serum Sodium (Na+)", parameter: "Sodium", unit: "mmol/L", normalMin: 135, normalMax: 145, description: "Serum sodium" },
+    { id: "biochem_27", name: "Serum Potassium (K+)", parameter: "Potassium", unit: "mmol/L", normalMin: 3.5, normalMax: 5.1, description: "Serum potassium" },
+    { id: "biochem_28", name: "Serum Chloride (Cl-)", parameter: "Chloride", unit: "mmol/L", normalMin: 98, normalMax: 107, description: "Serum chloride" },
+    { id: "biochem_29", name: "Serum Bicarbonate (HCO3-)", parameter: "Bicarbonate", unit: "mmol/L", normalMin: 22, normalMax: 28, description: "Serum bicarbonate" },
+    { id: "biochem_30", name: "Serum Iron", parameter: "Iron", unit: "µg/dL", normalMin: 60, normalMax: 170, description: "Iron concentration" },
+    { id: "biochem_31", name: "Total Iron Binding Capacity (TIBC)", parameter: "TIBC", unit: "µg/dL", normalMin: 240, normalMax: 450, description: "Total iron binding capacity" },
+    { id: "biochem_32", name: "Transferrin Saturation", parameter: "Transferrin Sat", unit: "%", normalMin: 20, normalMax: 50, description: "Iron/TIBC ratio" },
+    { id: "biochem_33", name: "Serum Ferritin", parameter: "Ferritin", unit: "ng/mL", normalMin: 24, normalMax: 336, description: "Iron storage protein" },
+    { id: "biochem_34", name: "Serum Amylase", parameter: "Amylase", unit: "U/L", normalMin: 30, normalMax: 110, description: "Pancreatic enzyme" },
+    { id: "biochem_35", name: "Serum Lipase", parameter: "Lipase", unit: "U/L", normalMin: 23, normalMax: 300, description: "Pancreatic lipase" },
+    { id: "biochem_36", name: "Lactate Dehydrogenase (LDH)", parameter: "LDH", unit: "U/L", normalMin: 140, normalMax: 280, description: "LDH enzyme activity" },
+    { id: "biochem_37", name: "Creatine Kinase (CK)", parameter: "CK", unit: "U/L", normalMin: 22, normalMax: 198, description: "Creatine kinase enzyme" },
+    { id: "biochem_38", name: "Creatine Kinase-MB (CK-MB)", parameter: "CK-MB", unit: "U/L", normalMin: 0, normalMax: 25, description: "Cardiac muscle CK isoenzyme" },
+    { id: "biochem_39", name: "Troponin I (Qualitative)", parameter: "Troponin I", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" },
+    { id: "biochem_40", name: "Troponin T (Qualitative)", parameter: "Troponin T", unit: "", normalMin: 0, normalMax: 0, description: "Cardiac biomarker (positive/negative)" }
+  ]
+};
+
+// Example: to integrate, push into your departments array like:
+// departmentsArray.push(biochemistry);
+
