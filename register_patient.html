@@ -1,113 +1,86 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Register Patient - Alpha Lab</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Register Patient - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
+  <script src="qrcode.min.js"></script>
 </head>
 <body>
-  <header class="header smallbar">
-    <div class="brand">
-      <img src="logo.svg" alt="logo" class="logo">
-      <h1 class="small">Register Patient</h1>
-    </div>
-    <nav class="nav"><a href="index.html">Home</a> <a href="view_reports.html">Reports</a> <a href="admin.html">Admin</a></nav>
-  </header>
 
-  <main class="container">
-    <form id="patientForm">
+  <!-- Header -->
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Reception - Patient Registration</p>
+  </div>
+
+  <!-- Form -->
+  <div class="container">
+    <h2>Register New Patient</h2>
+    <form id="registerForm" onsubmit="return registerPatient(event)">
       <div class="form-row">
         <div class="col">
           <label for="name">Full Name</label>
-          <input id="name" required>
+          <input type="text" id="name" required>
         </div>
         <div class="col">
           <label for="age">Age</label>
-          <input id="age" type="number" required>
+          <input type="number" id="age" required>
         </div>
-      </div>
-
-      <div class="form-row">
         <div class="col">
           <label for="gender">Gender</label>
           <select id="gender" required>
-            <option value="">--Select--</option><option>Male</option><option>Female</option><option>Other</option>
+            <option value="">--Select--</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
           </select>
-        </div>
-        <div class="col">
-          <label for="phone">Phone</label>
-          <input id="phone" required>
         </div>
       </div>
 
       <label for="department">Department</label>
       <select id="department" required>
-        <option value="">-- Select Department --</option>
+        <option value="">--Select Department--</option>
+        <option>Hematology</option>
+        <option>Biochemistry</option>
+        <option>Microbiology</option>
+        <option>Immunology</option>
+        <option>Histopathology</option>
+        <option>Molecular Biology</option>
+        <option>Radiology</option>
       </select>
 
-      <label>Tests <span class="small">(choose tests to request)</span></label>
-      <div id="tests-list"></div>
+      <label for="tests">Select Tests (comma separated)</label>
+      <input type="text" id="tests" placeholder="CBC, Blood Sugar, Cholesterol" required>
 
-      <div style="margin-top:12px">
-        <button type="submit" class="btn">Register & Save</button>
-        <button type="button" id="printSlip" class="btn alt">Print Registration Slip</button>
-      </div>
+      <button type="submit" style="margin-top:15px;">Register & Generate Slip</button>
     </form>
-  </main>
+  </div>
 
-  <script src="tests.js"></script>
   <script>
-    // populate departments
-    const deptSelect = document.getElementById('department');
-    departments.forEach(d=>{
-      const o = document.createElement('option'); o.value = d.id; o.textContent = d.name; deptSelect.appendChild(o);
-    });
-
-    const testsList = document.getElementById('tests-list');
-    deptSelect.addEventListener('change', ()=> {
-      testsList.innerHTML = '';
-      const dept = departments.find(x => x.id === deptSelect.value);
-      if (!dept) return;
-      dept.tests.forEach(t => {
-        const row = document.createElement('div');
-        row.className = 'test-item';
-        row.innerHTML = `<label><input type="checkbox" data-id="${t.id}"> ${t.name}</label>
-                         <div class="small">${t.parameter} — ${t.unit} (<em>${t.normalMin} - ${t.normalMax}</em>)</div>`;
-        testsList.appendChild(row);
-      });
-    });
-
-    document.getElementById('patientForm').addEventListener('submit', function(e){
+    function registerPatient(e){
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const age = document.getElementById('age').value;
-      const gender = document.getElementById('gender').value;
-      const phone = document.getElementById('phone').value.trim();
-      const department = deptSelect.value;
-      const selected = Array.from(document.querySelectorAll('#tests-list input[type=checkbox]:checked')).map(cb=>cb.getAttribute('data-id'));
 
-      if (!name || !age || !department) { alert('Please fill required fields.'); return; }
+      const id = "P-" + Date.now();
+      const name = document.getElementById("name").value;
+      const age = document.getElementById("age").value;
+      const gender = document.getElementById("gender").value;
+      const department = document.getElementById("department").value;
+      const tests = document.getElementById("tests").value.split(",").map(t => t.trim());
 
-      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
-      const pid = 'P' + Date.now();
-      const patient = { id: pid, name, age, gender, phone, department, tests:selected, created: new Date().toISOString() };
+      const patient = {
+        id, name, age, gender, department, tests,
+        created: new Date().toISOString()
+      };
+
+      let patients = JSON.parse(localStorage.getItem("patients") || "[]");
       patients.push(patient);
-      localStorage.setItem('patients', JSON.stringify(patients));
+      localStorage.setItem("patients", JSON.stringify(patients));
 
-      alert('Patient registered: ' + pid);
-      // store last registered id so registration-slip can print
-      localStorage.setItem('last_registered', pid);
-      this.reset();
-      testsList.innerHTML = '';
-    });
-
-    // print registration slip using stored last_registered id
-    document.getElementById('printSlip').addEventListener('click', function(){
-      const last = localStorage.getItem('last_registered');
-      if (!last) { alert('No recently registered patient to print.'); return; }
-      window.open('registration-slip.html?id=' + last, '_blank');
-    });
+      // Move to slip page
+      window.location.href = "registration-slip.html?id=" + id;
+    }
   </script>
+
 </body>
 </html>
