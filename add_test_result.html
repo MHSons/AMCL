@@ -32,28 +32,32 @@
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
       const container = document.getElementById("patientList");
 
-      console.log("Loaded Patients:", patients); // ✅ Debugging log
+      console.log("Loaded Patients:", patients);
 
-      if (patients.length === 0) {
+      if (!patients || patients.length === 0) {
         container.innerHTML = "<p style='color:red;'>No active patients found!</p>";
         return;
       }
 
       patients.forEach(p => {
+        // ✅ fix: department string ya array dono handle
+        let deptText = Array.isArray(p.departments || p.department)
+          ? (p.departments || p.department).join(", ")
+          : (p.departments || p.department || "N/A");
+
         let html = `<div class="patient-card">
           <h3>${p.name} (${p.age} yrs, ${p.gender})</h3>
-          <p><b>MRN:</b> ${p.mrn}</p>
-          <p><b>Departments:</b> ${p.departments.join(", ")}</p>
+          <p><b>MRN:</b> ${p.mrn || "N/A"}</p>
+          <p><b>Departments:</b> ${deptText}</p>
           <table>
             <tr><th>Test</th><th>Result</th></tr>
         `;
 
-        p.tests.forEach(testName => {
-          let existing = p.results.find(r => r.test === testName);
+        (p.tests || []).forEach(testName => {
           html += `<tr>
             <td>${testName}</td>
             <td>
-              <input type="text" id="result-${p.id}-${testName}" value="${existing ? existing.value : ''}" placeholder="Enter result">
+              <input type="text" id="result-${p.id}-${testName}" placeholder="Enter result">
             </td>
           </tr>`;
         });
@@ -72,8 +76,8 @@
       let patient = patients.find(p => p.id === patientId);
       if (!patient) return alert("Patient not found!");
 
-      patient.results = []; // reset and re-save
-      patient.tests.forEach(testName => {
+      patient.results = [];
+      (patient.tests || []).forEach(testName => {
         let val = document.getElementById(`result-${patient.id}-${testName}`).value.trim();
         if (val) {
           patient.results.push({
@@ -88,7 +92,6 @@
         return alert("Please enter at least one result.");
       }
 
-      // Move to reports
       reports.push(patient);
       patients = patients.filter(p => p.id !== patientId);
 
