@@ -7,9 +7,11 @@
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
     h2 { color:#00bcd4; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#1e1e1e; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; }
     th, td { border:1px solid #444; padding:10px; text-align:left; }
     th { background:#00bcd4; color:#fff; }
+    button { background:#00bcd4; border:none; padding:6px 12px; border-radius:6px; color:#fff; cursor:pointer; }
+    button:hover { background:#0097a7; }
   </style>
 </head>
 <body>
@@ -26,8 +28,7 @@
         return;
       }
 
-      let html = "<table><tr><th>Name</th><th>Age</th><th>Gender</th><th>Department</th><th>Test</th><th>Result</th><th>Date</th></tr>";
-
+      let html = "<table><tr><th>Name</th><th>Age</th><th>Gender</th><th>Department</th><th>Test</th><th>Date</th><th>Action</th></tr>";
       reports.forEach(r => {
         r.results.forEach(res => {
           html += `<tr>
@@ -36,15 +37,18 @@
             <td>${r.gender}</td>
             <td>${r.department}</td>
             <td>${res.test}</td>
-            <td>${res.value}</td>
             <td>${res.date}</td>
+            <td><button onclick="viewReport(${r.id})">View</button></td>
           </tr>`;
         });
       });
-
       html += "</table>";
       container.innerHTML = html;
     });
+
+    function viewReport(patientId) {
+      window.location.href = `report.html?id=${patientId}`;
+    }
   </script>
 </body>
 </html>
