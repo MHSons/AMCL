@@ -32,6 +32,8 @@
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
       const container = document.getElementById("patientList");
 
+      console.log("Loaded Patients:", patients); // ✅ Debugging log
+
       if (patients.length === 0) {
         container.innerHTML = "<p style='color:red;'>No active patients found!</p>";
         return;
