@@ -9,11 +9,11 @@ document.addEventListener("DOMContentLoaded", function () {
             let option = document.createElement("option");
             option.value = dept.id;
             option.textContent = dept.name;
-            deptDropdown.appendChild(option);
+            deptDropdown?.appendChild(option);
         });
     }
 
-    // ✅ On department change → load tests (multi)
+    // ✅ On department change → load tests
     deptDropdown?.addEventListener("change", function () {
         testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
 
@@ -52,12 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
             results: []
         };
 
+        // ✅ Save into "patients" (active patients)
         let patients = JSON.parse(localStorage.getItem("patients")) || [];
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
 
+        // ✅ Save last registered patient for slip
         localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
 
+        alert("Patient registered successfully!");
         window.location.href = "registration-slip.html";
     });
 });
