@@ -1,17 +1,52 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Technician - Alpha Lab</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Technician - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="container">
-    <h2>Technician Panel</h2>
-    <p class="small">Enter results for patients (search by ID)</p>
-    <a class="btn" href="add_test_result.html">Add Test Result</a>
-    <a class="btn alt" href="view_reports.html">View Results</a>
+<body onload="loadPatients()">
+
+  <!-- Header -->
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Technician Dashboard</p>
   </div>
+
+  <!-- Patients List -->
+  <div class="container">
+    <h2>Patients Waiting for Tests</h2>
+    <table border="1" width="100%" cellpadding="6" cellspacing="0" style="border-collapse:collapse; background:#2c2c2c; color:#eee;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="patient-list"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function loadPatients(){
+      let patients = JSON.parse(localStorage.getItem("patients") || "[]");
+      document.getElementById("patient-list").innerHTML = patients.map((p,i) => `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.name}</td>
+          <td>${p.department}</td>
+          <td><button onclick="addResult(${i})">➕ Add Result</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function addResult(index){
+      localStorage.setItem("currentPatientIndex", index);
+      window.location.href = "add_test_result.html";
+    }
+  </script>
+
 </body>
 </html>
