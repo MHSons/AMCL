@@ -1,72 +1,49 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Alpha Lab - Home</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <title>AlphaMed Clinical Laboratory - Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <div class="brand">
-      <img src="logo.svg" alt="Lab Logo" class="logo">
-      <h1>Alpha Diagnostic Lab</h1>
-    </div>
-    <nav class="nav">
-      <a href="index.html">Home</a>
+
+  <!-- Header -->
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Quality Assurance Through Advanced Technology</p>
+  </div>
+
+  <!-- Navigation -->
+  <div class="container">
+    <div class="nav">
       <a href="register_patient.html">Register Patient</a>
-      <a href="add_test_result.html">Add Test Result</a>
-      <a href="view_reports.html">Reports</a>
-      <a href="admin.html">Admin</a>
-      <a href="login.html">Login</a>
-    </nav>
-  </header>
+      <a href="view_reports.html">View Reports</a>
+      <a href="add_test_result.html">Add Test Results</a>
+      <a href="manage_users.html">Manage Users</a>
+      <a href="settings.html">Settings</a>
+      <a href="login.html">Logout</a>
+    </div>
 
-  <main class="container">
-    <h2>Welcome to Alpha Diagnostic Lab</h2>
-    <p class="lead">Professional lab management front-end. Use the navigation to register patients, add test results and manage departments.</p>
+    <!-- Welcome Section -->
+    <div>
+      <h2>Welcome to AlphaMed Clinical Laboratory System</h2>
+      <p>
+        This system allows receptionists, technicians, and administrators to 
+        manage patients, record test results, and generate professional reports.
+      </p>
+      <ul>
+        <li>✔ Register new patients and print slips with QR code</li>
+        <li>✔ Add and manage lab test results</li>
+        <li>✔ View detailed reports with watermark and QR code</li>
+        <li>✔ Manage staff and users</li>
+        <li>✔ Fully responsive dark theme interface</li>
+      </ul>
+    </div>
 
-    <section class="grid">
-      <div class="card">
-        <h3>Register</h3>
-        <p>Quickly register patients and order tests.</p>
-        <a class="btn" href="register_patient.html">Register Patient</a>
-      </div>
+    <div class="footer">
+      &copy; 2025 AlphaMed Clinical Laboratory - All Rights Reserved
+    </div>
+  </div>
 
-      <div class="card">
-        <h3>Results</h3>
-        <p>Technicians can add test results here.</p>
-        <a class="btn" href="add_test_result.html">Add Test Result</a>
-      </div>
-
-      <div class="card">
-        <h3>Reports</h3>
-        <p>View and print patient reports and slips.</p>
-        <a class="btn" href="view_reports.html">View Reports</a>
-      </div>
-    </section>
-
-    <section>
-      <h3>Departments Included</h3>
-      <ul id="deptList" class="small"></ul>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <small>&copy; <span id="year"></span> Alpha Diagnostic Lab — demo front-end</small>
-  </footer>
-
-  <script src="tests.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-    const deptList = document.getElementById('deptList');
-    if (typeof departments !== 'undefined') {
-      departments.forEach(d => {
-        const li = document.createElement('li');
-        li.textContent = `${d.name} (${d.tests.length} tests)`;
-        deptList.appendChild(li);
-      });
-    }
-  </script>
 </body>
 </html>
