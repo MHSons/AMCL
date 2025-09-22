@@ -1,124 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Add Test Results - Alpha Med Lab</title>
+  <meta charset="utf-8">
+  <title>Add Test Result</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="style.css">
-  <style>
-    body { font-family: Arial, sans-serif; margin: 30px; }
-    .patient-select { margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background: #f5f5f5; }
-    input[type="text"], input[type="number"] { width: 100%; padding: 6px; }
-    button { margin-top: 20px; padding: 10px 20px; font-size: 1em; }
-  </style>
 </head>
 <body>
-  <h1>Add Test Results</h1>
+  <header class="header smallbar">
+    <div class="brand"><img src="logo.svg" class="logo"><h1 class="small">Add Test Result</h1></div>
+    <nav class="nav"><a href="index.html">Home</a> <a href="register_patient.html">Register</a> <a href="view_reports.html">Reports</a></nav>
+  </header>
 
-  <div class="patient-select">
-    <label for="patientSelect">Select Patient (Sample No): </label>
-    <select id="patientSelect">
-      <option value="">-- Choose Patient --</option>
-    </select>
-  </div>
+  <main class="container">
+    <h2>Find patient</h2>
+    <div class="form-row">
+      <input id="searchId" placeholder="Enter Patient ID (e.g., P1623456789)">
+      <button id="btnSearch" class="btn">Search</button>
+    </div>
 
-  <div id="patientDetails"></div>
+    <div id="patientArea" style="margin-top:18px"></div>
+  </main>
 
-  <form id="resultsForm" style="display:none;">
-    <table>
-      <thead>
-        <tr>
-          <th>Test Name</th>
-          <th>Parameter</th>
-          <th>Normal Range</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody id="testsTable"></tbody>
-    </table>
-    <button type="submit">Save Results</button>
-  </form>
-
+  <script src="tests.js"></script>
   <script>
-    const patients = JSON.parse(localStorage.getItem('patients_data') || '[]');
-    const select = document.getElementById('patientSelect');
-    const detailsDiv = document.getElementById('patientDetails');
-    const tableBody = document.getElementById('testsTable');
-    const form = document.getElementById('resultsForm');
+    function findPatient(id) {
+      const patients = JSON.parse(localStorage.getItem('patients')||'[]');
+      return patients.find(p=>p.id === id);
+    }
 
-    // Populate patient dropdown
-    patients.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.sampleNo;
-      opt.textContent = `${p.sampleNo} - ${p.name}`;
-      select.appendChild(opt);
-    });
-
-    select.addEventListener('change', () => {
-      const sampleNo = select.value;
-      if (!sampleNo) {
-        detailsDiv.innerHTML = '';
-        form.style.display = 'none';
-        return;
+    document.getElementById('btnSearch').addEventListener('click', ()=>{
+      const id = document.getElementById('searchId').value.trim();
+      const area = document.getElementById('patientArea');
+      area.innerHTML = '';
+      if (!id) { alert('Enter patient ID'); return; }
+      const p = findPatient(id);
+      if (!p) { area.innerHTML = '<div class="small">Patient not found.</div>'; return; }
+      // render form for adding results for selected tests
+      const dept = departments.find(d => d.id === p.department);
+      const html = [];
+      html.push(`<h3>${p.name} (${p.id})</h3>`);
+      html.push(`<div class="small">Department: ${dept ? dept.name : p.department}</div>`);
+      html.push('<form id="resultsForm">');
+      if (!p.tests || !p.tests.length) {
+        html.push('<div class="small">No tests selected for this patient.</div>');
+      } else {
+        p.tests.forEach(tid => {
+          // find test metadata
+          let testMeta = null;
+          const deptFound = departments.find(d => d.tests.some(t=>t.id===tid));
+          if (deptFound) testMeta = deptFound.tests.find(tt => tt.id === tid);
+          html.push(`<label>${testMeta ? testMeta.name : tid} <span class="small">(${testMeta ? testMeta.unit : ''})</span></label>`);
+          html.push(`<input name="${tid}" placeholder="Enter result" required>`);
+        });
       }
-      const patient = patients.find(p => p.sampleNo === sampleNo);
-      if (!patient) return;
+      html.push('<div style="margin-top:12px"><button class="btn" type="submit">Save Results</button></div>');
+      html.push('</form>');
+      area.innerHTML = html.join('');
 
-      detailsDiv.innerHTML = `
-        <h3>Patient Info</h3>
-        <p><strong>Name:</strong> ${patient.name}</p>
-        <p><strong>Age/Gender:</strong> ${patient.age} / ${patient.gender}</p>
-        <p><strong>Department:</strong> ${patient.department}</p>
-      `;
-
-      // Build test table
-      tableBody.innerHTML = '';
-      patient.tests.forEach((t, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${t.name}</td>
-          <td>${t.parameter}</td>
-          <td>${t.normalMin} - ${t.normalMax} ${t.unit}</td>
-          <td>
-            <input type="text" name="result-${index}" data-testid="${t.id}" required>
-          </td>
-        `;
-        tableBody.appendChild(tr);
+      document.getElementById('resultsForm')?.addEventListener('submit', function(e){
+        e.preventDefault();
+        const form = new FormData(this);
+        const results = {};
+        for (const [k,v] of form.entries()) { results[k] = v; }
+        // save results to localStorage under results array
+        const allResults = JSON.parse(localStorage.getItem('results')||'[]');
+        allResults.push({ patientId: p.id, results, created: new Date().toISOString(), enteredBy: (JSON.parse(localStorage.getItem('lab_user')||'null')||{}).username || 'unknown' });
+        localStorage.setItem('results', JSON.stringify(allResults));
+        alert('Results saved.');
       });
-
-      form.style.display = 'block';
-    });
-
-    // Save results
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const sampleNo = select.value;
-      const patientIndex = patients.findIndex(p => p.sampleNo === sampleNo);
-      if (patientIndex === -1) return;
-
-      const patient = patients[patientIndex];
-
-      // Map entered results back into tests
-      const inputs = tableBody.querySelectorAll('input');
-      inputs.forEach((inp, idx) => {
-        const testId = inp.dataset.testid;
-        const test = patient.tests.find(t => t.id === testId);
-        if (test) {
-          test.result = inp.value;
-        }
-      });
-
-      // Update patient record
-      patients[patientIndex] = patient;
-      localStorage.setItem('patients_data', JSON.stringify(patients));
-
-      alert("✅ Results saved successfully!");
-      form.reset();
-      select.value = "";
-      form.style.display = "none";
-      detailsDiv.innerHTML = "";
     });
   </script>
 </body>
