@@ -15,46 +15,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ On department change → load tests
     deptDropdown.addEventListener("change", function () {
-        testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
-        let selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
+        let selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
 
-        selectedDepts.forEach(deptId => {
-            let selectedDept = departmentsArray.find(d => d.id === deptId);
-            if (selectedDept) {
-                selectedDept.tests.forEach(test => {
-                    let option = document.createElement("option");
-                    option.value = test.id;
-                    option.textContent = test.name;
-                    testDropdown.appendChild(option);
-                });
-            }
-        });
+        // Clear previous test options
+        testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
+
+        if (selectedDept) {
+            selectedDept.tests.forEach(test => {
+                let option = document.createElement("option");
+                option.value = test.id;
+                option.textContent = test.name;
+                testDropdown.appendChild(option);
+            });
+        }
     });
 
-    // ✅ On form submit → save patient
+    // ✅ On form submit → save patient data with full test info
     registerForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
+        const selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
+        const selectedTest = selectedDept.tests.find(t => t.id === testDropdown.value);
+
         const patientData = {
             id: Date.now(),
+            mrn: "MRN-" + Math.floor(Math.random() * 100000),
+            sampleNo: document.getElementById("sampleNo").value,
             name: document.getElementById("patientName").value,
             age: document.getElementById("age").value,
             gender: document.getElementById("gender").value,
-            sampleNo: document.getElementById("sampleNo").value,
-            departments: Array.from(deptDropdown.selectedOptions).map(opt => opt.text),
-            tests: Array.from(testDropdown.selectedOptions).map(opt => ({
-                id: opt.value,
-                name: opt.text
-            })),
-            mrn: "MRN-" + Date.now(),
-            date: new Date().toLocaleString()
+            departments: [selectedDept.name],
+            tests: [{
+                id: selectedTest.id,
+                name: selectedTest.name,
+                parameter: selectedTest.parameter,
+                unit: selectedTest.unit,
+                normalMin: selectedTest.normalMin,
+                normalMax: selectedTest.normalMax
+            }]
         };
 
+        // Save all patients
         let patients = JSON.parse(localStorage.getItem("patients")) || [];
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
 
-        // ✅ Auto open slip
-        window.location.href = `registration-slip.html?id=${patientData.id}`;
+        // Save last registered for slip
+        localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
+
+        alert("Patient registered successfully ✅");
+        window.location.href = "registration-slip.html";
     });
 });
