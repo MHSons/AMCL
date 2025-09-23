@@ -10,12 +10,29 @@
       background: #fff;
       margin: 20px;
       color: #000;
+      position: relative;
     }
 
     .slip {
       border: 2px solid #000;
       padding: 20px;
       border-radius: 8px;
+      position: relative;
+      background: #fff;
+    }
+
+    /* ✅ Watermark */
+    .slip::before {
+      content: "";
+      background: url("logo.png") no-repeat center;
+      background-size: 300px;
+      opacity: 0.1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
     }
 
     .header {
@@ -23,6 +40,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
     }
 
     .lab-name {
@@ -47,7 +66,7 @@
     }
 
     .qr-section canvas {
-      width: 200px !important; /* ✅ Double size */
+      width: 200px !important;
       height: 200px !important;
     }
 
@@ -55,6 +74,8 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 10px;
+      position: relative;
+      z-index: 1;
     }
 
     td {
@@ -67,23 +88,21 @@
       margin-top: 15px;
       font-size: 12px;
       color: gray;
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
 <body>
   <div class="slip">
-    <!-- Header Section -->
+    <!-- Header -->
     <div class="header">
-      <div class="qr-section">
-        <div id="qrCode"></div>
-      </div>
+      <div class="qr-section"><div id="qrCode"></div></div>
       <div class="lab-name">
         <h2>AlphaMed Clinical Laboratory</h2>
         <h3>Patient Registration Slip</h3>
       </div>
-      <div class="logo">
-        <img src="logo.png" alt="Lab Logo">
-      </div>
+      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
     </div>
 
     <!-- Patient Info -->
@@ -117,10 +136,10 @@
         document.getElementById("age").textContent = patient.age || "N/A";
         document.getElementById("gender").textContent = patient.gender || "N/A";
         document.getElementById("department").textContent = patient.departments ? patient.departments.join(", ") : "N/A";
-        document.getElementById("tests").textContent = patient.tests ? patient.tests.join(", ") : "N/A";
+        document.getElementById("tests").textContent = patient.tests ? patient.tests.map(t => t.name).join(", ") : "N/A";
         document.getElementById("date").textContent = new Date().toLocaleString();
 
-        // ✅ QR Code with patient info
+        // ✅ QR Code
         new QRCode(document.getElementById("qrCode"), {
           text: JSON.stringify(patient),
           width: 200,
