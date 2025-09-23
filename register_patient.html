@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Patient - AlphaMed Clinical Laboratory</title>
+  <title>Register Patient - Lab Management System</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
       background-color: #121212;
       color: #e0e0e0;
       font-family: Arial, sans-serif;
-      padding: 40px;
     }
     .container {
-      width: 70%;
+      width: 60%;
       margin: auto;
-      padding: 30px;
+      margin-top: 50px;
+      padding: 20px;
       background: #1e1e1e;
       border-radius: 12px;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
@@ -27,6 +27,7 @@
     label {
       display: block;
       margin-top: 15px;
+      margin-bottom: 5px;
       font-weight: bold;
     }
     input, select, button {
@@ -50,22 +51,6 @@
     button:hover {
       background: #0097a7;
     }
-    .department-box {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: #2c2c2c;
-      border-radius: 8px;
-    }
-    .dept-title {
-      font-weight: bold;
-      color: #00bcd4;
-      margin-bottom: 8px;
-    }
-    .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
   </style>
 </head>
 <body>
@@ -85,88 +70,25 @@
         <option value="Female">Female</option>
       </select>
 
-      <!-- ✅ Multi Department + Multi Test -->
-      <div id="departmentsContainer"></div>
+      <label for="sampleNo">Sample Number:</label>
+      <input type="text" id="sampleNo" name="sampleNo" required>
+
+      <label for="department">Select Department(s):</label>
+      <select id="department" name="department" multiple required>
+        <option value="">-- Select Department --</option>
+      </select>
+
+      <label for="test">Select Test(s):</label>
+      <select id="test" name="test" multiple required>
+        <option value="">-- Select Test --</option>
+      </select>
 
       <button type="submit">Register</button>
     </form>
   </div>
 
-  <!-- Scripts -->
+  <!-- ✅ Scripts load order important -->
   <script src="tests.js"></script>
-  <script>
-    const deptContainer = document.getElementById("departmentsContainer");
-
-    // ✅ Load departments + tests with checkboxes
-    if (Array.isArray(departmentsArray)) {
-      departmentsArray.forEach(dept => {
-        let div = document.createElement("div");
-        div.classList.add("department-box");
-
-        let deptTitle = document.createElement("div");
-        deptTitle.classList.add("dept-title");
-        deptTitle.innerText = dept.name;
-        div.appendChild(deptTitle);
-
-        let testGroup = document.createElement("div");
-        testGroup.classList.add("checkbox-group");
-
-        dept.tests.forEach(test => {
-          let label = document.createElement("label");
-          label.innerHTML = `<input type="checkbox" value="${test.id}" data-dept="${dept.name}"> ${test.name}`;
-          testGroup.appendChild(label);
-        });
-
-        div.appendChild(testGroup);
-        deptContainer.appendChild(div);
-      });
-    }
-
-    // ✅ Handle registration
-    document.getElementById("registerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      let name = document.getElementById("patientName").value;
-      let age = document.getElementById("age").value;
-      let gender = document.getElementById("gender").value;
-
-      let selectedTests = [];
-      let selectedDepts = new Set();
-
-      document.querySelectorAll("#departmentsContainer input[type=checkbox]:checked").forEach(cb => {
-        let deptName = cb.getAttribute("data-dept");
-        selectedDepts.add(deptName);
-
-        let dept = departmentsArray.find(d => d.name === deptName);
-        let test = dept.tests.find(t => t.id === cb.value);
-        if (test) selectedTests.push(test);
-      });
-
-      // ✅ Generate MRN (auto) and sampleNo (manual for now)
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let mrn = "MRN-" + String(patients.length + 1).padStart(4, "0");
-      let sampleNo = prompt("Enter Sample Number:");
-
-      let patientData = {
-        mrn,
-        sampleNo,
-        name,
-        age,
-        gender,
-        departments: Array.from(selectedDepts),
-        tests: selectedTests
-      };
-
-      // Save patient
-      patients.push(patientData);
-      localStorage.setItem("patients", JSON.stringify(patients));
-
-      // Save slip data for printing
-      localStorage.setItem("latestSlip", JSON.stringify(patientData));
-
-      alert("Patient Registered Successfully!");
-      window.location.href = "registration-slip.html"; // ✅ auto show slip
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
