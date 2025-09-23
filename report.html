@@ -19,7 +19,7 @@
     .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
     .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
     .logo img { width: 200px; }
-    #qrCode { width: 100px; height: 100px; }
+    #qrCode { width: 90px; height: 90px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid #000; padding: 6px; text-align: center; }
     th { background: #003366; color: #fff; }
@@ -69,11 +69,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const urlParams = new URLSearchParams(window.location.search);
-      const mrn = urlParams.get("mrn"); // URL se MRN lo
+      const params = new URLSearchParams(window.location.search);
+      const mrn = params.get("mrn");
 
-      const allReports = JSON.parse(localStorage.getItem("allReports")) || [];
-      const reportData = allReports.find(r => r.mrn === mrn);
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      const reportData = reports.find(r => r.mrn === mrn);
 
       if (reportData) {
         document.getElementById("mrn").textContent = reportData.mrn || "N/A";
@@ -81,8 +81,8 @@
         document.getElementById("name").textContent = reportData.name || "N/A";
         document.getElementById("age").textContent = reportData.age || "N/A";
         document.getElementById("gender").textContent = reportData.gender || "N/A";
-        document.getElementById("department").textContent = reportData.departments?.join(", ") || "N/A";
-        document.getElementById("date").textContent = reportData.date || new Date().toLocaleString();
+        document.getElementById("department").textContent = reportData.departments ? reportData.departments.join(", ") : "N/A";
+        document.getElementById("date").textContent = reportData.date || "N/A";
 
         // ✅ Fill test results
         const tbody = document.querySelector("#resultsTable tbody");
@@ -103,13 +103,9 @@
 
         // ✅ QR Code
         new QRCode(document.getElementById("qrCode"), {
-          text: JSON.stringify({
-            mrn: reportData.mrn,
-            name: reportData.name,
-            sampleNo: reportData.sampleNo
-          }),
-          width: 120,
-          height: 120
+          text: JSON.stringify(reportData),
+          width: 90,
+          height: 90
         });
       }
     });
