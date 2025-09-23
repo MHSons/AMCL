@@ -3,29 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Registration Slip - AlphaMed Clinical Laboratory</title>
+  <title>Registration Slip - AlphaMed Clinical Laboratory</title>
   <style>
     body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
-    .slip { border: 2px solid #000; padding: 20px; border-radius: 8px; position: relative; background: #fff; }
+    .slip {
+      border: 2px solid #000;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      background: #fff;
+    }
     .slip::before {
-      content: "";
-      background: url("logo.png") no-repeat center;
-      background-size: 250px;
-      opacity: 0.1;
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      content: "AlphaMed Clinical Laboratory";
+      font-size: 50px;
+      color: rgba(0,0,0,0.07);
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
     }
     .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .lab-name { flex: 1; text-align: center; }
-    .lab-name h2 { margin: 0; font-size: 22px; color: #003366; }
-    .lab-name h3 { margin: 0; font-size: 16px; color: #0066cc; }
-    .logo img { width: 180px; }
-    #qrCode { width: 90px; height: 90px; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .logo img { width: 120px; }
+    #qrCode { width: 100px; height: 100px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid #000; padding: 6px; text-align: left; }
-    th { background: #003366; color: #fff; text-align: center; }
-    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
-    button { margin-top:20px; background:#00bcd4; border:none; padding:10px 15px; border-radius:6px; color:#fff; cursor:pointer; }
-    button:hover { background:#0097a7; }
+    th { background: #003366; color: #fff; }
+    .actions { margin-top: 20px; text-align: center; }
+    button {
+      background: #00bcd4;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover { background: #0097a7; }
   </style>
 </head>
 <body>
@@ -34,7 +51,7 @@
       <div id="qrCode"></div>
       <div class="lab-name">
         <h2>AlphaMed Clinical Laboratory</h2>
-        <h3>Registration Slip</h3>
+        <h3>Patient Registration Slip</h3>
       </div>
       <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
     </div>
@@ -50,41 +67,41 @@
       <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
     </table>
 
-    <div class="footer">
-      AlphaMed Clinical Laboratory - Patient Registration Slip
+    <div class="actions">
+      <button onclick="window.print()">🖨️ Print Slip</button>
+      <button id="downloadPdf">📥 Download PDF</button>
     </div>
   </div>
 
-  <button onclick="window.print()">🖨 Print Slip</button>
-
+  <!-- ✅ QR + PDF Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const slipData = JSON.parse(localStorage.getItem("lastRegisteredPatient"));
+      const patientData = JSON.parse(localStorage.getItem("lastRegisteredPatient"));
+      if (patientData) {
+        document.getElementById("mrn").textContent = patientData.mrn;
+        document.getElementById("sampleNo").textContent = patientData.sampleNo;
+        document.getElementById("name").textContent = patientData.name;
+        document.getElementById("age").textContent = patientData.age;
+        document.getElementById("gender").textContent = patientData.gender;
+        document.getElementById("department").textContent = patientData.departments.join(", ");
+        document.getElementById("test").textContent = patientData.tests.join(", ");
+        document.getElementById("date").textContent = new Date().toLocaleString();
 
-      if (!slipData) {
-        alert("No registration data found!");
-        return;
+        // ✅ QR Code (smaller size for top left)
+        new QRCode(document.getElementById("qrCode"), {
+          text: JSON.stringify(patientData),
+          width: 90,
+          height: 90
+        });
       }
 
-      document.getElementById("mrn").textContent = slipData.mrn || "N/A";
-      document.getElementById("sampleNo").textContent = slipData.sampleNo || "N/A";
-      document.getElementById("name").textContent = slipData.name || "N/A";
-      document.getElementById("age").textContent = slipData.age || "N/A";
-      document.getElementById("gender").textContent = slipData.gender || "N/A";
-      document.getElementById("department").textContent = slipData.departments ? slipData.departments.join(", ") : "N/A";
-      document.getElementById("test").textContent = slipData.tests ? slipData.tests.join(", ") : "N/A";
-      document.getElementById("date").textContent = new Date().toLocaleString();
-
-      // ✅ QR Code
-      new QRCode(document.getElementById("qrCode"), {
-        text: JSON.stringify({
-          mrn: slipData.mrn,
-          sampleNo: slipData.sampleNo,
-          name: slipData.name
-        }),
-        width: 90,
-        height: 90
+      // ✅ PDF Download
+      document.getElementById("downloadPdf").addEventListener("click", function () {
+        const slip = document.querySelector(".slip");
+        html2pdf().from(slip).save("Registration_Slip.pdf");
       });
     });
   </script>
