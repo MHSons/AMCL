@@ -51,15 +51,17 @@
       `;
 
       patients.forEach((p, index) => {
+        const tests = p.tests || []; // ✅ safe handling
         html += `
           <tr>
             <td>${p.mrn}</td>
             <td>${p.name}</td>
             <td>${p.age}</td>
             <td>${p.gender}</td>
-            <td>${p.departments ? p.departments.join(", ") : "N/A"}</td>
-            <td>${p.tests ? p.tests.join(", ") : "N/A"}</td>
+            <td>${p.departments && p.departments.length > 0 ? p.departments.join(", ") : "N/A"}</td>
+            <td>${tests.length > 0 ? tests.join(", ") : "No Tests Assigned"}</td>
             <td>
+              ${tests.length > 0 ? `
               <div id="results-${index}">
                 <table style="background:#2c2c2c; width:100%;">
                   <tr>
@@ -69,7 +71,7 @@
                     <th>Unit</th>
                     <th>Normal Range</th>
                   </tr>
-                  ${p.tests.map((t, i) => `
+                  ${tests.map((t, i) => `
                     <tr>
                       <td>${t}</td>
                       <td><input type="text" id="param-${index}-${i}" placeholder="Parameter"></td>
@@ -82,9 +84,13 @@
                     </tr>
                   `).join("")}
                 </table>
-              </div>
+              </div>` : `<p>No result entry available</p>`}
             </td>
-            <td><button onclick="saveResult(${index})">Save</button></td>
+            <td>
+              ${tests.length > 0 
+                ? `<button onclick="saveResult(${index})">Save</button>` 
+                : "N/A"}
+            </td>
           </tr>
         `;
       });
@@ -100,7 +106,7 @@
       const p = patients[index];
       let results = [];
 
-      p.tests.forEach((t, i) => {
+      (p.tests || []).forEach((t, i) => {
         results.push({
           name: t,
           parameter: document.getElementById(`param-${index}-${i}`).value,
