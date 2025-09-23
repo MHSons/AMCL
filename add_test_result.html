@@ -3,203 +3,134 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Result</title>
+  <title>Add Test Result - Lab Management System</title>
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
     h2 { color:#00bcd4; }
     table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
-    th, td { border:1px solid #444; padding:10px; text-align:center; }
+    th, td { border:1px solid #444; padding:10px; text-align:left; }
     th { background:#00bcd4; color:#fff; }
-    input { padding:6px; border-radius:4px; border:none; width:100%; }
-    button { margin-top:20px; background:#00bcd4; border:none; padding:10px 15px; border-radius:6px; color:#fff; cursor:pointer; }
-    button:hover { background:#0097a7; }
-  </style>
-</head>
-<body>
-  <h2>Enter Test Results</h2>
-  <div id="patientsList"></div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let container = document.getElementById("patientsList");
-
-      if (patients.length === 0) {
-        container.innerHTML = "<p>No registered patients.</p>";
-        return;
-      }
-
-      patients.forEach((p, index) => {
-        let div = document.createElement("div");
-        div.innerHTML = `
-          <h3>${p.name} (MRN: ${p.mrn})</h3>
-          <table>
-            <thead>
-              <tr><th>Test</th><th>Parameter</th><th>Result</th><th>Unit</th><th>Normal Range</th></tr>
-            </thead>
-            <tbody id="tbody-${index}"></tbody>
-          </table>
-          <button onclick="saveResult(${index})">Save Report</button>
-          <hr>
-        `;
-        container.appendChild(div);
-
-        let tbody = document.getElementById(`tbody-${index}`);
-        p.tests.forEach(t => {
-          let row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${t.name}</td>
-            <td><input type="text" placeholder="Parameter" id="param-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Result" id="res-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Unit" id="unit-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Normal Min" id="nmin-${index}-${t.id}" style="width:45%"> -
-                <input type="text" placeholder="Normal Max" id="nmax-${index}-${t.id}" style="width:45%"></td>
-          `;
-          tbody.appendChild(row);
-        });
-      });
-    });
-
-    function saveResult(patientIndex) {
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let p = patients[patientIndex];
-      if (!p) return;
-
-      let results = [];
-      p.tests.forEach(t => {
-        results.push({
-          name: t.name,
-          parameter: document.getElementById(`param-${patientIndex}-${t.id}`).value,
-          result: document.getElementById(`res-${patientIndex}-${t.id}`).value,
-          unit: document.getElementById(`unit-${patientIndex}-${t.id}`).value,
-          normalMin: document.getElementById(`nmin-${patientIndex}-${t.id}`).value,
-          normalMax: document.getElementById(`nmax-${patientIndex}-${t.id}`).value
-        });
-      });
-
-      let reportData = {
-        mrn: p.mrn,
-        sampleNo: p.sampleNo,
-        name: p.name,
-        age: p.age,
-        gender: p.gender,
-        departments: p.departments,
-        date: new Date().toLocaleString(),
-        results: results
-      };
-
-      // ✅ Save report to localStorage
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
-      reports.push(reportData);
-      localStorage.setItem("reports", JSON.stringify(reports));
-
-      // ✅ Also save lastReport (for quick access)
-      localStorage.setItem("lastReport", JSON.stringify(reportData));
-
-      alert("Report saved for " + p.name);
+    input { width:100%; padding:5px; border-radius:4px; border:none; background:#2c2c2c; color:#fff; }
+    button {
+      background:#00bcd4;
+      border:none;
+      padding:6px 12px;
+      border-radius:6px;
+      color:#fff;
+      cursor:pointer;
     }
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Result</title>
-  <style>
-    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
-    h2 { color:#00bcd4; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
-    th, td { border:1px solid #444; padding:10px; text-align:center; }
-    th { background:#00bcd4; color:#fff; }
-    input { padding:6px; border-radius:4px; border:none; width:100%; }
-    button { margin-top:20px; background:#00bcd4; border:none; padding:10px 15px; border-radius:6px; color:#fff; cursor:pointer; }
     button:hover { background:#0097a7; }
   </style>
 </head>
 <body>
-  <h2>Enter Test Results</h2>
-  <div id="patientsList"></div>
+  <h2>Add Test Results</h2>
+  <div id="patientTable"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let container = document.getElementById("patientsList");
+      const container = document.getElementById("patientTable");
 
       if (patients.length === 0) {
-        container.innerHTML = "<p>No registered patients.</p>";
+        container.innerHTML = "<p>No patients available for test results.</p>";
         return;
       }
 
-      patients.forEach((p, index) => {
-        let div = document.createElement("div");
-        div.innerHTML = `
-          <h3>${p.name} (MRN: ${p.mrn})</h3>
-          <table>
-            <thead>
-              <tr><th>Test</th><th>Parameter</th><th>Result</th><th>Unit</th><th>Normal Range</th></tr>
-            </thead>
-            <tbody id="tbody-${index}"></tbody>
-          </table>
-          <button onclick="saveResult(${index})">Save Report</button>
-          <hr>
-        `;
-        container.appendChild(div);
+      let html = `
+        <table>
+          <tr>
+            <th>MRN</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Department(s)</th>
+            <th>Test(s)</th>
+            <th>Result Entry</th>
+            <th>Action</th>
+          </tr>
+      `;
 
-        let tbody = document.getElementById(`tbody-${index}`);
-        p.tests.forEach(t => {
-          let row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${t.name}</td>
-            <td><input type="text" placeholder="Parameter" id="param-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Result" id="res-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Unit" id="unit-${index}-${t.id}"></td>
-            <td><input type="text" placeholder="Normal Min" id="nmin-${index}-${t.id}" style="width:45%"> -
-                <input type="text" placeholder="Normal Max" id="nmax-${index}-${t.id}" style="width:45%"></td>
-          `;
-          tbody.appendChild(row);
-        });
+      patients.forEach((p, index) => {
+        html += `
+          <tr>
+            <td>${p.mrn}</td>
+            <td>${p.name}</td>
+            <td>${p.age}</td>
+            <td>${p.gender}</td>
+            <td>${p.departments ? p.departments.join(", ") : "N/A"}</td>
+            <td>${p.tests ? p.tests.join(", ") : "N/A"}</td>
+            <td>
+              <div id="results-${index}">
+                <table style="background:#2c2c2c; width:100%;">
+                  <tr>
+                    <th>Test</th>
+                    <th>Parameter</th>
+                    <th>Result</th>
+                    <th>Unit</th>
+                    <th>Normal Range</th>
+                  </tr>
+                  ${p.tests.map((t, i) => `
+                    <tr>
+                      <td>${t}</td>
+                      <td><input type="text" id="param-${index}-${i}" placeholder="Parameter"></td>
+                      <td><input type="text" id="result-${index}-${i}" placeholder="Result"></td>
+                      <td><input type="text" id="unit-${index}-${i}" placeholder="Unit"></td>
+                      <td>
+                        <input type="text" id="min-${index}-${i}" placeholder="Min" style="width:45%;"> -
+                        <input type="text" id="max-${index}-${i}" placeholder="Max" style="width:45%;">
+                      </td>
+                    </tr>
+                  `).join("")}
+                </table>
+              </div>
+            </td>
+            <td><button onclick="saveResult(${index})">Save</button></td>
+          </tr>
+        `;
       });
+
+      html += "</table>";
+      container.innerHTML = html;
     });
 
-    function saveResult(patientIndex) {
+    function saveResult(index) {
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let p = patients[patientIndex];
-      if (!p) return;
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
 
+      const p = patients[index];
       let results = [];
-      p.tests.forEach(t => {
+
+      p.tests.forEach((t, i) => {
         results.push({
-          name: t.name,
-          parameter: document.getElementById(`param-${patientIndex}-${t.id}`).value,
-          result: document.getElementById(`res-${patientIndex}-${t.id}`).value,
-          unit: document.getElementById(`unit-${patientIndex}-${t.id}`).value,
-          normalMin: document.getElementById(`nmin-${patientIndex}-${t.id}`).value,
-          normalMax: document.getElementById(`nmax-${patientIndex}-${t.id}`).value
+          name: t,
+          parameter: document.getElementById(`param-${index}-${i}`).value,
+          result: document.getElementById(`result-${index}-${i}`).value,
+          unit: document.getElementById(`unit-${index}-${i}`).value,
+          normalMin: document.getElementById(`min-${index}-${i}`).value,
+          normalMax: document.getElementById(`max-${index}-${i}`).value,
         });
       });
 
-      let reportData = {
+      const reportData = {
         mrn: p.mrn,
         sampleNo: p.sampleNo,
         name: p.name,
         age: p.age,
         gender: p.gender,
         departments: p.departments,
-        date: new Date().toLocaleString(),
-        results: results
+        results: results,
+        date: new Date().toLocaleString()
       };
 
-      // ✅ Save report to localStorage
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
       reports.push(reportData);
       localStorage.setItem("reports", JSON.stringify(reports));
 
-      // ✅ Also save lastReport (for quick access)
-      localStorage.setItem("lastReport", JSON.stringify(reportData));
+      // Remove patient from pending list
+      patients.splice(index, 1);
+      localStorage.setItem("patients", JSON.stringify(patients));
 
-      alert("Report saved for " + p.name);
+      alert("Test results saved successfully!");
+      location.reload();
     }
   </script>
 </body>
