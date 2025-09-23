@@ -5,94 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab Report - AlphaMed Clinical Laboratory</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 20px;
-      color: #000;
-    }
-
-    .report {
-      border: 2px solid #000;
-      padding: 20px;
-      border-radius: 8px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .lab-name {
-      flex: 1;
-      text-align: center;
-    }
-
-    .lab-name h2 {
-      margin: 0;
-      font-size: 24px;
-      color: #003366;
-    }
-
-    .lab-name h3 {
-      margin: 0;
-      font-size: 18px;
-      color: #0066cc;
-    }
-
-    .logo img {
-      width: 200px; /* ✅ Double size */
-    }
-
-    .qr-section canvas {
-      width: 200px !important;
-      height: 200px !important;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      border: 1px solid #000;
-      padding: 6px;
-      text-align: center;
-    }
-
-    th {
-      background: #003366;
-      color: #fff;
-    }
-
-    .footer {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 12px;
-      color: gray;
-    }
+    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
+    .report { border: 2px solid #000; padding: 20px; border-radius: 8px; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .lab-name { flex: 1; text-align: center; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
+    .logo img { width: 200px; }
+    .qr-section canvas { width: 200px !important; height: 200px !important; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+    th { background: #003366; color: #fff; }
+    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
   </style>
 </head>
 <body>
   <div class="report">
-    <!-- Header -->
     <div class="header">
-      <div class="qr-section">
-        <div id="qrCode"></div>
-      </div>
+      <div class="qr-section"><div id="qrCode"></div></div>
       <div class="lab-name">
         <h2>AlphaMed Clinical Laboratory</h2>
         <h3>Lab Report</h3>
       </div>
-      <div class="logo">
-        <img src="logo.png" alt="Lab Logo">
-      </div>
+      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
     </div>
 
-    <!-- Patient Info -->
     <table>
       <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
       <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
@@ -103,7 +40,6 @@
       <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
     </table>
 
-    <!-- Test Results -->
     <h3 style="margin-top:20px; color:#003366;">Test Results</h3>
     <table id="resultsTable">
       <thead>
@@ -115,23 +51,18 @@
           <th>Normal Range</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Test rows will be added dynamically -->
-      </tbody>
+      <tbody></tbody>
     </table>
 
-    <!-- Footer -->
     <div class="footer">
       AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
     </div>
   </div>
 
-  <!-- QR Code Library -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const reportData = JSON.parse(localStorage.getItem("lastReport"));
-
       if (reportData) {
         document.getElementById("mrn").textContent = reportData.mrn || "N/A";
         document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
@@ -141,10 +72,8 @@
         document.getElementById("department").textContent = reportData.departments ? reportData.departments.join(", ") : "N/A";
         document.getElementById("date").textContent = new Date().toLocaleString();
 
-        // ✅ Test Results Table
         const tbody = document.querySelector("#resultsTable tbody");
         tbody.innerHTML = "";
-
         if (reportData.results && reportData.results.length > 0) {
           reportData.results.forEach(test => {
             const row = document.createElement("tr");
@@ -163,11 +92,9 @@
           tbody.appendChild(row);
         }
 
-        // ✅ QR Code
         new QRCode(document.getElementById("qrCode"), {
           text: JSON.stringify(reportData),
-          width: 200,
-          height: 200
+          width: 200, height: 200
         });
       }
     });
