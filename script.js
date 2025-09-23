@@ -15,24 +15,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ✅ On department change → load tests
     deptDropdown.addEventListener("change", function () {
-        let selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
-        testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
-        if (selectedDept) {
-            selectedDept.tests.forEach(test => {
-                let option = document.createElement("option");
-                option.value = test.id;
-                option.textContent = test.name;
-                testDropdown.appendChild(option);
-            });
-        }
+        testDropdown.innerHTML = '<option value="">-- Select Test(s) --</option>';
+
+        // Saare selected departments nikaalna
+        let selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
+
+        // Un departments ke saare tests show karna
+        selectedDepts.forEach(deptId => {
+            let selectedDept = departmentsArray.find(d => d.id === deptId);
+            if (selectedDept) {
+                selectedDept.tests.forEach(test => {
+                    let option = document.createElement("option");
+                    option.value = test.id;
+                    option.textContent = test.name;
+                    testDropdown.appendChild(option);
+                });
+            }
+        });
     });
 
-    // ✅ On form submit → save patient to pendingTests
+    // ✅ On form submit → save patient with multiple departments & tests
     registerForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        const selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
-        const selectedTest = selectedDept.tests.find(t => t.id === testDropdown.value);
+        // Saare departments
+        let selectedDepartments = Array.from(deptDropdown.selectedOptions).map(opt => {
+            let dept = departmentsArray.find(d => d.id === opt.value);
+            return dept ? dept.name : "";
+        }).filter(Boolean);
+
+        // Saare tests
+        let selectedTests = Array.from(testDropdown.selectedOptions).map(opt => {
+            for (let dept of departmentsArray) {
+                let test = dept.tests.find(t => t.id === opt.value);
+                if (test) return {
+                    id: test.id,
+                    name: test.name,
+                    parameter: test.parameter,
+                    unit: test.unit,
+                    normalMin: test.normalMin,
+                    normalMax: test.normalMax
+                };
+            }
+        }).filter(Boolean);
 
         const patientData = {
             id: Date.now(),
@@ -41,18 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
             name: document.getElementById("patientName").value,
             age: document.getElementById("age").value,
             gender: document.getElementById("gender").value,
-            departments: [selectedDept.name],
-            tests: [{
-                id: selectedTest.id,
-                name: selectedTest.name,
-                parameter: selectedTest.parameter,
-                unit: selectedTest.unit,
-                normalMin: selectedTest.normalMin,
-                normalMax: selectedTest.normalMax
-            }]
+            departments: selectedDepartments,
+            tests: selectedTests
         };
 
-        // ✅ Save only in pendingTests
+        // ✅ Save in pendingTests
         let pendingTests = JSON.parse(localStorage.getItem("pendingTests")) || [];
         pendingTests.push(patientData);
         localStorage.setItem("pendingTests", JSON.stringify(pendingTests));
