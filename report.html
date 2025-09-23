@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Report</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #fff; color:#000; padding:40px; position:relative; }
-    /* 🔹 Watermark in center */
+    body { font-family: Arial, sans-serif; background:#fff; color:#000; padding:40px; position:relative; }
     body::before {
       content: "";
       background: url('logo.png') no-repeat center center;
       background-size: 300px;
       opacity: 0.08;
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 0;
+      position: absolute; top:0; left:0; right:0; bottom:0; z-index:0;
     }
     .header { display:flex; justify-content:space-between; align-items:center; position:relative; z-index:1; }
     .header img { height:80px; }
@@ -40,6 +38,7 @@
     <p>AlphaMed Clinical Laboratory - Quality Assurance Through Advance Technology</p>
   </div>
 
+  <script src="tests.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   <script>
     function getQueryParam(param) {
@@ -63,13 +62,27 @@
 
         <h3>Test Results</h3>
         <table>
-          <tr><th>Test</th><th>Result</th><th>Date</th></tr>
+          <tr><th>Test</th><th>Parameter</th><th>Result</th><th>Unit</th><th>Normal Range</th><th>Date</th></tr>
       `;
       patient.tests.forEach(testName => {
+        let testObj;
+        departmentsArray.forEach(dept => {
+          let t = dept.tests.find(x => x.name === testName);
+          if (t) testObj = t;
+        });
+
+        let parameter = testObj ? testObj.parameter : "-";
+        let unit = testObj ? testObj.unit : "-";
+        let normalRange = testObj ? `${testObj.normalMin} - ${testObj.normalMax}` : "-";
+
         let result = patient.results.find(r => r.test === testName);
+
         html += `<tr>
           <td>${testName}</td>
+          <td>${parameter}</td>
           <td>${result ? result.value : "Pending"}</td>
+          <td>${unit}</td>
+          <td>${normalRange}</td>
           <td>${result ? result.date : "-"}</td>
         </tr>`;
       });
