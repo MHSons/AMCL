@@ -4,47 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab Report - AlphaMed Clinical Laboratory</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; }
-    .report-container { border: 2px solid #000; padding: 20px; border-radius: 8px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .lab-title { text-align: center; font-size: 20px; font-weight: bold; color: #003366; }
-    .section { margin-top: 20px; }
+    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
+    .report { border: 2px solid #000; padding: 20px; border-radius: 8px; position: relative; background: #fff; }
+    .report::before {
+      content: "";
+      background: url("logo.png") no-repeat center;
+      background-size: 300px;
+      opacity: 0.1;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .lab-name { flex: 1; text-align: center; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
+    .logo img { width: 200px; }
+    #qrCode { width: 100px; height: 100px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    table, th, td { border: 1px solid #000; }
-    th { background: #003366; color: #fff; padding: 8px; text-align: center; }
-    td { padding: 8px; text-align: center; }
-    #qrCode { width: 120px; height: 120px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+    th { background: #003366; color: #fff; }
+    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
   </style>
 </head>
 <body>
-  <div class="report-container">
+  <div class="report">
     <div class="header">
       <div id="qrCode"></div>
-      <div class="lab-title">
-        AlphaMed Clinical Laboratory <br>
-        <span style="font-size:14px;">Lab Report</span>
+      <div class="lab-name">
+        <h2>AlphaMed Clinical Laboratory</h2>
+        <h3>Lab Report</h3>
       </div>
-      <img src="logo.png" alt="Lab Logo" style="height:80px;">
+      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
     </div>
 
-    <div class="section">
-      <table>
-        <tr><td><b>MRN:</b></td><td id="mrn"></td></tr>
-        <tr><td><b>Sample No:</b></td><td id="sampleNo"></td></tr>
-        <tr><td><b>Name:</b></td><td id="name"></td></tr>
-        <tr><td><b>Age:</b></td><td id="age"></td></tr>
-        <tr><td><b>Gender:</b></td><td id="gender"></td></tr>
-        <tr><td><b>Department(s):</b></td><td id="departments"></td></tr>
-        <tr><td><b>Date:</b></td><td id="date"></td></tr>
-      </table>
-    </div>
+    <table>
+      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
+      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
+      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
+      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
+      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
+      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
+      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
+    </table>
 
-    <div class="section">
-      <h3>Test Results</h3>
-      <table id="resultsTable">
+    <h3 style="margin-top:20px; color:#003366;">Test Results</h3>
+    <table id="resultsTable">
+      <thead>
         <tr>
           <th>Test</th>
           <th>Parameter</th>
@@ -52,50 +57,52 @@
           <th>Unit</th>
           <th>Normal Range</th>
         </tr>
-      </table>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="footer">
+      AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const reportData = JSON.parse(localStorage.getItem("currentReport")) || {};
+    document.addEventListener("DOMContentLoaded", function () {
+      const reportData = JSON.parse(localStorage.getItem("lastReport"));
+      if (reportData) {
+        document.getElementById("mrn").textContent = reportData.mrn || "N/A";
+        document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
+        document.getElementById("name").textContent = reportData.name || "N/A";
+        document.getElementById("age").textContent = reportData.age || "N/A";
+        document.getElementById("gender").textContent = reportData.gender || "N/A";
+        document.getElementById("department").textContent = reportData.departments && reportData.departments.length > 0 ? reportData.departments.join(", ") : "N/A";
+        document.getElementById("date").textContent = new Date().toLocaleString();
 
-    // ✅ Fill patient info
-    document.getElementById("mrn").innerText = reportData.mrn || "N/A";
-    document.getElementById("sampleNo").innerText = reportData.sampleNo || "N/A";
-    document.getElementById("name").innerText = reportData.name || "N/A";
-    document.getElementById("age").innerText = reportData.age || "N/A";
-    document.getElementById("gender").innerText = reportData.gender || "N/A";
-    document.getElementById("departments").innerText = (reportData.departments || []).join(", ");
-    document.getElementById("date").innerText = reportData.date || new Date().toLocaleString();
+        // ✅ Fill test results
+        const tbody = document.querySelector("#resultsTable tbody");
+        tbody.innerHTML = "";
+        if (reportData.results && reportData.results.length > 0) {
+          reportData.results.forEach(test => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${test.name}</td>
+              <td>${test.parameter || "N/A"}</td>
+              <td>${test.result || "N/A"}</td>
+              <td>${test.unit || "N/A"}</td>
+              <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
 
-    // ✅ Fill test results
-    const table = document.getElementById("resultsTable");
-    if (reportData.results) {
-      reportData.results.forEach(test => {
-        let row = table.insertRow();
-        row.insertCell(0).innerText = test.name || "";
-        row.insertCell(1).innerText = test.parameter || "";
-        row.insertCell(2).innerText = test.value || "";
-        row.insertCell(3).innerText = test.unit || "";
-        row.insertCell(4).innerText = test.normalMin && test.normalMax 
-          ? `${test.normalMin} - ${test.normalMax}` 
-          : "-";
-      });
-    }
-
-    // ✅ Generate QR Code (Top Left)
-    const qrContainer = document.getElementById("qrCode");
-    qrContainer.innerHTML = "";
-    new QRCode(qrContainer, {
-      text: JSON.stringify({
-        mrn: reportData.mrn,
-        sampleNo: reportData.sampleNo,
-        name: reportData.name,
-        age: reportData.age,
-        gender: reportData.gender
-      }),
-      width: 120,
-      height: 120
+        // ✅ QR Code
+        new QRCode(document.getElementById("qrCode"), {
+          text: JSON.stringify(reportData),
+          width: 100,
+          height: 100
+        });
+      }
     });
   </script>
 </body>
