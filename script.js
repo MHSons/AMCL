@@ -16,10 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // ✅ On department change → load tests
     deptDropdown.addEventListener("change", function () {
         let selectedDept = departmentsArray.find(d => d.id === deptDropdown.value);
-
-        // Clear previous test options
         testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
-
         if (selectedDept) {
             selectedDept.tests.forEach(test => {
                 let option = document.createElement("option");
@@ -30,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // ✅ On form submit → save patient data with full test info
+    // ✅ On form submit → save patient to pendingTests
     registerForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -55,12 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }]
         };
 
-        // Save all patients
-        let patients = JSON.parse(localStorage.getItem("patients")) || [];
-        patients.push(patientData);
-        localStorage.setItem("patients", JSON.stringify(patients));
+        // ✅ Save only in pendingTests
+        let pendingTests = JSON.parse(localStorage.getItem("pendingTests")) || [];
+        pendingTests.push(patientData);
+        localStorage.setItem("pendingTests", JSON.stringify(pendingTests));
 
-        // Save last registered for slip
+        // ✅ Save for slip
         localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
 
         alert("Patient registered successfully ✅");
