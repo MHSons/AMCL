@@ -3,66 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Patient Registration Slip</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <title>Patient Registration Slip - AlphaMed Clinical Laboratory</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; }
-    .slip-container { border: 2px solid #000; padding: 20px; border-radius: 8px; }
-    .header { display: flex; justify-content: space-between; align-items: center; }
-    .title { text-align: center; font-size: 20px; font-weight: bold; color: #003366; }
+    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
+    .slip { border: 2px solid #000; padding: 20px; border-radius: 8px; position: relative; background: #fff; }
+    /* ✅ Watermark */
+    .slip::before {
+      content: "";
+      background: url("logo.png") no-repeat center;
+      background-size: 300px;
+      opacity: 0.1;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; position: relative; z-index: 1; }
+    .lab-name { flex: 1; text-align: center; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
+    .logo img { width: 200px; }
+    #qrCode { width: 100px; height: 100px; }
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    table, th, td { border: 1px solid #000; }
-    td { padding: 8px; }
-    #qrCode { width: 120px; height: 120px; }
+    td { padding: 6px; border-bottom: 1px solid #ddd; }
+    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
   </style>
 </head>
 <body>
-  <div class="slip-container">
+  <div class="slip">
     <div class="header">
       <div id="qrCode"></div>
-      <div class="title">AlphaMed Clinical Laboratory<br>Patient Registration Slip</div>
-      <img src="logo.png" alt="Lab Logo" style="height:80px;">
+      <div class="lab-name">
+        <h2>AlphaMed Clinical Laboratory</h2>
+        <h3>Patient Registration Slip</h3>
+      </div>
+      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
     </div>
 
     <table>
-      <tr><td><b>MRN:</b></td><td id="mrn"></td></tr>
-      <tr><td><b>Sample No:</b></td><td id="sampleNo"></td></tr>
-      <tr><td><b>Name:</b></td><td id="name"></td></tr>
-      <tr><td><b>Age:</b></td><td id="age"></td></tr>
-      <tr><td><b>Gender:</b></td><td id="gender"></td></tr>
-      <tr><td><b>Department(s):</b></td><td id="departments"></td></tr>
-      <tr><td><b>Test(s):</b></td><td id="tests"></td></tr>
-      <tr><td><b>Date:</b></td><td id="date"></td></tr>
+      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
+      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
+      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
+      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
+      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
+      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
+      <tr><td><b>Test(s):</b></td><td id="tests">N/A</td></tr>
+      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
     </table>
+
+    <div class="footer">
+      AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
+    </div>
   </div>
 
+  <!-- ✅ QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    const slipData = JSON.parse(localStorage.getItem("currentSlip")) || {};
+    document.addEventListener("DOMContentLoaded", function () {
+      const patient = JSON.parse(localStorage.getItem("lastRegisteredPatient"));
+      if (patient) {
+        document.getElementById("mrn").textContent = patient.mrn || "N/A";
+        document.getElementById("sampleNo").textContent = patient.sampleNo || "N/A";
+        document.getElementById("name").textContent = patient.name || "N/A";
+        document.getElementById("age").textContent = patient.age || "N/A";
+        document.getElementById("gender").textContent = patient.gender || "N/A";
+        document.getElementById("department").textContent = patient.departments && patient.departments.length > 0 ? patient.departments.join(", ") : "N/A";
+        document.getElementById("tests").textContent = patient.tests && patient.tests.length > 0 ? patient.tests.map(t => t.name).join(", ") : "N/A";
+        document.getElementById("date").textContent = new Date().toLocaleString();
 
-    // ✅ Fill slip data
-    document.getElementById("mrn").innerText = slipData.mrn || "N/A";
-    document.getElementById("sampleNo").innerText = slipData.sampleNo || "N/A";
-    document.getElementById("name").innerText = slipData.name || "N/A";
-    document.getElementById("age").innerText = slipData.age || "N/A";
-    document.getElementById("gender").innerText = slipData.gender || "N/A";
-    document.getElementById("departments").innerText = (slipData.departments || []).join(", ");
-    document.getElementById("tests").innerText = (slipData.tests || []).join(", ");
-    document.getElementById("date").innerText = slipData.date || new Date().toLocaleString();
-
-    // ✅ Generate QR Code (Top Left)
-    const qrContainer = document.getElementById("qrCode");
-    qrContainer.innerHTML = "";
-    new QRCode(qrContainer, {
-      text: JSON.stringify({
-        mrn: slipData.mrn,
-        sampleNo: slipData.sampleNo,
-        name: slipData.name,
-        age: slipData.age,
-        gender: slipData.gender
-      }),
-      width: 120,
-      height: 120
+        // ✅ QR Code
+        new QRCode(document.getElementById("qrCode"), {
+          text: JSON.stringify(patient),
+          width: 100,
+          height: 100
+        });
+      }
     });
   </script>
 </body>
