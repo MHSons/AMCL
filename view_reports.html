@@ -6,9 +6,9 @@
   <title>View Reports</title>
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
-    h2 { color:#00bcd4; text-align:center; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
-    th, td { border:1px solid #444; padding:10px; text-align:center; }
+    h2 { color:#00bcd4; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; }
+    th, td { border:1px solid #444; padding:10px; text-align:left; }
     th { background:#00bcd4; color:#fff; }
     button { background:#00bcd4; border:none; padding:6px 12px; border-radius:6px; color:#fff; cursor:pointer; }
     button:hover { background:#0097a7; }
@@ -20,8 +20,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // ✅ Correct storage key
-      let reports = JSON.parse(localStorage.getItem("allReports")) || [];
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
       const container = document.getElementById("reportTable");
 
       if (reports.length === 0) {
@@ -29,8 +28,7 @@
         return;
       }
 
-      let html = "<table><tr><th>MRN</th><th>Name</th><th>Age</th><th>Gender</th><th>Departments</th><th>Sample No</th><th>Date</th><th>Action</th></tr>";
-
+      let html = "<table><tr><th>MRN</th><th>Name</th><th>Age</th><th>Gender</th><th>Departments</th><th>Date</th><th>Action</th></tr>";
       reports.forEach(r => {
         html += `<tr>
           <td>${r.mrn}</td>
@@ -38,18 +36,15 @@
           <td>${r.age}</td>
           <td>${r.gender}</td>
           <td>${r.departments ? r.departments.join(", ") : ""}</td>
-          <td>${r.sampleNo}</td>
-          <td>${r.date || ""}</td>
+          <td>${r.date}</td>
           <td><button onclick="viewReport('${r.mrn}')">View</button></td>
         </tr>`;
       });
-
       html += "</table>";
       container.innerHTML = html;
     });
 
     function viewReport(mrn) {
-      // ✅ Pass MRN instead of ID
       window.location.href = `report.html?mrn=${mrn}`;
     }
   </script>
