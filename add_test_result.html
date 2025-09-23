@@ -3,118 +3,204 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Results - AlphaMed Clinical Laboratory</title>
+  <title>Add Test Result</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; margin: 20px; }
-    .container { width: 70%; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; }
-    h2 { text-align: center; color: #00bcd4; }
-    label { display: block; margin-top: 15px; font-weight: bold; }
-    select, input, button { width: 100%; padding: 10px; border-radius: 8px; border: none; margin-bottom: 15px; }
-    select, input { background: #2c2c2c; color: #fff; }
-    button { background: #00bcd4; color: #fff; font-weight: bold; cursor: pointer; }
-    button:hover { background: #0097a7; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #2c2c2c; }
-    th, td { padding: 8px; text-align: center; border: 1px solid #444; }
-    th { background: #00bcd4; color: #fff; }
+    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
+    h2 { color:#00bcd4; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
+    th, td { border:1px solid #444; padding:10px; text-align:center; }
+    th { background:#00bcd4; color:#fff; }
+    input { padding:6px; border-radius:4px; border:none; width:100%; }
+    button { margin-top:20px; background:#00bcd4; border:none; padding:10px 15px; border-radius:6px; color:#fff; cursor:pointer; }
+    button:hover { background:#0097a7; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Add Test Results</h2>
-
-    <label for="patientSelect">Select Patient:</label>
-    <select id="patientSelect">
-      <option value="">-- Select Patient --</option>
-    </select>
-
-    <div id="testsSection" style="display:none;">
-      <h3>Enter Test Results</h3>
-      <table id="resultsTable">
-        <thead>
-          <tr>
-            <th>Test</th>
-            <th>Parameter</th>
-            <th>Result</th>
-            <th>Unit</th>
-            <th>Normal Range</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <button id="saveResults">Save Results</button>
-    </div>
-  </div>
+  <h2>Enter Test Results</h2>
+  <div id="patientsList"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const patientSelect = document.getElementById("patientSelect");
-      const testsSection = document.getElementById("testsSection");
-      const resultsTableBody = document.querySelector("#resultsTable tbody");
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let container = document.getElementById("patientsList");
 
-      // ✅ Load from pendingTests
-      const patients = JSON.parse(localStorage.getItem("pendingTests")) || [];
+      if (patients.length === 0) {
+        container.innerHTML = "<p>No registered patients.</p>";
+        return;
+      }
 
-      patients.forEach(patient => {
-        let option = document.createElement("option");
-        option.value = patient.id;
-        option.textContent = `${patient.name} (MRN: ${patient.mrn})`;
-        patientSelect.appendChild(option);
-      });
+      patients.forEach((p, index) => {
+        let div = document.createElement("div");
+        div.innerHTML = `
+          <h3>${p.name} (MRN: ${p.mrn})</h3>
+          <table>
+            <thead>
+              <tr><th>Test</th><th>Parameter</th><th>Result</th><th>Unit</th><th>Normal Range</th></tr>
+            </thead>
+            <tbody id="tbody-${index}"></tbody>
+          </table>
+          <button onclick="saveResult(${index})">Save Report</button>
+          <hr>
+        `;
+        container.appendChild(div);
 
-      // ✅ Patient selected
-      patientSelect.addEventListener("change", function () {
-        const selectedPatient = patients.find(p => p.id == this.value);
-
-        if (selectedPatient) {
-          testsSection.style.display = "block";
-          resultsTableBody.innerHTML = "";
-
-          selectedPatient.tests.forEach(test => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${test.name}</td>
-              <td>${test.parameter || "N/A"}</td>
-              <td><input type="text" data-testid="${test.id}" placeholder="Enter result"></td>
-              <td>${test.unit || "N/A"}</td>
-              <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
-            `;
-            resultsTableBody.appendChild(row);
-          });
-        } else {
-          testsSection.style.display = "none";
-        }
-      });
-
-      // ✅ Save Results
-      document.getElementById("saveResults").addEventListener("click", function () {
-        const selectedPatient = patients.find(p => p.id == patientSelect.value);
-        if (!selectedPatient) { alert("Please select a patient!"); return; }
-
-        let results = [];
-        resultsTableBody.querySelectorAll("tr").forEach(row => {
-          const inputs = row.querySelectorAll("td");
-          results.push({
-            name: inputs[0].innerText,
-            parameter: inputs[1].innerText,
-            result: inputs[2].querySelector("input").value || "N/A",
-            unit: inputs[3].innerText,
-            normalMin: inputs[4].innerText.split("-")[0].trim(),
-            normalMax: inputs[4].innerText.split("-")[1]?.trim()
-          });
+        let tbody = document.getElementById(`tbody-${index}`);
+        p.tests.forEach(t => {
+          let row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${t.name}</td>
+            <td><input type="text" placeholder="Parameter" id="param-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Result" id="res-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Unit" id="unit-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Normal Min" id="nmin-${index}-${t.id}" style="width:45%"> -
+                <input type="text" placeholder="Normal Max" id="nmax-${index}-${t.id}" style="width:45%"></td>
+          `;
+          tbody.appendChild(row);
         });
-
-        // ✅ Save final report
-        const reportData = { ...selectedPatient, results: results };
-        localStorage.setItem("lastReport", JSON.stringify(reportData));
-
-        // ✅ Remove patient from pendingTests
-        let pending = JSON.parse(localStorage.getItem("pendingTests")) || [];
-        pending = pending.filter(p => p.id !== selectedPatient.id);
-        localStorage.setItem("pendingTests", JSON.stringify(pending));
-
-        window.location.href = "report.html";
       });
     });
+
+    function saveResult(patientIndex) {
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let p = patients[patientIndex];
+      if (!p) return;
+
+      let results = [];
+      p.tests.forEach(t => {
+        results.push({
+          name: t.name,
+          parameter: document.getElementById(`param-${patientIndex}-${t.id}`).value,
+          result: document.getElementById(`res-${patientIndex}-${t.id}`).value,
+          unit: document.getElementById(`unit-${patientIndex}-${t.id}`).value,
+          normalMin: document.getElementById(`nmin-${patientIndex}-${t.id}`).value,
+          normalMax: document.getElementById(`nmax-${patientIndex}-${t.id}`).value
+        });
+      });
+
+      let reportData = {
+        mrn: p.mrn,
+        sampleNo: p.sampleNo,
+        name: p.name,
+        age: p.age,
+        gender: p.gender,
+        departments: p.departments,
+        date: new Date().toLocaleString(),
+        results: results
+      };
+
+      // ✅ Save report to localStorage
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      reports.push(reportData);
+      localStorage.setItem("reports", JSON.stringify(reports));
+
+      // ✅ Also save lastReport (for quick access)
+      localStorage.setItem("lastReport", JSON.stringify(reportData));
+
+      alert("Report saved for " + p.name);
+    }
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Test Result</title>
+  <style>
+    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
+    h2 { color:#00bcd4; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
+    th, td { border:1px solid #444; padding:10px; text-align:center; }
+    th { background:#00bcd4; color:#fff; }
+    input { padding:6px; border-radius:4px; border:none; width:100%; }
+    button { margin-top:20px; background:#00bcd4; border:none; padding:10px 15px; border-radius:6px; color:#fff; cursor:pointer; }
+    button:hover { background:#0097a7; }
+  </style>
+</head>
+<body>
+  <h2>Enter Test Results</h2>
+  <div id="patientsList"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let container = document.getElementById("patientsList");
+
+      if (patients.length === 0) {
+        container.innerHTML = "<p>No registered patients.</p>";
+        return;
+      }
+
+      patients.forEach((p, index) => {
+        let div = document.createElement("div");
+        div.innerHTML = `
+          <h3>${p.name} (MRN: ${p.mrn})</h3>
+          <table>
+            <thead>
+              <tr><th>Test</th><th>Parameter</th><th>Result</th><th>Unit</th><th>Normal Range</th></tr>
+            </thead>
+            <tbody id="tbody-${index}"></tbody>
+          </table>
+          <button onclick="saveResult(${index})">Save Report</button>
+          <hr>
+        `;
+        container.appendChild(div);
+
+        let tbody = document.getElementById(`tbody-${index}`);
+        p.tests.forEach(t => {
+          let row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${t.name}</td>
+            <td><input type="text" placeholder="Parameter" id="param-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Result" id="res-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Unit" id="unit-${index}-${t.id}"></td>
+            <td><input type="text" placeholder="Normal Min" id="nmin-${index}-${t.id}" style="width:45%"> -
+                <input type="text" placeholder="Normal Max" id="nmax-${index}-${t.id}" style="width:45%"></td>
+          `;
+          tbody.appendChild(row);
+        });
+      });
+    });
+
+    function saveResult(patientIndex) {
+      let patients = JSON.parse(localStorage.getItem("patients")) || [];
+      let p = patients[patientIndex];
+      if (!p) return;
+
+      let results = [];
+      p.tests.forEach(t => {
+        results.push({
+          name: t.name,
+          parameter: document.getElementById(`param-${patientIndex}-${t.id}`).value,
+          result: document.getElementById(`res-${patientIndex}-${t.id}`).value,
+          unit: document.getElementById(`unit-${patientIndex}-${t.id}`).value,
+          normalMin: document.getElementById(`nmin-${patientIndex}-${t.id}`).value,
+          normalMax: document.getElementById(`nmax-${patientIndex}-${t.id}`).value
+        });
+      });
+
+      let reportData = {
+        mrn: p.mrn,
+        sampleNo: p.sampleNo,
+        name: p.name,
+        age: p.age,
+        gender: p.gender,
+        departments: p.departments,
+        date: new Date().toLocaleString(),
+        results: results
+      };
+
+      // ✅ Save report to localStorage
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      reports.push(reportData);
+      localStorage.setItem("reports", JSON.stringify(reports));
+
+      // ✅ Also save lastReport (for quick access)
+      localStorage.setItem("lastReport", JSON.stringify(reportData));
+
+      alert("Report saved for " + p.name);
+    }
   </script>
 </body>
 </html>
