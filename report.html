@@ -73,10 +73,18 @@
       const mrn = params.get("mrn");
 
       let reports = JSON.parse(localStorage.getItem("reports")) || [];
-      const reportData = reports.find(r => r.mrn === mrn);
+      let reportData = null;
+
+      if (mrn) {
+        reportData = reports.find(r => r.mrn === mrn);
+      }
+      if (!reportData) {
+        // fallback to lastReport (for compatibility)
+        reportData = JSON.parse(localStorage.getItem("lastReport"));
+      }
 
       if (!reportData) {
-        alert("Report not found for MRN: " + mrn);
+        alert("No report data found!");
         return;
       }
 
@@ -86,124 +94,7 @@
       document.getElementById("age").textContent = reportData.age || "N/A";
       document.getElementById("gender").textContent = reportData.gender || "N/A";
       document.getElementById("department").textContent = reportData.departments ? reportData.departments.join(", ") : "N/A";
-      document.getElementById("date").textContent = reportData.date || "N/A";
-
-      // ✅ Test results
-      const tbody = document.querySelector("#resultsTable tbody");
-      tbody.innerHTML = "";
-      if (reportData.results && reportData.results.length > 0) {
-        reportData.results.forEach(test => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${test.name}</td>
-            <td>${test.parameter || "N/A"}</td>
-            <td>${test.result || "N/A"}</td>
-            <td>${test.unit || "N/A"}</td>
-            <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      }
-
-      // ✅ QR Code
-      new QRCode(document.getElementById("qrCode"), {
-        text: JSON.stringify(reportData),
-        width: 90,
-        height: 90
-      });
-    });
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab Report - AlphaMed Clinical Laboratory</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
-    .report { border: 2px solid #000; padding: 20px; border-radius: 8px; position: relative; background: #fff; }
-    .report::before {
-      content: "";
-      background: url("logo.png") no-repeat center;
-      background-size: 300px;
-      opacity: 0.1;
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-    }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .lab-name { flex: 1; text-align: center; }
-    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
-    .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
-    .logo img { width: 200px; }
-    #qrCode { width: 90px; height: 90px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #000; padding: 6px; text-align: center; }
-    th { background: #003366; color: #fff; }
-    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
-  </style>
-</head>
-<body>
-  <div class="report">
-    <div class="header">
-      <div id="qrCode"></div>
-      <div class="lab-name">
-        <h2>AlphaMed Clinical Laboratory</h2>
-        <h3>Lab Report</h3>
-      </div>
-      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
-    </div>
-
-    <table>
-      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
-      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
-      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
-      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
-      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
-      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
-      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
-    </table>
-
-    <h3 style="margin-top:20px; color:#003366;">Test Results</h3>
-    <table id="resultsTable">
-      <thead>
-        <tr>
-          <th>Test</th>
-          <th>Parameter</th>
-          <th>Result</th>
-          <th>Unit</th>
-          <th>Normal Range</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-    <div class="footer">
-      AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
-    </div>
-  </div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const params = new URLSearchParams(window.location.search);
-      const mrn = params.get("mrn");
-
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
-      const reportData = reports.find(r => r.mrn === mrn);
-
-      if (!reportData) {
-        alert("Report not found for MRN: " + mrn);
-        return;
-      }
-
-      document.getElementById("mrn").textContent = reportData.mrn || "N/A";
-      document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
-      document.getElementById("name").textContent = reportData.name || "N/A";
-      document.getElementById("age").textContent = reportData.age || "N/A";
-      document.getElementById("gender").textContent = reportData.gender || "N/A";
-      document.getElementById("department").textContent = reportData.departments ? reportData.departments.join(", ") : "N/A";
-      document.getElementById("date").textContent = reportData.date || "N/A";
+      document.getElementById("date").textContent = reportData.date || new Date().toLocaleString();
 
       // ✅ Test results
       const tbody = document.querySelector("#resultsTable tbody");
