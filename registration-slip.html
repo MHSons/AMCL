@@ -66,8 +66,8 @@
     }
 
     .qr-section canvas {
-      width: 200px !important;
-      height: 200px !important;
+      width: 120px !important;
+      height: 120px !important;
     }
 
     table {
@@ -139,11 +139,11 @@
         document.getElementById("tests").textContent = patient.tests ? patient.tests.map(t => t.name).join(", ") : "N/A";
         document.getElementById("date").textContent = new Date().toLocaleString();
 
-        // ✅ QR Code
+        // ✅ QR Code (small size)
         new QRCode(document.getElementById("qrCode"), {
           text: JSON.stringify(patient),
-          width: 200,
-          height: 200
+          width: 120,
+          height: 120
         });
       }
     });
