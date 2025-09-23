@@ -6,7 +6,7 @@
   <title>Add Test Results - AlphaMed Clinical Laboratory</title>
   <style>
     body { font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; margin: 20px; }
-    .container { width: 70%; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+    .container { width: 70%; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; }
     h2 { text-align: center; color: #00bcd4; }
     label { display: block; margin-top: 15px; font-weight: bold; }
     select, input, button { width: 100%; padding: 10px; border-radius: 8px; border: none; margin-bottom: 15px; }
@@ -51,8 +51,8 @@
       const testsSection = document.getElementById("testsSection");
       const resultsTableBody = document.querySelector("#resultsTable tbody");
 
-      // ✅ Load patients
-      const patients = JSON.parse(localStorage.getItem("patients")) || [];
+      // ✅ Load from pendingTests
+      const patients = JSON.parse(localStorage.getItem("pendingTests")) || [];
 
       patients.forEach(patient => {
         let option = document.createElement("option");
@@ -103,16 +103,15 @@
           });
         });
 
-        // ✅ Save report
+        // ✅ Save final report
         const reportData = { ...selectedPatient, results: results };
         localStorage.setItem("lastReport", JSON.stringify(reportData));
 
-        // ✅ Update patient list (prevent disappearing)
-        let allPatients = JSON.parse(localStorage.getItem("patients")) || [];
-        allPatients = allPatients.map(p => p.id === selectedPatient.id ? reportData : p);
-        localStorage.setItem("patients", JSON.stringify(allPatients));
+        // ✅ Remove patient from pendingTests
+        let pending = JSON.parse(localStorage.getItem("pendingTests")) || [];
+        pending = pending.filter(p => p.id !== selectedPatient.id);
+        localStorage.setItem("pendingTests", JSON.stringify(pending));
 
-        alert("Results saved ✅");
         window.location.href = "report.html";
       });
     });
