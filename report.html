@@ -79,12 +79,11 @@
         reportData = reports.find(r => r.mrn === mrn);
       }
       if (!reportData) {
-        // fallback to lastReport (for compatibility)
         reportData = JSON.parse(localStorage.getItem("lastReport"));
       }
 
       if (!reportData) {
-        alert("No report data found!");
+        alert("No report found!");
         return;
       }
 
