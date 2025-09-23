@@ -69,15 +69,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const reportData = JSON.parse(localStorage.getItem("lastReport"));
+      const urlParams = new URLSearchParams(window.location.search);
+      const mrn = urlParams.get("mrn"); // URL se MRN lo
+
+      const allReports = JSON.parse(localStorage.getItem("allReports")) || [];
+      const reportData = allReports.find(r => r.mrn === mrn);
+
       if (reportData) {
         document.getElementById("mrn").textContent = reportData.mrn || "N/A";
         document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
         document.getElementById("name").textContent = reportData.name || "N/A";
         document.getElementById("age").textContent = reportData.age || "N/A";
         document.getElementById("gender").textContent = reportData.gender || "N/A";
-        document.getElementById("department").textContent = reportData.departments && reportData.departments.length > 0 ? reportData.departments.join(", ") : "N/A";
-        document.getElementById("date").textContent = new Date().toLocaleString();
+        document.getElementById("department").textContent = reportData.departments?.join(", ") || "N/A";
+        document.getElementById("date").textContent = reportData.date || new Date().toLocaleString();
 
         // ✅ Fill test results
         const tbody = document.querySelector("#resultsTable tbody");
@@ -98,7 +103,11 @@
 
         // ✅ QR Code
         new QRCode(document.getElementById("qrCode"), {
-          text: JSON.stringify(reportData),
+          text: JSON.stringify({
+            mrn: reportData.mrn,
+            name: reportData.name,
+            sampleNo: reportData.sampleNo
+          }),
           width: 120,
           height: 120
         });
