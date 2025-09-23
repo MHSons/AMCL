@@ -5,31 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Test Results - AlphaMed Clinical Laboratory</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: #e0e0e0;
-      margin: 20px;
-    }
-    .container {
-      width: 70%;
-      margin: auto;
-      background: #1e1e1e;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    }
+    body { font-family: Arial, sans-serif; background: #121212; color: #e0e0e0; margin: 20px; }
+    .container { width: 70%; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
     h2 { text-align: center; color: #00bcd4; }
     label { display: block; margin-top: 15px; font-weight: bold; }
-    select, input, button {
-      width: 100%; padding: 10px; border-radius: 8px; border: none; margin-bottom: 15px;
-    }
+    select, input, button { width: 100%; padding: 10px; border-radius: 8px; border: none; margin-bottom: 15px; }
     select, input { background: #2c2c2c; color: #fff; }
     button { background: #00bcd4; color: #fff; font-weight: bold; cursor: pointer; }
     button:hover { background: #0097a7; }
-    table {
-      width: 100%; border-collapse: collapse; margin-top: 20px; background: #2c2c2c;
-    }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #2c2c2c; }
     th, td { padding: 8px; text-align: center; border: 1px solid #444; }
     th { background: #00bcd4; color: #fff; }
   </style>
@@ -119,9 +103,14 @@
           });
         });
 
-        // Save report
+        // ✅ Save report
         const reportData = { ...selectedPatient, results: results };
         localStorage.setItem("lastReport", JSON.stringify(reportData));
+
+        // ✅ Update patient list (prevent disappearing)
+        let allPatients = JSON.parse(localStorage.getItem("patients")) || [];
+        allPatients = allPatients.map(p => p.id === selectedPatient.id ? reportData : p);
+        localStorage.setItem("patients", JSON.stringify(allPatients));
 
         alert("Results saved ✅");
         window.location.href = "report.html";
