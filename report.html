@@ -4,126 +4,108 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab Report - AlphaMed Clinical Laboratory</title>
-  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
       background: #fff;
+      margin: 20px;
+      color: #000;
     }
-    .report-container {
+
+    .report {
       border: 2px solid #000;
       padding: 20px;
       border-radius: 8px;
-      position: relative;
-      background: #fff;
     }
-    /* ✅ Watermark */
-    .watermark {
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.08;
-      font-size: 100px;
-      font-weight: bold;
-      color: #000;
-      white-space: nowrap;
-      pointer-events: none;
-    }
+
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 20px;
     }
-    .header .qr {
-      width: 160px;
-    }
-    .header .logo {
-      width: 200px; /* ✅ double size */
-    }
+
     .lab-name {
+      flex: 1;
       text-align: center;
-      margin: 15px 0;
     }
-    .lab-name h1 {
+
+    .lab-name h2 {
       margin: 0;
-      font-size: 28px;
-      color: #0056b3;
+      font-size: 24px;
+      color: #003366;
     }
-    .lab-name p {
+
+    .lab-name h3 {
       margin: 0;
-      font-size: 14px;
-      color: #444;
+      font-size: 18px;
+      color: #0066cc;
     }
+
+    .logo img {
+      width: 200px; /* ✅ Double size */
+    }
+
+    .qr-section canvas {
+      width: 200px !important;
+      height: 200px !important;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 10px;
     }
-    table, th, td {
-      border: 1px solid #000;
-    }
+
     th, td {
-      padding: 8px;
+      border: 1px solid #000;
+      padding: 6px;
       text-align: center;
     }
+
     th {
-      background: #1976d2;
-      color: white;
+      background: #003366;
+      color: #fff;
     }
+
     .footer {
       text-align: center;
       margin-top: 15px;
-      font-size: 13px;
+      font-size: 12px;
       color: gray;
-    }
-    .print-btn {
-      margin-top: 15px;
-      display: block;
-      text-align: right;
-    }
-    .print-btn button {
-      padding: 8px 15px;
-      background: #1976d2;
-      border: none;
-      color: #fff;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .print-btn button:hover {
-      background: #125a9c;
     }
   </style>
 </head>
 <body>
-  <div class="report-container">
-    <div class="watermark">AlphaMed Clinical Laboratory</div>
-
+  <div class="report">
     <!-- Header -->
     <div class="header">
-      <div class="qr">
-        <div id="qrcode"></div>
+      <div class="qr-section">
+        <div id="qrCode"></div>
+      </div>
+      <div class="lab-name">
+        <h2>AlphaMed Clinical Laboratory</h2>
+        <h3>Lab Report</h3>
       </div>
       <div class="logo">
-        <img src="logo.png" alt="Lab Logo" style="width:100%;">
+        <img src="logo.png" alt="Lab Logo">
       </div>
-    </div>
-
-    <!-- Lab Name -->
-    <div class="lab-name">
-      <h1>AlphaMed Clinical Laboratory</h1>
-      <p>Quality Assurance Through Advanced Technology</p>
     </div>
 
     <!-- Patient Info -->
-    <p><b>Name:</b> <span id="pname"></span></p>
-    <p><b>Age:</b> <span id="page"></span> &nbsp;&nbsp; <b>Gender:</b> <span id="pgender"></span></p>
-    <p><b>Department(s):</b> <span id="pdepartment"></span></p>
-    <p><b>Date:</b> <span id="pdate"></span></p>
+    <table>
+      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
+      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
+      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
+      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
+      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
+      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
+      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
+    </table>
 
     <!-- Test Results -->
-    <table>
+    <h3 style="margin-top:20px; color:#003366;">Test Results</h3>
+    <table id="resultsTable">
       <thead>
         <tr>
           <th>Test</th>
@@ -133,60 +115,62 @@
           <th>Normal Range</th>
         </tr>
       </thead>
-      <tbody id="resultsTable"></tbody>
+      <tbody>
+        <!-- Test rows will be added dynamically -->
+      </tbody>
     </table>
 
+    <!-- Footer -->
     <div class="footer">
       AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
     </div>
-
-    <div class="print-btn">
-      <button onclick="window.print()">🖨 Print Report</button>
-    </div>
   </div>
 
-  <!-- QR Code Generator -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+  <!-- QR Code Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
-    // ✅ Get patient ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const patientId = urlParams.get("id");
+    document.addEventListener("DOMContentLoaded", function () {
+      const reportData = JSON.parse(localStorage.getItem("lastReport"));
 
-    // ✅ Fetch patients from localStorage
-    const patients = JSON.parse(localStorage.getItem("patients")) || [];
-    const patient = patients.find(p => p.id == patientId);
+      if (reportData) {
+        document.getElementById("mrn").textContent = reportData.mrn || "N/A";
+        document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
+        document.getElementById("name").textContent = reportData.name || "N/A";
+        document.getElementById("age").textContent = reportData.age || "N/A";
+        document.getElementById("gender").textContent = reportData.gender || "N/A";
+        document.getElementById("department").textContent = reportData.departments ? reportData.departments.join(", ") : "N/A";
+        document.getElementById("date").textContent = new Date().toLocaleString();
 
-    if (patient) {
-      document.getElementById("pname").textContent = patient.name;
-      document.getElementById("page").textContent = patient.age;
-      document.getElementById("pgender").textContent = patient.gender;
-      document.getElementById("pdepartment").textContent = patient.departments ? patient.departments.join(", ") : "N/A";
-      document.getElementById("pdate").textContent = new Date(patient.date).toLocaleString();
+        // ✅ Test Results Table
+        const tbody = document.querySelector("#resultsTable tbody");
+        tbody.innerHTML = "";
 
-      // ✅ Generate QR Code
-      new QRCode(document.getElementById("qrcode"), {
-        text: `Patient: ${patient.name}, MRN: ${patient.mrn}`,
-        width: 140,
-        height: 140
-      });
+        if (reportData.results && reportData.results.length > 0) {
+          reportData.results.forEach(test => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${test.name}</td>
+              <td>${test.parameter || "N/A"}</td>
+              <td>${test.result || "N/A"}</td>
+              <td>${test.unit || "N/A"}</td>
+              <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        } else {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="5">No test results found</td>`;
+          tbody.appendChild(row);
+        }
 
-      // ✅ Show Test Results with normal range
-      const resultsTable = document.getElementById("resultsTable");
-      patient.tests.forEach(test => {
-        let row = `
-          <tr>
-            <td>${test.name}</td>
-            <td>${test.parameter || "-"}</td>
-            <td>${test.result || "-"}</td>
-            <td>${test.unit || "-"}</td>
-            <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
-          </tr>
-        `;
-        resultsTable.innerHTML += row;
-      });
-    } else {
-      document.querySelector(".report-container").innerHTML = "<h2>No report found!</h2>";
-    }
+        // ✅ QR Code
+        new QRCode(document.getElementById("qrCode"), {
+          text: JSON.stringify(reportData),
+          width: 200,
+          height: 200
+        });
+      }
+    });
   </script>
 </body>
 </html>
