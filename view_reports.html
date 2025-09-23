@@ -7,10 +7,17 @@
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
     h2 { color:#00bcd4; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; }
+    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
     th, td { border:1px solid #444; padding:10px; text-align:left; }
     th { background:#00bcd4; color:#fff; }
-    button { background:#00bcd4; border:none; padding:6px 12px; border-radius:6px; color:#fff; cursor:pointer; }
+    button {
+      background:#00bcd4;
+      border:none;
+      padding:6px 12px;
+      border-radius:6px;
+      color:#fff;
+      cursor:pointer;
+    }
     button:hover { background:#0097a7; }
   </style>
 </head>
@@ -28,18 +35,33 @@
         return;
       }
 
-      let html = "<table><tr><th>MRN</th><th>Name</th><th>Age</th><th>Gender</th><th>Departments</th><th>Date</th><th>Action</th></tr>";
+      let html = `
+        <table>
+          <tr>
+            <th>MRN</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Department(s)</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+      `;
+
       reports.forEach(r => {
-        html += `<tr>
-          <td>${r.mrn}</td>
-          <td>${r.name}</td>
-          <td>${r.age}</td>
-          <td>${r.gender}</td>
-          <td>${r.departments ? r.departments.join(", ") : ""}</td>
-          <td>${r.date}</td>
-          <td><button onclick="viewReport('${r.mrn}')">View</button></td>
-        </tr>`;
+        html += `
+          <tr>
+            <td>${r.mrn}</td>
+            <td>${r.name}</td>
+            <td>${r.age}</td>
+            <td>${r.gender}</td>
+            <td>${r.departments && r.departments.length ? r.departments.join(", ") : "N/A"}</td>
+            <td>${new Date(r.date || Date.now()).toLocaleString()}</td>
+            <td><button onclick="viewReport('${r.mrn}')">View Report</button></td>
+          </tr>
+        `;
       });
+
       html += "</table>";
       container.innerHTML = html;
     });
