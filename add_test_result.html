@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Test Results</title>
   <style>
     body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
@@ -13,9 +12,9 @@
     }
     .patient-card h3 { margin:0 0 10px; color:#00e5ff; }
     table { width:100%; border-collapse:collapse; margin-top:10px; }
-    th, td { border:1px solid #444; padding:8px; text-align:left; }
+    th, td { border:1px solid #444; padding:8px; text-align:left; font-size:14px; }
     th { background:#00bcd4; color:#fff; }
-    input { width:95%; padding:5px; border-radius:5px; border:none; background:#2c2c2c; color:#fff; }
+    input { width:100%; padding:5px; border-radius:5px; border:none; background:#2c2c2c; color:#fff; }
     button {
       margin-top:10px; padding:8px 15px; background:#00bcd4; border:none; border-radius:6px;
       cursor:pointer; color:#fff; font-weight:bold;
@@ -27,12 +26,11 @@
   <h2>Add Test Results</h2>
   <div id="patientList"></div>
 
+  <script src="tests.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       let patients = JSON.parse(localStorage.getItem("patients")) || [];
       const container = document.getElementById("patientList");
-
-      console.log("Loaded Patients:", patients);
 
       if (!patients || patients.length === 0) {
         container.innerHTML = "<p style='color:red;'>No active patients found!</p>";
@@ -40,25 +38,31 @@
       }
 
       patients.forEach(p => {
-        // ✅ fix: department string ya array dono handle
-        let deptText = Array.isArray(p.departments || p.department)
-          ? (p.departments || p.department).join(", ")
-          : (p.departments || p.department || "N/A");
-
         let html = `<div class="patient-card">
           <h3>${p.name} (${p.age} yrs, ${p.gender})</h3>
-          <p><b>MRN:</b> ${p.mrn || "N/A"}</p>
-          <p><b>Departments:</b> ${deptText}</p>
+          <p><b>MRN:</b> ${p.mrn}</p>
+          <p><b>Departments:</b> ${(p.departments || []).join(", ")}</p>
           <table>
-            <tr><th>Test</th><th>Result</th></tr>
+            <tr><th>Test</th><th>Parameter</th><th>Normal Range</th><th>Unit</th><th>Result</th></tr>
         `;
 
         (p.tests || []).forEach(testName => {
+          let testObj;
+          departmentsArray.forEach(dept => {
+            let t = dept.tests.find(x => x.name === testName);
+            if (t) testObj = t;
+          });
+
+          let normalRange = testObj ? `${testObj.normalMin} - ${testObj.normalMax}` : "-";
+          let parameter = testObj ? testObj.parameter : "-";
+          let unit = testObj ? testObj.unit : "-";
+
           html += `<tr>
             <td>${testName}</td>
-            <td>
-              <input type="text" id="result-${p.id}-${testName}" placeholder="Enter result">
-            </td>
+            <td>${parameter}</td>
+            <td>${normalRange}</td>
+            <td>${unit}</td>
+            <td><input type="text" id="result-${p.id}-${testName}" placeholder="Enter result"></td>
           </tr>`;
         });
 
