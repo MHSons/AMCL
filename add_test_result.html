@@ -51,7 +51,7 @@
       `;
 
       patients.forEach((p, index) => {
-        const tests = p.tests || []; // ✅ safe handling
+        const tests = p.tests || []; 
         html += `
           <tr>
             <td>${p.mrn}</td>
@@ -78,7 +78,7 @@
                       <td><input type="text" id="result-${index}-${i}" placeholder="Result"></td>
                       <td><input type="text" id="unit-${index}-${i}" placeholder="Unit"></td>
                       <td>
-                        <input type="text" id="min-${index}-${i}" placeholder="Min" style="width:45%;"> -
+                        <input type="text" id="min-${index}-${i}" placeholder="Min" style="width:45%;"> - 
                         <input type="text" id="max-${index}-${i}" placeholder="Max" style="width:45%;">
                       </td>
                     </tr>
@@ -136,7 +136,8 @@
       localStorage.setItem("patients", JSON.stringify(patients));
 
       alert("Test results saved successfully!");
-      location.reload();
+      // ✅ Directly open report for this MRN
+      window.location.href = "report.html?mrn=" + p.mrn;
     }
   </script>
 </body>
