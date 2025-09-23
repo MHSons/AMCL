@@ -112,7 +112,7 @@
         document.getElementById("age").textContent = reportData.age || "N/A";
         document.getElementById("gender").textContent = reportData.gender || "N/A";
         document.getElementById("department").textContent = reportData.departments && reportData.departments.length > 0 ? reportData.departments.join(", ") : "N/A";
-        document.getElementById("date").textContent = new Date().toLocaleString();
+        document.getElementById("date").textContent = reportData.date || new Date().toLocaleString();
 
         // ✅ Fill test results
         const tbody = document.querySelector("#resultsTable tbody");
@@ -121,19 +121,19 @@
           reportData.results.forEach(test => {
             const row = document.createElement("tr");
             row.innerHTML = `
-              <td>${test.name}</td>
+              <td>${test.name || "N/A"}</td>
               <td>${test.parameter || "N/A"}</td>
               <td>${test.result || "N/A"}</td>
               <td>${test.unit || "N/A"}</td>
-              <td>${test.normalMin || ""} - ${test.normalMax || ""}</td>
+              <td>${(test.normalMin || "")} ${test.normalMin || test.normalMax ? "-" : ""} ${(test.normalMax || "")}</td>
             `;
             tbody.appendChild(row);
           });
         }
 
-        // ✅ QR Code (smaller)
+        // ✅ QR Code generate
         new QRCode(document.getElementById("qrCode"), {
-          text: JSON.stringify(reportData),
+          text: "MRN: " + reportData.mrn + " | Name: " + reportData.name,
           width: 90,
           height: 90
         });
