@@ -1,120 +1,159 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register Patient - Lab Management System</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <style>
+    /* ===== Dark Theme + Layout ===== */
     body {
       background-color: #121212;
       color: #e0e0e0;
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
     }
+
     .container {
-      width: 60%;
-      margin: auto;
-      margin-top: 50px;
-      padding: 20px;
+      width: 90%;
+      max-width: 700px;
+      margin: 50px auto;
+      padding: 25px 30px;
       background: #1e1e1e;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     }
+
     h2 {
       text-align: center;
       color: #00bcd4;
+      margin-bottom: 25px;
     }
+
     label {
       display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      font-weight: bold;
+      margin-top: 12px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #ccc;
     }
-    input, select, button {
+
+    input,
+    select {
       width: 100%;
       padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 15px;
-    }
-    input, select {
+      border-radius: 6px;
+      border: 1px solid #444;
       background: #2c2c2c;
       color: #fff;
+      font-size: 15px;
+      box-sizing: border-box;
     }
+
+    input:focus,
+    select:focus {
+      border-color: #00bcd4;
+      outline: none;
+    }
+
     button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
       background: #00bcd4;
       color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.25s ease;
     }
+
     button:hover {
       background: #0097a7;
+    }
+
+    small {
+      display: block;
+      margin-top: 6px;
+      color: #aaa;
+      font-size: 0.85em;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        width: 95%;
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Patient Registration</h2>
+
     <form id="registerForm">
       <label for="patientName">Patient Name:</label>
-      <input type="text" id="patientName" name="patientName" required>
+      <input type="text" id="patientName" name="patientName" placeholder="Enter full name" required />
 
       <label for="age">Age:</label>
-      <input type="number" id="age" name="age" required>
+      <input type="number" id="age" name="age" min="0" max="120" required />
 
       <label for="gender">Gender:</label>
       <select id="gender" name="gender" required>
         <option value="">-- Select Gender --</option>
         <option value="Male">Male</option>
         <option value="Female">Female</option>
+        <option value="Other">Other</option>
       </select>
 
       <label for="sampleNo">Sample Number:</label>
-      <input type="text" id="sampleNo" name="sampleNo" required>
+      <input type="text" id="sampleNo" name="sampleNo" placeholder="e.g. S-12345" required />
 
       <label for="department">Select Department(s):</label>
       <select id="department" name="department" multiple required>
         <option value="">-- Select Department --</option>
       </select>
+      <small>Hold CTRL (Windows) or CMD (Mac) to select multiple.</small>
 
       <label for="test">Select Test(s):</label>
       <select id="test" name="test" multiple required>
         <option value="">-- Select Test --</option>
       </select>
 
-      <button type="submit">Register</button>
+      <button type="submit">Register Patient</button>
     </form>
   </div>
 
-  <!-- ✅ Scripts load order important -->
+  <!-- ✅ Scripts -->
   <script src="tests.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", () => {
       const deptDropdown = document.getElementById("department");
       const testDropdown = document.getElementById("test");
       const registerForm = document.getElementById("registerForm");
 
       // ✅ Load departments dynamically
       if (typeof departmentsArray !== "undefined" && Array.isArray(departmentsArray)) {
-        departmentsArray.forEach(dept => {
-          let option = document.createElement("option");
+        departmentsArray.forEach((dept) => {
+          const option = document.createElement("option");
           option.value = dept.id;
           option.textContent = dept.name;
           deptDropdown.appendChild(option);
         });
       }
 
-      // ✅ On department change → load tests
-      deptDropdown.addEventListener("change", function () {
-        testDropdown.innerHTML = "";
-        const selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
+      // ✅ Department change → show related tests
+      deptDropdown.addEventListener("change", () => {
+        testDropdown.innerHTML = '<option value="">-- Select Test --</option>';
+        const selectedDepts = Array.from(deptDropdown.selectedOptions).map((opt) => opt.value);
 
-        selectedDepts.forEach(deptId => {
-          let selectedDept = departmentsArray.find(d => d.id === deptId);
-          if (selectedDept) {
-            selectedDept.tests.forEach(test => {
-              let option = document.createElement("option");
+        selectedDepts.forEach((deptId) => {
+          const dept = departmentsArray.find((d) => d.id === deptId);
+          if (dept) {
+            dept.tests.forEach((test) => {
+              const option = document.createElement("option");
               option.value = test.id;
               option.textContent = test.name;
               testDropdown.appendChild(option);
@@ -123,34 +162,32 @@
         });
       });
 
-      // ✅ On form submit → save patient + open slip
-      registerForm.addEventListener("submit", function (e) {
+      // ✅ Form submit → save + redirect
+      registerForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        // Auto-generate MRN
         const mrn = "MRN-" + Date.now();
-
         const patientData = {
-          mrn: mrn,
-          name: document.getElementById("patientName").value,
+          mrn,
+          name: document.getElementById("patientName").value.trim(),
           age: document.getElementById("age").value,
           gender: document.getElementById("gender").value,
-          sampleNo: document.getElementById("sampleNo").value,
-          departments: Array.from(deptDropdown.selectedOptions).map(opt => opt.text),
-          tests: Array.from(testDropdown.selectedOptions).map(opt => opt.text),
+          sampleNo: document.getElementById("sampleNo").value.trim(),
+          departments: Array.from(deptDropdown.selectedOptions).map((opt) => opt.text),
+          tests: Array.from(testDropdown.selectedOptions).map((opt) => opt.text),
         };
 
-        // Save in localStorage
-        let patients = JSON.parse(localStorage.getItem("patients")) || [];
+        if (!patientData.name || !patientData.age || !patientData.gender || !patientData.sampleNo || !patientData.tests.length) {
+          alert("⚠️ Please fill in all required fields and select tests.");
+          return;
+        }
+
+        const patients = JSON.parse(localStorage.getItem("patients")) || [];
         patients.push(patientData);
         localStorage.setItem("patients", JSON.stringify(patients));
-
-        // Save last registered patient for slip
         localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
 
-        alert("Patient Registered Successfully! MRN: " + mrn);
-
-        // ✅ Open registration slip automatically
+        alert(`✅ Patient Registered Successfully!\nMRN: ${mrn}`);
         window.location.href = "registration-slip.html";
       });
     });
