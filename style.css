@@ -1,12 +1,23 @@
-/* Dark theme base */
+/* ==============================
+   Base & Layout
+============================== */
+* {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   background: #121212;
   color: #e0e0e0;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Watermark logo in background */
+/* Watermark logo background */
 body::before {
   content: "";
   position: fixed;
@@ -15,37 +26,69 @@ body::before {
   width: 400px;
   height: 400px;
   background: url('logo.png') no-repeat center/contain;
-  opacity: 0.05;   /* watermark faint */
+  opacity: 0.05;
   transform: translate(-50%, -50%);
   z-index: -1;
 }
 
+/* ==============================
+   Header
+============================== */
 .header {
   background: #1f1f1f;
   color: #00bcd4;
-  padding: 18px 24px;
+  padding: 20px 24px;
+  text-align: center;
+  border-bottom: 2px solid #00bcd4;
+}
+.header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+.header p {
+  margin: 4px 0 0;
+  font-size: 1rem;
+  color: #aaa;
 }
 
+/* ==============================
+   Container & Sections
+============================== */
 .container {
   max-width: 1000px;
+  width: 90%;
   margin: 18px auto;
-  padding: 18px;
+  padding: 20px;
   background: #1e1e1e;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.8);
 }
 
+/* ==============================
+   Typography
+============================== */
 h1, h2, h3, h4 {
   color: #00e5ff;
   margin-top: 0;
 }
+p {
+  color: #ddd;
+}
+ul li {
+  margin: 6px 0;
+}
 
+/* ==============================
+   Forms
+============================== */
 .form-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 .form-row .col {
   flex: 1;
+  min-width: 200px;
 }
 
 label {
@@ -57,46 +100,75 @@ label {
 
 input, select, textarea {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   background: #2c2c2c;
   border: 1px solid #444;
-  border-radius: 4px;
+  border-radius: 6px;
   color: #e0e0e0;
+  transition: border 0.2s, box-shadow 0.2s;
 }
 
+input:focus, select:focus, textarea:focus {
+  border-color: #00bcd4;
+  outline: none;
+  box-shadow: 0 0 6px #00bcd4;
+}
+
+/* ==============================
+   Buttons
+============================== */
 button {
   background: #00bcd4;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s, transform 0.2s;
+  font-weight: bold;
 }
 button:hover {
   background: #0097a7;
+  transform: translateY(-2px);
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
+/* ==============================
+   Navigation
+============================== */
 .nav {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 .nav a {
   color: #00e5ff;
   text-decoration: none;
   font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background 0.3s, color 0.3s;
 }
 .nav a:hover {
-  text-decoration: underline;
+  background: #00bcd4;
+  color: #fff;
 }
 
+/* ==============================
+   Lists & Items
+============================== */
 #tests-list {
   border: 1px solid #333;
   padding: 10px;
   max-height: 280px;
-  overflow: auto;
+  overflow-y: auto;
   background: #2c2c2c;
+  border-radius: 6px;
 }
 .test-item {
   display: flex;
@@ -110,7 +182,9 @@ button:hover {
   color: #aaa;
 }
 
-/* Report header with logo + QR code */
+/* ==============================
+   Report Header
+============================== */
 .report-header {
   position: relative;
   margin-bottom: 40px;
@@ -126,9 +200,40 @@ button:hover {
   top: 15px;
   left: 20px;
 }
+
+/* ==============================
+   Footer
+============================== */
 .footer {
-  margin-top: 16px;
+  margin-top: auto;
   font-size: 0.9em;
   color: #888;
   text-align: center;
+  padding: 20px;
+  border-top: 1px solid #333;
+}
+
+/* ==============================
+   Responsive Design
+============================== */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+  .nav a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+  .container {
+    padding: 16px;
+  }
+  .header h1 {
+    font-size: 1.5rem;
+  }
+  .header p {
+    font-size: 0.9rem;
+  }
 }
