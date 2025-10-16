@@ -2,46 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login - AlphaMed Clinical Laboratory</title>
+  <title>Login - Lab System</title>
   <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand"><img src="logo.png" alt="logo" style="height:48px; vertical-align:middle"> <strong>AlphaMed Clinical Laboratory</strong></div>
+    <nav class="topnav">
+      <a href="gallery.html">Gallery</a>
+      <a href="careers.html">Careers</a>
+      <a href="settings.html">Settings</a>
+      <a href="mailto:info@example.com">info@example.com</a>
+    </nav>
+  </header>
 
-  <div class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Secure Access Portal</p>
-  </div>
-
-  <div class="container" style="max-width:400px; text-align:center;">
-    <h2>Login</h2>
-    <form onsubmit="return loginUser(event)">
-      <label for="username">Username</label>
-      <input type="text" id="username" required>
-
-      <label for="password">Password</label>
-      <input type="password" id="password" required>
-
-      <button type="submit" style="margin-top:15px;">Login</button>
+  <main class="container" style="max-width:420px; margin: 40px auto;">
+    <h2>Secure Login</h2>
+    <form id="loginForm">
+      <label>Username<br><input id="username" required></label><br><br>
+      <label>Password<br><input id="password" type="password" required></label><br><br>
+      <label>Role<br>
+        <select id="role">
+          <option value="reception">Reception</option>
+          <option value="technician">Technician</option>
+          <option value="admin">Admin</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </label><br><br>
+      <button type="submit">Log in</button>
     </form>
-    <p class="small" style="margin-top:12px;">
-      Please login with your assigned credentials.
-    </p>
-  </div>
 
-  <script>
-    function loginUser(event){
-      event.preventDefault();
-      const user = document.getElementById("username").value.trim();
-      const pass = document.getElementById("password").value.trim();
+    <p style="margin-top:18px; font-size:0.95em">Need help? WhatsApp us: <a id="waLink" href="#" target="_blank">0301-8067880</a></p>
+  </main>
 
-      // Default demo admin (replace with DB/backend later)
-      if(user === "admin" && pass === "1234"){
-        window.location.href = "index.html";
-      } else {
-        alert("Invalid username or password!");
-      }
-    }
-  </script>
+  <a id="waFloat" href="#" target="_blank" aria-label="WhatsApp" title="WhatsApp">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" style="width:56px;height:56px;border-radius:50%">
+  </a>
 
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,23 +1,12 @@
-/* ==============================
-   Base & Layout
-============================== */
-* {
-  box-sizing: border-box;
-  scroll-behavior: smooth;
-}
-
+/* Dark theme base */
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   background: #121212;
   color: #e0e0e0;
-  line-height: 1.6;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
-/* Watermark logo background */
+/* Watermark logo in background */
 body::before {
   content: "";
   position: fixed;
@@ -26,69 +15,37 @@ body::before {
   width: 400px;
   height: 400px;
   background: url('logo.png') no-repeat center/contain;
-  opacity: 0.05;
+  opacity: 0.05;   /* watermark faint */
   transform: translate(-50%, -50%);
   z-index: -1;
 }
 
-/* ==============================
-   Header
-============================== */
 .header {
   background: #1f1f1f;
   color: #00bcd4;
-  padding: 20px 24px;
-  text-align: center;
-  border-bottom: 2px solid #00bcd4;
-}
-.header h1 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-.header p {
-  margin: 4px 0 0;
-  font-size: 1rem;
-  color: #aaa;
+  padding: 18px 24px;
 }
 
-/* ==============================
-   Container & Sections
-============================== */
 .container {
   max-width: 1000px;
-  width: 90%;
   margin: 18px auto;
-  padding: 20px;
+  padding: 18px;
   background: #1e1e1e;
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.8);
 }
 
-/* ==============================
-   Typography
-============================== */
 h1, h2, h3, h4 {
   color: #00e5ff;
   margin-top: 0;
 }
-p {
-  color: #ddd;
-}
-ul li {
-  margin: 6px 0;
-}
 
-/* ==============================
-   Forms
-============================== */
 .form-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
 }
 .form-row .col {
   flex: 1;
-  min-width: 200px;
 }
 
 label {
@@ -100,75 +57,46 @@ label {
 
 input, select, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   background: #2c2c2c;
   border: 1px solid #444;
-  border-radius: 6px;
+  border-radius: 4px;
   color: #e0e0e0;
-  transition: border 0.2s, box-shadow 0.2s;
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #00bcd4;
-  outline: none;
-  box-shadow: 0 0 6px #00bcd4;
-}
-
-/* ==============================
-   Buttons
-============================== */
 button {
   background: #00bcd4;
-  color: #fff;
+  color: white;
   border: none;
-  padding: 10px 16px;
+  padding: 10px 14px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  font-weight: bold;
+  transition: background 0.2s;
 }
 button:hover {
   background: #0097a7;
-  transform: translateY(-2px);
-}
-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
-/* ==============================
-   Navigation
-============================== */
 .nav {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 .nav a {
   color: #00e5ff;
   text-decoration: none;
   font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background 0.3s, color 0.3s;
 }
 .nav a:hover {
-  background: #00bcd4;
-  color: #fff;
+  text-decoration: underline;
 }
 
-/* ==============================
-   Lists & Items
-============================== */
 #tests-list {
   border: 1px solid #333;
   padding: 10px;
   max-height: 280px;
-  overflow-y: auto;
+  overflow: auto;
   background: #2c2c2c;
-  border-radius: 6px;
 }
 .test-item {
   display: flex;
@@ -182,9 +110,7 @@ button:disabled {
   color: #aaa;
 }
 
-/* ==============================
-   Report Header
-============================== */
+/* Report header with logo + QR code */
 .report-header {
   position: relative;
   margin-bottom: 40px;
@@ -200,40 +126,9 @@ button:disabled {
   top: 15px;
   left: 20px;
 }
-
-/* ==============================
-   Footer
-============================== */
 .footer {
-  margin-top: auto;
+  margin-top: 16px;
   font-size: 0.9em;
   color: #888;
   text-align: center;
-  padding: 20px;
-  border-top: 1px solid #333;
-}
-
-/* ==============================
-   Responsive Design
-============================== */
-@media (max-width: 768px) {
-  .nav {
-    flex-direction: column;
-    align-items: center;
-  }
-  .nav a {
-    display: block;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-  }
-  .container {
-    padding: 16px;
-  }
-  .header h1 {
-    font-size: 1.5rem;
-  }
-  .header p {
-    font-size: 0.9rem;
-  }
 }

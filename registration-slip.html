@@ -5,92 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Slip - AlphaMed Clinical Laboratory</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #fff;
-      margin: 20px;
-      color: #000;
-      position: relative;
-    }
-
-    /* 🔹 Background watermark logo */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 600px;
-      height: 600px;
-      background: url('logo.png') no-repeat center/contain;
-      opacity: 0.05;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-    }
-
+    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
     .slip {
       border: 2px solid #000;
       padding: 20px;
       border-radius: 8px;
-      background: rgba(255,255,255,0.95);
       position: relative;
+      background: #fff;
     }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
+    .slip::before {
+      content: "AlphaMed Clinical Laboratory";
+      font-size: 50px;
+      color: rgba(0,0,0,0.07);
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
     }
-
-    .lab-name {
-      flex: 1;
-      text-align: center;
-    }
-
-    .lab-name h2 {
-      margin: 0;
-      font-size: 26px;
-      color: #003366;
-      font-weight: bold;
-    }
-
-    .lab-name h3 {
-      margin: 0;
-      color: #007b9e;
-    }
-
-    .logo img {
-      width: 100px;
-    }
-
-    #qrCode {
-      width: 100px;
-      height: 100px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      border: 1px solid #000;
-      padding: 6px;
-      text-align: left;
-      vertical-align: top;
-    }
-
-    th {
-      background: #003366;
-      color: #fff;
-    }
-
-    .actions {
-      margin-top: 20px;
-      text-align: center;
-    }
-
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .lab-name { flex: 1; text-align: center; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .logo img { width: 120px; }
+    #qrCode { width: 100px; height: 100px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+    th { background: #003366; color: #fff; }
+    .actions { margin-top: 20px; text-align: center; }
     button {
       background: #00bcd4;
       border: none;
@@ -99,17 +41,8 @@
       color: #fff;
       cursor: pointer;
       margin: 5px;
-      font-weight: bold;
     }
-
-    button:hover {
-      background: #0097a7;
-    }
-
-    @media print {
-      button { display: none; }
-      body::before { opacity: 0.1; }
-    }
+    button:hover { background: #0097a7; }
   </style>
 </head>
 <body>
@@ -157,7 +90,7 @@
         document.getElementById("test").textContent = patientData.tests.join(", ");
         document.getElementById("date").textContent = new Date().toLocaleString();
 
-        // ✅ QR Code
+        // ✅ QR Code (smaller size for top left)
         new QRCode(document.getElementById("qrCode"), {
           text: JSON.stringify(patientData),
           width: 90,
@@ -168,13 +101,7 @@
       // ✅ PDF Download
       document.getElementById("downloadPdf").addEventListener("click", function () {
         const slip = document.querySelector(".slip");
-        const opt = {
-          filename: "Registration_Slip.pdf",
-          image: { type: 'jpeg', quality: 1 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(slip).save();
+        html2pdf().from(slip).save("Registration_Slip.pdf");
       });
     });
   </script>
