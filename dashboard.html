@@ -55,6 +55,7 @@
   <script>
     const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
     if(!user){ alert('Please login first!'); window.location.href='index.html'; }
+
     const links = {
       admin: [
         ['add-patient.html','Add Patient'],
@@ -64,18 +65,21 @@
         ['users.html','User Management'],
         ['settings.html','Lab Settings']
       ],
+      technician: [
+        ['add-result.html','Add Test Result'],
+        ['patients.html','Patient Records']
+      ],
       doctor: [
         ['patients.html','View Patients'],
-        ['add-result.html','Add Results']
-      ],
-      technician: [
-        ['add-result.html','Add Results']
+        ['report.html','View Reports']
       ],
       reception: [
         ['add-patient.html','Register Patient'],
-        ['patients.html','Patient Records']
+        ['patients.html','Patient Records'],
+        ['report.html','View Reports']
       ]
     };
+
     const list = links[user.role] || [];
     const div = document.getElementById('menuLinks');
     list.forEach(l=>{
