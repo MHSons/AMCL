@@ -64,34 +64,44 @@
 </div>
 
 <script>
-  // --- 1. Sample real department data ---
+  // ===== ACCESS CONTROL =====
+  const logged = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+  if (!logged) {
+    alert('Please login first!');
+    window.location.href = 'index.html';
+  } 
+  else if (!['admin','technician'].includes(logged.role)) {
+    alert('You are not authorized to add or modify reports.');
+    window.location.href = 'dashboard.html';
+  }
+
+  // ===== REAL DEPARTMENT DATA (Part-1) =====
   const departments = {
-    "Hematology":[
-      {test:"Hemoglobin",unit:"g/dL",min:13,max:17},
-      {test:"RBC Count",unit:"million/uL",min:4.5,max:6.0},
-      {test:"WBC Count",unit:"/uL",min:4000,max:11000},
-      {test:"Platelet Count",unit:"/uL",min:150000,max:450000}
+    "Hematology": [
+      { test: "Hemoglobin (Hb)", unit: "g/dL", min: 13, max: 17 },
+      { test: "Hematocrit (HCT)", unit: "%", min: 40, max: 52 },
+      { test: "RBC Count", unit: "million/uL", min: 4.5, max: 6.0 },
+      { test: "WBC Count", unit: "/uL", min: 4000, max: 11000 },
+      { test: "Platelet Count", unit: "/uL", min: 150000, max: 450000 }
     ],
-    "Biochemistry":[
-      {test:"Glucose (Fasting)",unit:"mg/dL",min:70,max:100},
-      {test:"Urea",unit:"mg/dL",min:10,max:50},
-      {test:"Creatinine",unit:"mg/dL",min:0.7,max:1.3},
-      {test:"Cholesterol",unit:"mg/dL",min:0,max:200}
+    "Biochemistry": [
+      { test: "Glucose (Fasting)", unit: "mg/dL", min: 70, max: 100 },
+      { test: "Urea", unit: "mg/dL", min: 10, max: 50 },
+      { test: "Creatinine", unit: "mg/dL", min: 0.7, max: 1.3 }
     ],
-    "Serology":[
-      {test:"HIV",unit:"",min:0,max:0},
-      {test:"Hepatitis B Surface Antigen",unit:"",min:0,max:0},
-      {test:"Hepatitis C Antibody",unit:"",min:0,max:0},
-      {test:"VDRL",unit:"",min:0,max:0}
+    "Serology": [
+      { test: "Hepatitis B Surface Antigen (HBsAg)", unit: "", min: 0, max: 0 },
+      { test: "Hepatitis C Antibody (Anti-HCV)", unit: "", min: 0, max: 0 },
+      { test: "HIV 1/2 Antibody", unit: "", min: 0, max: 0 }
     ],
-    "Microbiology":[
-      {test:"Urine Culture",unit:"",min:0,max:0},
-      {test:"Sputum Culture",unit:"",min:0,max:0},
-      {test:"Blood Culture",unit:"",min:0,max:0}
+    "Immunology": [
+      { test: "ANA (Antinuclear Antibody)", unit: "", min: 0, max: 0 },
+      { test: "CRP Quantitative", unit: "mg/L", min: 0, max: 6 },
+      { test: "Rheumatoid Factor", unit: "IU/mL", min: 0, max: 14 }
     ]
   };
 
-  // populate department list
+  // ===== Populate Departments =====
   const deptSel=document.getElementById('departmentSelect');
   Object.keys(departments).forEach(d=>{
     const opt=document.createElement('option');
@@ -99,7 +109,7 @@
     deptSel.appendChild(opt);
   });
 
-  // when dept changes => show related tests
+  // On Department change
   deptSel.addEventListener('change',()=>{
     const testSel=document.getElementById('testSelect');
     testSel.innerHTML='';
@@ -114,7 +124,7 @@
     });
   });
 
-  // --- 2. Add result row ---
+  // ===== Add Result =====
   const results=[];
   function addResult(){
     const testVal=document.getElementById('testSelect').value;
@@ -135,16 +145,15 @@
     const tb=document.getElementById('resultsTable');
     tb.innerHTML='';
     results.forEach(r=>{
-      const tr=document.createElement('tr');
       const color=(r.indicator==='Normal')?'green':'red';
-      tr.innerHTML=`<td>${r.department}</td><td>${r.test}</td>
-        <td>${r.result}</td><td>${r.unit}</td><td>${r.range}</td>
-        <td style="color:${color};font-weight:600">${r.indicator}</td>`;
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${r.department}</td><td>${r.test}</td><td>${r.result}</td>
+        <td>${r.unit}</td><td>${r.range}</td><td style="color:${color};font-weight:600">${r.indicator}</td>`;
       tb.appendChild(tr);
     });
   }
 
-  // --- 3. Save report ---
+  // ===== Save Report =====
   function saveReport(){
     if(results.length===0){alert('Add at least one test');return;}
     const patient_code=document.getElementById('patientCode').value.trim();
@@ -166,6 +175,7 @@
     window.location='report.html';
   }
 </script>
+
 <script src="app.js"></script>
 </body>
 </html>
