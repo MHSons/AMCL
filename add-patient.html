@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Patient | AlphaMed Clinical Laboratory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #111;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 25px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    textarea { resize: vertical; grid-column: span 2; }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      grid-column: span 2;
+    }
+    button:hover { background: #1e3a8a; }
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Register New Patient</h2>
+    <form id="patientForm">
+      <label>Patient Code</label>
+      <input type="text" id="patient_code" readonly>
+
+      <label>Full Name</label>
+      <input type="text" id="full_name" required>
+
+      <label>Age</label>
+      <input type="number" id="age" required>
+
+      <label>Gender</label>
+      <select id="gender" required>
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
+
+      <label>Mobile</label>
+      <input type="text" id="mobile">
+
+      <label>Doctor / Referred By</label>
+      <input type="text" id="referred_by">
+
+      <label>Department</label>
+      <select id="department" required></select>
+
+      <label>Sample Type</label>
+      <input type="text" id="sample_type" placeholder="Blood / Urine / Stool etc.">
+
+      <label>Address</label>
+      <textarea id="address" rows="2"></textarea>
+
+      <label>Remarks</label>
+      <textarea id="remarks" rows="2"></textarea>
+
+      <button type="button" onclick="savePatient()">Save Patient</button>
+    </form>
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+  </div>
+
+  <script>
+    // ensure login
+    const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+    if(!user){ alert('Please login first!'); window.location.href = 'index.html'; }
+
+    // generate new patient code
+    function generatePatientCode(){
+      const code = "P-" + new Date().getFullYear().toString().slice(-2)
+        + Math.floor(100000 + Math.random()*900000);
+      document.getElementById('patient_code').value = code;
+    }
+
+    // load departments
+    function loadDepartments(){
+      const depts = JSON.parse(localStorage.getItem('departments') || '[]');
+      const sel = document.getElementById('department');
+      sel.innerHTML = '<option value="">Select Department</option>';
+      if(depts.length===0){
+        const list = ["Hematology","Biochemistry","Microbiology","Serology","Pathology","Virology","Urinalysis"];
+        list.forEach(d => {
+          sel.innerHTML += `<option>${d}</option>`;
+        });
+      } else {
+        depts.forEach(d => sel.innerHTML += `<option>${d.name}</option>`);
+      }
+    }
+
+    function savePatient(){
+      const form = {
+        id: Date.now(),
+        patient_code: document.getElementById('patient_code').value,
+        full_name: document.getElementById('full_name').value.trim(),
+        age: document.getElementById('age').value.trim(),
+        gender: document.getElementById('gender').value,
+        mobile: document.getElementById('mobile').value.trim(),
+        referred_by: document.getElementById('referred_by').value.trim(),
+        department: document.getElementById('department').value,
+        sample_type: document.getElementById('sample_type').value,
+        address: document.getElementById('address').value,
+        remarks: document.getElementById('remarks').value,
+        collected_at: new Date().toISOString()
+      };
+
+      if(!form.full_name || !form.age || !form.gender || !form.department){
+        alert("Please fill required fields");
+        return;
+      }
+
+      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+      patients.push(form);
+      localStorage.setItem('patients', JSON.stringify(patients));
+
+      // log activity
+      const logs = JSON.parse(localStorage.getItem('activityLog') || '[]');
+      logs.push({ time: new Date(), text: `Patient added: ${form.full_name} (${form.patient_code})`});
+      localStorage.setItem('activityLog', JSON.stringify(logs));
+
+      alert("Patient saved successfully!");
+      window.location.href = 'dashboard.html';
+    }
+
+    loadDepartments();
+    generatePatientCode();
+  </script>
+</body>
+</html>
