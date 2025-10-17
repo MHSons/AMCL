@@ -3,220 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Result | AlphaMed Clinical Laboratory</title>
+  <title>Add Result | AlphaMed Clinical Laboratory</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-      margin: 0;
-      color: #111;
-      min-height: 100vh;
+      background: linear-gradient(135deg,#1e3a8a,#2563eb);
+      margin: 0; color:#111;
     }
     .container {
       max-width: 900px;
       margin: 40px auto;
-      background: white;
-      border-radius: 12px;
+      background: #fff;
       padding: 25px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     }
-    h2 {
-      text-align: center;
-      color: #1e3a8a;
-      margin-bottom: 25px;
-    }
-    select, input {
-      width: 100%;
+    h2 { text-align:center; color:#1e3a8a; }
+    select, input, button {
       padding: 8px;
       border-radius: 6px;
       border: 1px solid #ccc;
+      margin: 5px 0;
       font-size: 14px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      border-bottom: 1px solid #eee;
-      padding: 8px;
-      text-align: left;
-    }
-    button {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 15px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-    button:hover { background: #1e3a8a; }
-    .back {
-      display: block;
-      margin-top: 10px;
-      text-align: center;
-      color: #2563eb;
-      text-decoration: none;
-    }
+    table { width:100%; border-collapse: collapse; margin-top:15px; }
+    th,td { padding:6px; border-bottom:1px solid #eee; }
+    th { background:#f3f4f6; color:#1e3a8a; }
+    .btn { background:#2563eb; color:white; border:none; cursor:pointer; }
+    .btn:hover { background:#1e3a8a; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Add Test Result</h2>
 
-    <label>Patient</label>
-    <select id="patientSelect" onchange="loadPatientTests()"></select>
+<div class="container">
+  <h2>Add Test Results</h2>
 
-    <label>Department</label>
-    <select id="departmentSelect" onchange="loadTests()"></select>
+  <label>Patient Code:</label>
+  <input id="patientCode" placeholder="Enter patient code"><br>
 
-    <label>Test</label>
-    <select id="testSelect" onchange="addTestRow()"></select>
+  <label>Select Department(s):</label><br>
+  <select id="departmentSelect" multiple size="6" style="width:100%;"></select><br>
 
-    <table id="resultTable">
-      <thead>
-        <tr>
-          <th>Test Name</th>
-          <th>Result</th>
-          <th>Unit</th>
-          <th>Normal Range</th>
-          <th>Indicator</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+  <label>Select Test:</label><br>
+  <select id="testSelect" style="width:100%;"></select><br>
 
-    <button onclick="saveReport()">Save Report</button>
-    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+  <label>Result:</label><br>
+  <input id="resultValue" placeholder="Enter result"><br>
+  <button class="btn" onclick="addResult()">Add to Report</button>
+
+  <table>
+    <thead><tr>
+      <th>Department</th><th>Test</th><th>Result</th><th>Unit</th><th>Normal Range</th><th>Indicator</th>
+    </tr></thead>
+    <tbody id="resultsTable"></tbody>
+  </table>
+
+  <div style="text-align:center;margin-top:15px;">
+    <button class="btn" onclick="saveReport()">Save & View Report</button>
   </div>
+</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
-  <script>
-    const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
-    if(!user){ alert('Please login first!'); window.location.href='index.html'; }
+<script>
+  // --- 1. Sample real department data ---
+  const departments = {
+    "Hematology":[
+      {test:"Hemoglobin",unit:"g/dL",min:13,max:17},
+      {test:"RBC Count",unit:"million/uL",min:4.5,max:6.0},
+      {test:"WBC Count",unit:"/uL",min:4000,max:11000},
+      {test:"Platelet Count",unit:"/uL",min:150000,max:450000}
+    ],
+    "Biochemistry":[
+      {test:"Glucose (Fasting)",unit:"mg/dL",min:70,max:100},
+      {test:"Urea",unit:"mg/dL",min:10,max:50},
+      {test:"Creatinine",unit:"mg/dL",min:0.7,max:1.3},
+      {test:"Cholesterol",unit:"mg/dL",min:0,max:200}
+    ],
+    "Serology":[
+      {test:"HIV",unit:"",min:0,max:0},
+      {test:"Hepatitis B Surface Antigen",unit:"",min:0,max:0},
+      {test:"Hepatitis C Antibody",unit:"",min:0,max:0},
+      {test:"VDRL",unit:"",min:0,max:0}
+    ],
+    "Microbiology":[
+      {test:"Urine Culture",unit:"",min:0,max:0},
+      {test:"Sputum Culture",unit:"",min:0,max:0},
+      {test:"Blood Culture",unit:"",min:0,max:0}
+    ]
+  };
 
-    function loadPatients(){
-      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
-      const sel = document.getElementById('patientSelect');
-      sel.innerHTML = '<option value="">Select Patient</option>';
-      patients.forEach(p=>{
-        sel.innerHTML += `<option value="${p.patient_code}">${p.full_name} (${p.patient_code})</option>`;
+  // populate department list
+  const deptSel=document.getElementById('departmentSelect');
+  Object.keys(departments).forEach(d=>{
+    const opt=document.createElement('option');
+    opt.value=d; opt.textContent=d;
+    deptSel.appendChild(opt);
+  });
+
+  // when dept changes => show related tests
+  deptSel.addEventListener('change',()=>{
+    const testSel=document.getElementById('testSelect');
+    testSel.innerHTML='';
+    const selected=Array.from(deptSel.selectedOptions).map(o=>o.value);
+    selected.forEach(dep=>{
+      departments[dep].forEach(t=>{
+        const opt=document.createElement('option');
+        opt.value=dep+'|'+t.test;
+        opt.textContent=`${dep} - ${t.test}`;
+        testSel.appendChild(opt);
       });
-    }
+    });
+  });
 
-    function loadDepartments(){
-      const depts = JSON.parse(localStorage.getItem('departments') || '[]');
-      const sel = document.getElementById('departmentSelect');
-      sel.innerHTML = '<option value="">Select Department</option>';
-      if(depts.length===0){
-        ["Hematology","Biochemistry","Serology","Microbiology"].forEach(d=>{
-          sel.innerHTML += `<option>${d}</option>`;
-        });
-      } else {
-        depts.forEach(d=> sel.innerHTML += `<option>${d.name}</option>`);
-      }
-    }
+  // --- 2. Add result row ---
+  const results=[];
+  function addResult(){
+    const testVal=document.getElementById('testSelect').value;
+    if(!testVal){alert('Select a test');return;}
+    const [dep,testName]=testVal.split('|');
+    const data=departments[dep].find(t=>t.test===testName);
+    const result=parseFloat(document.getElementById('resultValue').value);
+    if(isNaN(result)){alert('Enter numeric result');return;}
+    let indicator='Normal';
+    if(result<data.min)indicator='Low';
+    else if(result>data.max)indicator='High';
+    results.push({department:dep,test:testName,result,unit:data.unit,range:`${data.min}-${data.max}`,indicator});
+    renderTable();
+    document.getElementById('resultValue').value='';
+  }
 
-    function loadTests(){
-      const dept = document.getElementById('departmentSelect').value;
-      const sel = document.getElementById('testSelect');
-      sel.innerHTML = '<option value="">Select Test</option>';
-      const tests = JSON.parse(localStorage.getItem('tests') || '[]');
-      const filtered = tests.filter(t => t.department === dept);
-      if(filtered.length === 0){
-        // default dummy for first time
-        const defaultTests = [
-          {name:"Hemoglobin", unit:"g/dL", min:13, max:17, normal:"13–17 g/dL"},
-          {name:"WBC Count", unit:"×10⁹/L", min:4, max:11, normal:"4–11 ×10⁹/L"},
-          {name:"Platelets", unit:"×10⁹/L", min:150, max:450, normal:"150–450 ×10⁹/L"}
-        ];
-        defaultTests.forEach(t => sel.innerHTML += `<option value="${t.name}" data-unit="${t.unit}" data-min="${t.min}" data-max="${t.max}" data-normal="${t.normal}">${t.name}</option>`);
-      } else {
-        filtered.forEach(t=> sel.innerHTML += `<option value="${t.test_name}" data-unit="${t.unit}" data-min="${t.min_value}" data-max="${t.max_value}" data-normal="${t.normal_range_adult}">${t.test_name}</option>`);
-      }
-    }
+  function renderTable(){
+    const tb=document.getElementById('resultsTable');
+    tb.innerHTML='';
+    results.forEach(r=>{
+      const tr=document.createElement('tr');
+      const color=(r.indicator==='Normal')?'green':'red';
+      tr.innerHTML=`<td>${r.department}</td><td>${r.test}</td>
+        <td>${r.result}</td><td>${r.unit}</td><td>${r.range}</td>
+        <td style="color:${color};font-weight:600">${r.indicator}</td>`;
+      tb.appendChild(tr);
+    });
+  }
 
-    function addTestRow(){
-      const sel = document.getElementById('testSelect');
-      if(!sel.value) return;
-      const tbody = document.querySelector('#resultTable tbody');
-      const testName = sel.value;
-      const unit = sel.selectedOptions[0].dataset.unit;
-      const min = parseFloat(sel.selectedOptions[0].dataset.min);
-      const max = parseFloat(sel.selectedOptions[0].dataset.max);
-      const normal = sel.selectedOptions[0].dataset.normal;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${testName}</td>
-        <td><input type="number" step="any" oninput="updateIndicator(this,${min},${max})"></td>
-        <td>${unit}</td>
-        <td>${normal}</td>
-        <td class="indicator"></td>
-        <td><button onclick="this.closest('tr').remove()">❌</button></td>
-      `;
-      tbody.appendChild(tr);
-    }
-
-    function updateIndicator(input,min,max){
-      const val = parseFloat(input.value);
-      const indicatorCell = input.closest('tr').querySelector('.indicator');
-      if(isNaN(val)){ indicatorCell.innerText=''; indicatorCell.style.color='black'; return; }
-      if(val < min){ indicatorCell.innerText='Low'; indicatorCell.style.color='red'; }
-      else if(val > max){ indicatorCell.innerText='High'; indicatorCell.style.color='red'; }
-      else{ indicatorCell.innerText='Normal'; indicatorCell.style.color='green'; }
-    }
-
-    function saveReport(){
-      const patientCode = document.getElementById('patientSelect').value;
-      if(!patientCode){ alert('Select patient'); return; }
-
-      const patient = JSON.parse(localStorage.getItem('patients') || '[]').find(p=>p.patient_code===patientCode);
-      if(!patient){ alert('Patient not found'); return; }
-
-      const rows = document.querySelectorAll('#resultTable tbody tr');
-      if(rows.length===0){ alert('Add at least one test'); return; }
-
-      const results = [];
-      rows.forEach(r=>{
-        const tds = r.querySelectorAll('td');
-        results.push({
-          test: tds[0].innerText,
-          result: tds[1].querySelector('input').value,
-          unit: tds[2].innerText,
-          range: tds[3].innerText,
-          indicator: tds[4].innerText
-        });
-      });
-
-      const report = {
-        id: Date.now(),
-        report_id: "R-" + Date.now(),
-        patient_code: patient.patient_code,
-        patient_name: patient.full_name,
-        results,
-        department: document.getElementById('departmentSelect').value,
-        created_by: user.user,
-        date: new Date().toISOString()
-      };
-
-      const reports = JSON.parse(localStorage.getItem('reports') || '[]');
-      reports.push(report);
-      localStorage.setItem('reports', JSON.stringify(reports));
-
-      const logs = JSON.parse(localStorage.getItem('activityLog') || '[]');
-      logs.push({ time:new Date(), text:`Report created for ${patient.full_name}` });
-      localStorage.setItem('activityLog', JSON.stringify(logs));
-
-      alert("Report saved successfully!");
-      localStorage.setItem('lastReportId', report.report_id);
-      window.location.href = 'report.html';
-    }
-
-    loadPatients();
-    loadDepartments();
-  </script>
+  // --- 3. Save report ---
+  function saveReport(){
+    if(results.length===0){alert('Add at least one test');return;}
+    const patient_code=document.getElementById('patientCode').value.trim();
+    if(!patient_code){alert('Enter patient code');return;}
+    const report_id='R'+Date.now();
+    const newReport={
+      report_id,
+      patient_name:patient_code,
+      patient_code,
+      department:results.map(r=>r.department).join(', '),
+      results,
+      date:new Date().toISOString()
+    };
+    const reports=JSON.parse(localStorage.getItem('reports')||'[]');
+    reports.push(newReport);
+    localStorage.setItem('reports',JSON.stringify(reports));
+    localStorage.setItem('lastReportId',report_id);
+    alert('Report saved!');
+    window.location='report.html';
+  }
+</script>
+<script src="app.js"></script>
 </body>
 </html>
