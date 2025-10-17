@@ -1,260 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>AlphaMed Clinical Laboratory — Dashboard</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AlphaMed Clinical Laboratory</title>
   <style>
-    :root{
-      --bg-gradient: linear-gradient(135deg,#1e3a8a,#2563eb);
-      --card-bg: #fff;
-      --muted: #6b7280;
-      --accent: #2563eb;
-      --success: #16a34a;
-      --danger: #ef4444;
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      margin: 0;
+      color: white;
+      min-height: 100vh;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg-gradient);min-height:100vh;color:#111}
-    .wrap{max-width:1200px;margin:28px auto;padding:18px}
-    header.appbar{display:flex;align-items:center;justify-content:space-between;background:transparent;color:white;gap:12px;margin-bottom:18px}
-    .branding{display:flex;align-items:center;gap:12px}
-    .branding img{height:56px;border-radius:8px;background:white;padding:6px}
-    .branding h1{font-size:20px;margin:0}
-    .contacts{font-size:13px;color:rgba(255,255,255,0.9)}
-    .card{background:var(--card-bg);border-radius:10px;padding:14px;box-shadow:0 6px 18px rgba(16,24,40,0.15)}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .stat{padding:14px;border-radius:8px}
-    .stat h3{margin:0;font-size:18px}
-    .stat p{margin:6px 0 0;color:var(--muted)}
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
-    .btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
-    .btn.secondary{background:#f3f4f6;color:#111}
-    .nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-    .menu-item{padding:8px 12px;border-radius:8px;background:rgba(255,255,255,0.12);color:white;text-decoration:none}
-    .main{display:grid;grid-template-columns:320px 1fr;gap:16px}
-    .side{position:relative}
-    .search{display:flex;gap:8px;margin-bottom:12px}
-    input[type="text"], select{padding:8px;border-radius:8px;border:1px solid #e6e6e6;width:100%}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
-    .small{font-size:13px;color:var(--muted)}
-    footer{margin-top:18px;color:#f3f4f6;text-align:center}
-    .role-badge{background:rgba(255,255,255,0.14);padding:6px 8px;border-radius:8px;color:white;font-weight:600}
-    .quick-link{display:block;padding:10px;border-radius:8px;border:1px solid #eef2ff;background:#fff;margin-bottom:10px;text-decoration:none;color:#111}
-    @media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} .main{grid-template-columns:1fr} .branding img{height:48px} }
+    .box {
+      max-width: 700px;
+      margin: 80px auto;
+      background: white;
+      color: #111;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    h2 { color: #1e3a8a; margin-bottom: 20px; }
+    .links a {
+      display: block;
+      margin: 8px 0;
+      background: #2563eb;
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .links a:hover { background: #1e3a8a; }
+    button {
+      margin-top: 20px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="appbar">
-      <div class="branding">
-        <img id="logoImg" src="logo.png" alt="logo" onerror="this.style.display='none'"/>
-        <div>
-          <h1>AlphaMed Clinical Laboratory</h1>
-          <div class="contacts small" id="labContact">amcl@gmail.com • 0339-8067880</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <div class="role-badge" id="userRole">—</div>
-        <div style="color:white;text-align:right">
-          <div id="userName">Guest</div>
-          <div class="small" id="userEmail">—</div>
-        </div>
-        <button class="btn secondary" onclick="goSettings()">Settings</button>
-        <button class="btn" onclick="logout()">Logout</button>
-      </div>
-    </header>
 
-    <nav class="nav">
-      <a class="menu-item" href="dashboard.html">Dashboard</a>
-      <a class="menu-item" href="add-patient.html">Add Patient</a>
-      <a class="menu-item" href="add-result.html">Add Result</a>
-      <a class="menu-item" href="patients.html">Patients</a>
-      <a class="menu-item" href="departments.html">Departments</a>
-      <a class="menu-item" href="report.html">Reports</a>
-      <a class="menu-item" href="users.html" id="usersLink" style="display:none">Users</a>
-    </nav>
-
-    <div class="main">
-      <!-- LEFT: Quick actions + stats -->
-      <aside class="side">
-        <div class="card" style="margin-bottom:12px">
-          <h3>Quick Actions</h3>
-          <div class="actions" style="margin-top:8px">
-            <button class="btn" onclick="goAddPatient()">+ New Patient</button>
-            <button class="btn" onclick="goAddResult()">+ Add Result</button>
-            <button class="btn secondary" onclick="openPatients()">View Patients</button>
-          </div>
-          <div style="margin-top:12px">
-            <a class="quick-link" href="#" onclick="openWhatsApp()">Open WhatsApp Chat (Patient)</a>
-            <a class="quick-link" href="lab_test_catalog.html" target="_blank">Download Test Catalog</a>
-          </div>
-        </div>
-
-        <div class="card" style="margin-bottom:12px">
-          <h3>Statistics</h3>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
-            <div class="stat"><h3 id="deptCount">0</h3><p>Departments</p></div>
-            <div class="stat"><h3 id="testCount">0</h3><p>Tests</p></div>
-            <div class="stat"><h3 id="patientCount">0</h3><p>Patients</p></div>
-            <div class="stat"><h3 id="reportCount">0</h3><p>Reports</p></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>Administration</h3>
-          <div style="margin-top:8px">
-            <a class="quick-link" href="departments.html">Manage Departments & Tests</a>
-            <a class="quick-link" href="users.html" id="adminUsersLink" style="display:none">Manage Users & Roles</a>
-          </div>
-        </div>
-      </aside>
-
-      <!-- RIGHT: content -->
-      <section>
-        <div class="card" style="margin-bottom:12px">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <h2 style="margin:0">Recent Patients</h2>
-              <div class="small">Quick access to latest registered patients</div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <input id="searchInput" type="text" placeholder="Search patients, ID or mobile" style="width:320px" oninput="renderPatients()">
-            </div>
-          </div>
-
-          <div style="margin-top:12px;overflow:auto;max-height:420px">
-            <table>
-              <thead>
-                <tr><th>Patient Code</th><th>Name</th><th>Mobile</th><th>Dept</th><th>Collected</th><th></th></tr>
-              </thead>
-              <tbody id="patientsTbody">
-                <!-- JS fills -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3>System Activity</h3>
-          <div class="small" id="activityLog">No recent activity</div>
-        </div>
-      </section>
-    </div>
-
-    <footer style="margin-top:18px;color:white;text-align:center">
-      © AlphaMed Clinical Laboratory — <span id="footerContact">0339-8067880</span> — <a href="mailto:amcl@gmail.com" style="color:rgba(255,255,255,0.9)">amcl@gmail.com</a>
-    </footer>
+  <div class="box">
+    <h2>Welcome to AlphaMed Dashboard</h2>
+    <div class="links" id="menuLinks"></div>
+    <button onclick="logout()">Logout</button>
   </div>
 
   <script>
-    // --- Helpers & navigation ---
-    function requireLogin(){
-      const u = localStorage.getItem('loggedUser');
-      if(!u){ alert('Please login first'); window.location.href='index.html'; return null; }
-      return JSON.parse(u);
-    }
-
-    const labContact = '03398067880';
-    const labEmail = 'amcl@gmail.com';
-    document.getElementById('labContact').innerText = labEmail + ' • ' + labContact;
-    document.getElementById('footerContact').innerText = labContact;
-
-    // On load: verify login
-    (function init(){
-      const user = requireLogin();
-      if(!user) return;
-      document.getElementById('userName').innerText = user.name || user.username || user.user;
-      document.getElementById('userRole').innerText = (user.role || 'user').toUpperCase();
-      document.getElementById('userEmail').innerText = user.username || '';
-      // show admin links if admin
-      if(user.role === 'admin'){
-        document.getElementById('usersLink').style.display = 'inline-block';
-        document.getElementById('adminUsersLink').style.display = 'block';
-      }
-      // load counts from localStorage
-      loadCounts();
-      renderPatients();
-      loadActivity();
-    })();
-
-    function goAddPatient(){ window.location.href = 'add-patient.html'; }
-    function goAddResult(){ window.location.href = 'add-result.html'; }
-    function openPatients(){ window.location.href = 'patients.html'; }
-    function goSettings(){ window.location.href = 'settings.html'; }
-
-    function logout(){
-      localStorage.removeItem('loggedUser');
-      alert('Logged out');
-      window.location.href = 'index.html';
-    }
-
-    function openWhatsApp(){
-      // Compose WhatsApp message with contact prefilled
-      const msg = encodeURIComponent('Assalamualaikum, I need support regarding my test/report.');
-      window.open('https://wa.me/' + labContact + '?text=' + msg, '_blank');
-    }
-
-    // --- Data helpers (localStorage based) ---
-    function loadCounts(){
-      const depts = JSON.parse(localStorage.getItem('departments') || '[]');
-      const tests = JSON.parse(localStorage.getItem('tests') || '[]');
-      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
-      const reports = JSON.parse(localStorage.getItem('reports') || '[]');
-      document.getElementById('deptCount').innerText = depts.length || 0;
-      document.getElementById('testCount').innerText = tests.length || 0;
-      document.getElementById('patientCount').innerText = patients.length || 0;
-      document.getElementById('reportCount').innerText = reports.length || 0;
-    }
-
-    function renderPatients(){
-      const patients = JSON.parse(localStorage.getItem('patients') || '[]').slice().reverse();
-      const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-      const tbody = document.getElementById('patientsTbody');
-      tbody.innerHTML = '';
-      const filtered = patients.filter(p => {
-        if(!q) return true;
-        return (p.patient_code||'').toLowerCase().includes(q) || (p.full_name||'').toLowerCase().includes(q) || (p.mobile||'').toLowerCase().includes(q);
-      }).slice(0,50);
-      if(filtered.length===0){
-        tbody.innerHTML = '<tr><td colspan="6" class="small">No patients found</td></tr>';
-        return;
-      }
-      filtered.forEach(p=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${p.patient_code||''}</td>
-                        <td>${p.full_name||''}</td>
-                        <td>${p.mobile||''}</td>
-                        <td class="small">${p.department||''}</td>
-                        <td class="small">${p.collected_at? new Date(p.collected_at).toLocaleString() : ''}</td>
-                        <td><button class="btn secondary small" onclick='viewPatient("${p.id||p.patient_code||''}")'>Open</button></td>`;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function viewPatient(id){
-      // store last viewed and open patient page
-      localStorage.setItem('viewPatientId', id);
-      window.location.href = 'patients.html';
-    }
-
-    function loadActivity(){
-      const logs = JSON.parse(localStorage.getItem('activityLog') || '[]').slice().reverse();
-      const el = document.getElementById('activityLog');
-      if(!logs || logs.length===0){ el.innerText = 'No recent activity'; return; }
-      el.innerHTML = logs.slice(0,6).map(l=>`${new Date(l.time).toLocaleString()}: ${l.text}`).join('<br>');
-    }
-
-    // small utility to bootstrap departments/tests if missing only for admin convenience (not demo)
-    function bootstrapIfEmpty(){
-      const depts = JSON.parse(localStorage.getItem('departments') || '[]');
-      if(depts.length===0){
-        // DO NOT auto-fill tests: leave empty — admin must import via departments.html
-        console.log('No departments found. Admin can add departments via Departments page.');
-      }
-    }
-    bootstrapIfEmpty();
-
+    const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+    if(!user){ alert('Please login first!'); window.location.href='index.html'; }
+    const links = {
+      admin: [
+        ['add-patient.html','Add Patient'],
+        ['patients.html','Patient Records'],
+        ['add-result.html','Add Test Result'],
+        ['departments.html','Departments & Tests'],
+        ['users.html','User Management'],
+        ['settings.html','Lab Settings']
+      ],
+      doctor: [
+        ['patients.html','View Patients'],
+        ['add-result.html','Add Results']
+      ],
+      technician: [
+        ['add-result.html','Add Results']
+      ],
+      reception: [
+        ['add-patient.html','Register Patient'],
+        ['patients.html','Patient Records']
+      ]
+    };
+    const list = links[user.role] || [];
+    const div = document.getElementById('menuLinks');
+    list.forEach(l=>{
+      div.innerHTML += `<a href="${l[0]}">${l[1]}</a>`;
+    });
   </script>
+
+  <script src="app.js"></script>
 </body>
 </html>
