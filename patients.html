@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patients | AlphaMed Clinical Laboratory</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      margin: 0;
+      color: #111;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 300px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-bottom: 1px solid #eee;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+    th {
+      background: #f3f4f6;
+      color: #1e3a8a;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    button:hover { background: #1e3a8a; }
+    .btn-del { background: #ef4444; }
+    .btn-del:hover { background: #b91c1c; }
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .small { font-size: 13px; color: #555; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Patient Records</h2>
+
+    <div class="topbar">
+      <input type="text" id="searchBox" placeholder="Search by name, code, or mobile" oninput="renderPatients()">
+      <button onclick="window.location.href='add-patient.html'">+ Add Patient</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Patient Code</th>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>Gender</th>
+          <th>Mobile</th>
+          <th>Department</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="patientsTbody"></tbody>
+    </table>
+
+    <a href="dashboard.html" class="back">← Back to Dashboard</a>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('loggedUser') || 'null');
+    if(!user){ alert('Please login first!'); window.location.href = 'index.html'; }
+
+    function renderPatients(){
+      const tbody = document.getElementById('patientsTbody');
+      tbody.innerHTML = '';
+      const patients = JSON.parse(localStorage.getItem('patients') || '[]');
+      const q = document.getElementById('searchBox').value.toLowerCase().trim();
+      const filtered = patients.filter(p =>
+        !q || p.full_name.toLowerCase().includes(q) || p.patient_code.toLowerCase().includes(q) || (p.mobile||'').toLowerCase().includes(q)
+      );
+
+      if(filtered.length === 0){
+        tbody.innerHTML = '<tr><td colspan="8" class="small">No patients found.</td></tr>';
+        return;
+      }
+
+      filtered.reverse().forEach(p=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.patient_code}</td>
+          <td>${p.full_name}</td>
+          <td>${p.age}</td>
+          <td>${p.gender}</td>
+          <td>${p.mobile}</td>
+          <td>${p.department}</td>
+          <td>${p.collected_at ? new Date(p.collected_at).toLocaleDateString() : '-'}</td>
+          <td>
+            <button onclick="openResult('${p.patient_code}')">Add Result</button>
+            <button class="btn-del" onclick="deletePatient('${p.patient_code}')">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openResult(code){
+      localStorage.setItem('selectedPatient', code);
+      window.location.href = 'add-result.html';
+    }
+
+    function deletePatient(code){
+      if(!confirm('Are you sure to delete this patient?')) return;
+      let patients = JSON.parse(localStorage.getItem('patients') || '[]');
+      patients = patients.filter(p => p.patient_code !== code);
+      localStorage.setItem('patients', JSON.stringify(patients));
+      renderPatients();
+      const logs = JSON.parse(localStorage.getItem('activityLog') || '[]');
+      logs.push({ time: new Date(), text: `Deleted patient ${code}` });
+      localStorage.setItem('activityLog', JSON.stringify(logs));
+    }
+
+    renderPatients();
+  </script>
+
+</body>
+</html>
