@@ -2,6 +2,7 @@ function viewReport(patientId) {
     const patient = JSON.parse(localStorage.getItem('patients')).find(p => p.id === patientId);
     const settings = JSON.parse(localStorage.getItem('labSettings'));
     const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'long', timeStyle: 'short' });
+    const appointmentTime = new Date(patient.appointment).toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'medium', timeStyle: 'short' });
     const reportWindow = window.open('', '_blank');
     let html = `
         <div style="position:relative;">
@@ -16,6 +17,7 @@ function viewReport(patientId) {
             <p>Name: ${patient.name} | Age: ${patient.age} | Gender: ${patient.gender}</p>
             <p>Address: ${patient.address} | Phone: ${patient.phone}</p>
             <p>Registered: ${patient.registeredDate}</p>
+            <p>Appointment: ${appointmentTime}</p>
             <h3>Results</h3>
     `;
     patient.departments.forEach(dept => {
