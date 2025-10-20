@@ -1,0 +1,35 @@
+function generateRegistrationSlip(patient) {
+    const settings = JSON.parse(localStorage.getItem('labSettings'));
+    const qrDiv = document.createElement('div');
+    new QRCode(qrDiv, {
+        text: JSON.stringify(patient),
+        width: 128,
+        height: 128
+    });
+    const qrCanvas = qrDiv.querySelector('canvas');
+    const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'long', timeStyle: 'short' });
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.addImage(settings.logo, 'PNG', 10, 10, 50, 50);
+    doc.text(settings.name, 70, 20);
+    doc.text(settings.tagline, 70, 30);
+    doc.text(`CLIA #${settings.cliaNumber}`, 70, 40);
+    doc.text(settings.hipaaNotice, 10, 50, { maxWidth: 190 });
+    doc.text(`Generated on: ${currentDateTime}`, 10, 60);
+    doc.text(`Patient Name: ${patient.name}`, 10, 70);
+    doc.text(`Age: ${patient.age}, Gender: ${patient.gender}`, 10, 80);
+    doc.text(`Address: ${patient.address}`, 10, 90);
+    doc.text(`Phone: ${patient.phone}`, 10, 100);
+    doc.text(`Registered: ${patient.registeredDate}`, 10, 110);
+    patient.departments.forEach((dept, index) => {
+        const deptName = JSON.parse(localStorage.getItem('departments')).find(d => d.id == dept.deptId).name;
+        doc.text(deptName, 10, 130 + index * 20);
+        dept.tests.forEach(t => {
+            const testName = JSON.parse(localStorage.getItem('tests'))[dept.deptId].find(test => test.id == t.id).name;
+            doc.text(`- ${testName}`, 15, 140 + index * 20);
+        });
+    });
+    doc.addImage(qrCanvas.toDataURL('image/png'), 'PNG', 150, 10, 50, 50);
+    doc.save(`registration_slip_${patient.id}.pdf`);
+}
