@@ -1,115 +1,27 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-.form-control {
-    display: block;
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-}
-
-.btn {
-    padding: 8px 16px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-}
-
-.btn-success {
-    background-color: #28a745;
-    color: white;
-    border: none;
-}
-
-.btn-info {
-    background-color: #17a2b8;
-    color: white;
-    border: none;
-}
-
-.btn-warning {
-    background-color: #ffc107;
-    color: white;
-    border: none;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.table th, .table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-.table th {
-    background-color: #f2f2f2;
-}
-
-.reminder {
-    margin: 10px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-}
-
-.password-container {
-    position: relative;
-}
-
-#togglePassword {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-#watermark {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.1;
-    z-index: -1;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.report-watermark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.1;
-    z-index: -1;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.navbar {
-    margin-bottom: 20px;
-}
-
-.navbar-nav .nav-link {
-    margin-right: 15px;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaMed Clinical Laboratory</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script type="module" src="script.js"></script> <!-- Changed to type="module" -->
+</head>
+<body>
+    <div id="loginSection" style="display: block;">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" class="form-control mb-2" required>
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Password" class="form-control mb-2" required>
+                <i id="togglePassword" class="fas fa-eye"></i>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+    <div id="mainSection" style="display: none;"></div>
+</body>
+</html>
