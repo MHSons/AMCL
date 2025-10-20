@@ -1,0 +1,47 @@
+function loadRoleContent(role) {
+    const main = document.getElementById('mainSection');
+    main.innerHTML = '<button onclick="logout()" class="btn btn-secondary mb-3">Logout</button>';
+    // Change password form
+    const changePassForm = document.createElement('form');
+    changePassForm.innerHTML = `
+        <h3>Change Password</h3>
+        <input type="password" id="newPassword" placeholder="New Password" class="form-control mb-2">
+        <button type="submit" class="btn btn-info">Change</button>
+    `;
+    changePassForm.addEventListener('submit', changePassword);
+    main.appendChild(changePassForm);
+
+    // Patient list for all
+    const patientList = document.createElement('div');
+    patientList.id = 'patientList';
+    patientList.innerHTML = '<h2>Patient List</h2>';
+    main.appendChild(patientList);
+    loadPatients(role);
+
+    if (role === 'reception' || role === 'admin') {
+        const form = document.createElement('form');
+        form.id = 'patientForm';
+        form.innerHTML = `
+            <h2>Patient Entry</h2>
+            <input type="text" id="patientName" placeholder="Name" class="form-control mb-2" required>
+            <input type="number" id="patientAge" placeholder="Age" class="form-control mb-2" required>
+            <select id="patientGender" class="form-control mb-2" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            <input type="text" id="patientAddress" placeholder="Address" class="form-control mb-2" required>
+            <input type="text" id="patientPhone" placeholder="Phone" class="form-control mb-2" required>
+            <input type="datetime-local" id="patientAppointment" placeholder="Appointment Time" class="form-control mb-2" required>
+            <div id="deptSelection">
+                <h3>Select Departments and Tests</h3>
+            </div>
+            <button type="submit" class="btn btn-primary">Register Patient</button>
+        `;
+        main.appendChild(form);
+        loadDeptSelection();
+        form.addEventListener('submit', savePatient);
+    }
+
+    // ... rest of the function remains the same
+}
