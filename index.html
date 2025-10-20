@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AlphaMed Clinical Laboratory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div id="watermark"></div>
+    <div class="container mt-5">
+        <img id="labLogo" src="" alt="AlphaMed Clinical Laboratory" class="img-fluid mb-3" style="max-width: 300px; display: block; margin: auto;">
+        <h1 id="labName">AlphaMed Clinical Laboratory</h1>
+        <p id="labTagline">Quality Assurance Through Advance Technology</p>
+        <div id="loginSection">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username">
+                </div>
+                <div class="mb-3 input-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password">
+                    <span class="input-group-text" id="togglePassword"><i class="fa fa-eye"></i></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+        <div id="mainSection" style="display: none;">
+            <!-- Role-based content will be loaded here -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
