@@ -1,7 +1,12 @@
-// script.js
 import { savePatient, loadPatients } from './patient.js';
 import { generateRegistrationSlip, viewReport } from './report.js';
 import config from './config.js';
+
+const CryptoJS = window.CryptoJS;
+
+function hashPassword(password) {
+    return CryptoJS.SHA256(password).toString();
+}
 
 // Initialize storage with data from data.json if available
 function initStorage() {
@@ -11,7 +16,10 @@ function initStorage() {
             .then(data => {
                 localStorage.setItem('departments', JSON.stringify(data.departments));
                 localStorage.setItem('tests', JSON.stringify(data.tests));
-                localStorage.setItem('users', JSON.stringify(data.users));
+                localStorage.setItem('users', JSON.stringify(data.users.map(u => ({
+                    ...u,
+                    password: hashPassword(u.password) // Ensure passwords are hashed
+                }))));
                 localStorage.setItem('patients', JSON.stringify([]));
                 localStorage.setItem('labSettings', JSON.stringify({
                     name: 'AlphaMed Clinical Laboratory',
@@ -23,6 +31,7 @@ function initStorage() {
                 }));
                 localStorage.setItem('gallery', JSON.stringify([]));
                 localStorage.setItem('careers', JSON.stringify([]));
+                console.log('Storage initialized with data.json');
             })
             .catch(error => console.error('Error loading data.json:', error));
     }
@@ -91,7 +100,8 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = hashPassword(document.getElementById('password').value);
-    const users = JSON.parse(localStorage.getItem('users'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    console.log('Login Attempt - Username:', username, 'Hashed Password:', password, 'Users:', users);
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
@@ -99,7 +109,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         document.getElementById('mainSection').style.display = 'block';
         loadRoleContent(user.role);
     } else {
-        alert('Invalid credentials');
+        alert('Invalid credentials. Check console for details.');
     }
 });
 
@@ -427,8 +437,9 @@ function saveResults(patientId, div) {
 function checkReminders(role) {
     const remindersDiv = document.getElementById('reminders');
     const patients = JSON.parse(localStorage.getItem('patients'));
-    const now = new Date(); // 01:04 PM PKT
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // 02:04 PM PKT
+    const now = new Date(); // 01:08 PM PKT
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // 02:08 PM PKT
+    console.log('Checking reminders at:', now.toLocaleString('en-US', { timeZone: 'Asia/Karachi' }));
 
     remindersDiv.innerHTML = '';
     patients.forEach(p => {
@@ -472,9 +483,4 @@ function rescheduleAppointment(patientId) {
             alert(`Appointment for ${patient.name} rescheduled to ${newTime}`);
         }
     }
-}
-
-// Hashing function (required for password handling)
-function hashPassword(password) {
-    return CryptoJS.SHA256(password).toString();
 }
