@@ -3,38 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMed Clinical Laboratory</title>
+    <meta name="description" content="AlphaMed Clinical Laboratory - Accredited Medical Testing and Research Services in USA">
+    <meta name="keywords" content="clinical laboratory, medical testing, USA lab services, ISO 17025, CAP accredited">
+    <meta name="author" content="AlphaMed Clinical Laboratory">
+    <title>AlphaMed Clinical Laboratory - Quality Medical Testing</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
     <div id="watermark"></div>
-    <div class="container mt-5">
-        <img id="labLogo" src="" alt="AlphaMed Clinical Laboratory" class="img-fluid mb-3" style="max-width: 300px; display: block; margin: auto;">
-        <h1 id="labName">AlphaMed Clinical Laboratory</h1>
-        <p id="labTagline">Quality Assurance Through Advance Technology</p>
-        <div id="loginSection">
-            <h2>Login</h2>
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username">
-                </div>
-                <div class="mb-3 input-group">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password">
-                    <span class="input-group-text" id="togglePassword"><i class="fa fa-eye"></i></span>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="AlphaMed Clinical Laboratory Logo" width="150">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#accreditation">Accreditation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#login">Patient Portal</a></li>
+                </ul>
+            </div>
         </div>
-        <div id="mainSection" style="display: none;">
-            <!-- Role-based content will be loaded here -->
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section text-center py-5 bg-primary text-white">
+        <div class="container">
+            <img src="logo.png" alt="AlphaMed Clinical Laboratory" class="img-fluid mb-3" style="max-width: 200px;">
+            <h1>AlphaMed Clinical Laboratory</h1>
+            <p class="lead">Quality Assurance Through Advanced Technology</p>
+            <a href="#contact" class="btn btn-light btn-lg">Book an Appointment</a>
         </div>
-    </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">About Us</h2>
+            <p>We are a leading clinical laboratory in the USA, dedicated to providing accurate and timely medical testing services. Our state-of-the-art facility is equipped with advanced technology to ensure quality results.</p>
+            <div class="row mt-4">
+                <div class="col-md-4 text-center">
+                    <img src="https://via.placeholder.com/150" alt="Dr. John Doe" class="rounded-circle mb-3">
+                    <h5>Dr. John Doe</h5>
+                    <p>Chief Pathologist, MD</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="https://via.placeholder.com/150" alt="Dr. Jane Smith" class="rounded-circle mb-3">
+                    <h5>Dr. Jane Smith</h5>
+                    <p>Lab Director, PhD</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Services</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <h4>Blood Testing</h4>
+                    <p>Comprehensive blood analysis for diagnostics and health monitoring.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Genetic Testing</h4>
+                    <p>Advanced genetic screening for personalized healthcare.</p>
+                </div>
+                <div class="col-md-4">
+                    <h4>Pathology Services</h4>
+                    <p>Expert pathology services for accurate disease diagnosis.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accreditation Section -->
+    <section id="accreditation" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Accreditations</h2>
+            <p>We are proud to be accredited by leading organizations, ensuring the highest standards of quality and reliability.</p>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/100" alt="ISO 17025 Accreditation" class="mb-3">
+                    <p>ISO/IEC 17025 Accredited</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/100" alt="CAP Accreditation" class="mb-3">
+                    <p>CAP Accredited</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/100" alt="CLIA Certification" class="mb-3">
+                    <p>CLIA Certified</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Patient Portal</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3 input-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                            <span class="input-group-text" id="togglePassword"><i class="fa fa-eye"></i></span>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                    <p class="mt-3 text-center"><a href="#forgot-password">Forgot Password?</a> | <a href="#register">Register</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Contact Us</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Email:</strong> info@alphamedlab.com</p>
+                    <p><strong>Phone:</strong> +1-123-456-7890</p>
+                    <p><strong>Address:</strong> 123 Lab Street, City, USA</p>
+                    <div id="map" style="height: 200px; background: #ccc;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+            <p>
+                <a href="#privacy" class="text-white">Privacy Policy</a> |
+                <a href="#terms" class="text-white">Terms of Service</a> |
+                <a href="https://www.linkedin.com" class="text-white"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.twitter.com" class="text-white"><i class="fab fa-twitter"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
