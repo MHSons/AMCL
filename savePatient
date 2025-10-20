@@ -1,0 +1,41 @@
+function savePatient(e) {
+    e.preventDefault();
+    const name = document.getElementById('patientName').value;
+    const age = document.getElementById('patientAge').value;
+    const gender = document.getElementById('patientGender').value;
+    const address = document.getElementById('patientAddress').value;
+    const phone = document.getElementById('patientPhone').value;
+    const appointment = document.getElementById('patientAppointment').value; // New field
+    const departments = [];
+    document.querySelectorAll('.deptCheck:checked').forEach(checkbox => {
+        const deptId = checkbox.dataset.deptId;
+        const tests = [];
+        document.querySelectorAll(`#testsFor${deptId} .testCheck:checked`).forEach(testCheck => {
+            tests.push(testCheck.dataset.testId);
+        });
+        if (tests.length > 0) {
+            departments.push({deptId, tests: tests.map(id => ({id, result: ''}))});
+        }
+    });
+    if (departments.length === 0) {
+        alert('Select at least one department and test');
+        return;
+    }
+    const patient = {
+        id: Date.now(),
+        name, age, gender, address, phone,
+        appointment, // Store appointment time
+        departments,
+        registeredDate: new Date().toISOString(),
+        status: 'Registered'
+    };
+    const patients = JSON.parse(localStorage.getItem('patients'));
+    patients.push(patient);
+    localStorage.setItem('patients', JSON.stringify(patients));
+    alert('Patient registered');
+    generateRegistrationSlip(patient);
+    loadPatients(localStorage.getItem('currentUser').role);
+    e.target.reset();
+    document.querySelectorAll('.deptCheck').forEach(ch => ch.checked = false);
+    document.querySelectorAll('.testCheck').forEach(ch => ch.checked = false);
+}
