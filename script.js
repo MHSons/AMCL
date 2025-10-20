@@ -1,97 +1,30 @@
-const CryptoJS = window.CryptoJS;
+// script.js
+import { savePatient, loadPatients } from './patient.js';
+import { generateRegistrationSlip, viewReport } from './report.js';
+import config from './config.js';
 
-function hashPassword(password) {
-    return CryptoJS.SHA256(password).toString();
-}
-
+// Initialize storage with data from data.json if available
 function initStorage() {
     if (!localStorage.getItem('departments')) {
-        const departments = [
-            {id: 1, name: 'Hematology'},
-            {id: 2, name: 'Biochemistry'},
-            {id: 3, name: 'Microbiology'},
-            {id: 4, name: 'Immunology'},
-            {id: 5, name: 'Serology'},
-            {id: 6, name: 'Endocrinology'},
-            {id: 7, name: 'Cytology'},
-            {id: 8, name: 'Histology'},
-            {id: 9, name: 'Urinalysis'},
-            {id: 10, name: 'Coagulation'},
-            {id: 11, name: 'Toxicology'},
-            {id: 12, name: 'Virology'},
-            {id: 13, name: 'Parasitology'},
-            {id: 14, name: 'Mycology'},
-            {id: 15, name: 'Molecular Pathology'},
-            {id: 16, name: 'Genetics'},
-            {id: 17, name: 'Flow Cytometry'},
-            {id: 18, name: 'Anatomic Pathology'},
-            {id: 19, name: 'Surgical Pathology'},
-            {id: 20, name: 'Dermatopathology'},
-            {id: 21, name: 'Neuropathology'},
-            {id: 22, name: 'Forensic Pathology'},
-            {id: 23, name: 'Pediatric Pathology'},
-            {id: 24, name: 'Gynecologic Pathology'},
-            {id: 25, name: 'Gastrointestinal Pathology'},
-            {id: 26, name: 'Urologic Pathology'},
-            {id: 27, name: 'Hematopathology'},
-            {id: 28, name: 'Bone and Soft Tissue Pathology'},
-            {id: 29, name: 'Cardiovascular Pathology'},
-            {id: 30, name: 'Pulmonary Pathology'}
-        ];
-        localStorage.setItem('departments', JSON.stringify(departments));
-    }
-
-    if (!localStorage.getItem('tests')) {
-        const tests = {
-            1: [
-                {id: 1, name: 'Hemoglobin (Hb)', unit: 'g/dL', normalMale: '14-18', normalFemale: '12-16'},
-                {id: 2, name: 'Hematocrit (Hct)', unit: '%', normalMale: '42-50', normalFemale: '36-45'},
-                // ... (add all 50 Hematology tests as in original)
-            ],
-            2: [
-                {id: 1, name: 'Glucose', unit: 'mg/dL', normalMale: '70-100', normalFemale: '70-100'},
-                {id: 2, name: 'Urea', unit: 'mg/dL', normalMale: '7-20', normalFemale: '7-20'},
-                // ... (add all 50 Biochemistry tests as in original)
-            ],
-            // ... (add all 30 departments' tests)
-            30: [
-                {id: 1, name: 'Pulmonary Function Test', unit: '', normalMale: 'Normal', normalFemale: 'Normal'},
-                // ... (add all 50 Pulmonary Pathology tests)
-            ]
-        };
-        localStorage.setItem('tests', JSON.stringify(tests));
-    }
-
-    if (!localStorage.getItem('users')) {
-        const users = [
-            {username: 'admin', password: hashPassword('admin123'), role: 'admin'},
-            {username: 'mlt', password: hashPassword('mlt123'), role: 'mlt'},
-            {username: 'reception', password: hashPassword('rec123'), role: 'reception'}
-        ];
-        localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    if (!localStorage.getItem('patients')) {
-        localStorage.setItem('patients', JSON.stringify([]));
-    }
-
-    if (!localStorage.getItem('labSettings')) {
-        localStorage.setItem('labSettings', JSON.stringify({
-            name: 'AlphaMed Clinical Laboratory',
-            tagline: 'Quality Assurance Through Advanced Technology',
-            logo: 'data:image/png;base64,[BASE64_LOGO_HERE]',
-            cliaNumber: 'CLIA #45D1234567',
-            capNumber: 'CAP #12345678',
-            hipaaNotice: 'This report contains Protected Health Information (PHI) under HIPAA. Unauthorized disclosure is prohibited.'
-        }));
-    }
-
-    if (!localStorage.getItem('gallery')) {
-        localStorage.setItem('gallery', JSON.stringify([]));
-    }
-
-    if (!localStorage.getItem('careers')) {
-        localStorage.setItem('careers', JSON.stringify([]));
+        fetch('./data.json')
+            .then(response => response.json())
+            .then(data => {
+                localStorage.setItem('departments', JSON.stringify(data.departments));
+                localStorage.setItem('tests', JSON.stringify(data.tests));
+                localStorage.setItem('users', JSON.stringify(data.users));
+                localStorage.setItem('patients', JSON.stringify([]));
+                localStorage.setItem('labSettings', JSON.stringify({
+                    name: 'AlphaMed Clinical Laboratory',
+                    tagline: 'Quality Assurance Through Advanced Technology',
+                    logo: 'data:image/png;base64,[BASE64_LOGO_HERE]',
+                    cliaNumber: 'CLIA #45D1234567',
+                    capNumber: 'CAP #12345678',
+                    hipaaNotice: 'This report contains Protected Health Information (PHI) under HIPAA. Unauthorized disclosure is prohibited.'
+                }));
+                localStorage.setItem('gallery', JSON.stringify([]));
+                localStorage.setItem('careers', JSON.stringify([]));
+            })
+            .catch(error => console.error('Error loading data.json:', error));
     }
 }
 
@@ -330,166 +263,6 @@ function loadTestsForDept(deptId, container) {
     });
 }
 
-function savePatient(e) {
-    e.preventDefault();
-    const name = document.getElementById('patientName').value;
-    const age = document.getElementById('patientAge').value;
-    const gender = document.getElementById('patientGender').value;
-    const address = document.getElementById('patientAddress').value;
-    const phone = document.getElementById('patientPhone').value;
-    const appointment = document.getElementById('patientAppointment').value;
-    const departments = [];
-    document.querySelectorAll('.deptCheck:checked').forEach(checkbox => {
-        const deptId = checkbox.dataset.deptId;
-        const tests = [];
-        document.querySelectorAll(`#testsFor${deptId} .testCheck:checked`).forEach(testCheck => {
-            tests.push(testCheck.dataset.testId);
-        });
-        if (tests.length > 0) {
-            departments.push({deptId, tests: tests.map(id => ({id, result: ''}))});
-        }
-    });
-    if (departments.length === 0) {
-        alert('Select at least one department and test');
-        return;
-    }
-    const patient = {
-        id: Date.now(),
-        name, age, gender, address, phone,
-        appointment,
-        departments,
-        registeredDate: new Date().toISOString(),
-        status: 'Registered'
-    };
-    const patients = JSON.parse(localStorage.getItem('patients'));
-    patients.push(patient);
-    localStorage.setItem('patients', JSON.stringify(patients));
-    alert('Patient registered');
-    generateRegistrationSlip(patient);
-    loadPatients(localStorage.getItem('currentUser').role);
-    e.target.reset();
-    document.querySelectorAll('.deptCheck').forEach(ch => ch.checked = false);
-    document.querySelectorAll('.testCheck').forEach(ch => ch.checked = false);
-}
-
-function generateRegistrationSlip(patient) {
-    const settings = JSON.parse(localStorage.getItem('labSettings'));
-    const qrDiv = document.createElement('div');
-    new QRCode(qrDiv, {
-        text: JSON.stringify(patient),
-        width: 128,
-        height: 128
-    });
-    const qrCanvas = qrDiv.querySelector('canvas');
-    const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'long', timeStyle: 'short' });
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    doc.addImage(settings.logo, 'PNG', 10, 10, 50, 50);
-    doc.text(settings.name, 70, 20);
-    doc.text(settings.tagline, 70, 30);
-    doc.text(`CLIA #${settings.cliaNumber}`, 70, 40);
-    doc.text(settings.hipaaNotice, 10, 50, { maxWidth: 190 });
-    doc.text(`Generated on: ${currentDateTime}`, 10, 60);
-    doc.text(`Patient Name: ${patient.name}`, 10, 70);
-    doc.text(`Age: ${patient.age}, Gender: ${patient.gender}`, 10, 80);
-    doc.text(`Address: ${patient.address}`, 10, 90);
-    doc.text(`Phone: ${patient.phone}`, 10, 100);
-    doc.text(`Registered: ${patient.registeredDate}`, 10, 110);
-    doc.text(`Appointment: ${new Date(patient.appointment).toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'medium', timeStyle: 'short' })}`, 10, 120);
-    patient.departments.forEach((dept, index) => {
-        const deptName = JSON.parse(localStorage.getItem('departments')).find(d => d.id == dept.deptId).name;
-        doc.text(deptName, 10, 140 + index * 20);
-        dept.tests.forEach(t => {
-            const testName = JSON.parse(localStorage.getItem('tests'))[dept.deptId].find(test => test.id == t.id).name;
-            doc.text(`- ${testName}`, 15, 150 + index * 20);
-        });
-    });
-    doc.addImage(qrCanvas.toDataURL('image/png'), 'PNG', 150, 10, 50, 50);
-    doc.save(`registration_slip_${patient.id}.pdf`);
-}
-
-function loadPatients(role) {
-    const patientList = document.getElementById('patientList');
-    patientList.innerHTML = '<h2>Patient List</h2><input type="text" id="patientSearch" placeholder="Search by Name or ID" class="form-control mb-2">';
-    const searchInput = patientList.querySelector('#patientSearch');
-    searchInput.addEventListener('input', (e) => updatePatientTable(role, e.target.value));
-    updatePatientTable(role);
-}
-
-function updatePatientTable(role, query = '') {
-    const patients = query ? searchPatients(query) : JSON.parse(localStorage.getItem('patients'));
-    const table = document.createElement('table');
-    table.className = 'table';
-    table.innerHTML = '<thead><tr><th>ID</th><th>Name</th><th>Age</th><th>Gender</th><th>Appointment</th><th>Status</th><th>Actions</th></tr></thead><tbody></tbody>';
-    const tbody = table.querySelector('tbody');
-    patients.forEach(p => {
-        const tr = document.createElement('tr');
-        const appointmentTime = new Date(p.appointment).toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'medium', timeStyle: 'short' });
-        tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.name}</td>
-            <td>${p.age}</td>
-            <td>${p.gender}</td>
-            <td>${appointmentTime}</td>
-            <td>${p.status}</td>
-            <td>
-                <button onclick="viewReport(${p.id})" class="btn btn-info btn-sm">View Report</button>
-            </td>
-        `;
-        if (role === 'mlt' || role === 'admin') {
-            tr.querySelector('td:last-child').innerHTML += ` <button onclick="enterResults(${p.id})" class="btn btn-warning btn-sm">Enter Results</button>`;
-        }
-        if (role === 'admin') {
-            tr.querySelector('td:last-child').innerHTML += ` <button onclick="editPatient(${p.id})" class="btn btn-secondary btn-sm">Edit</button>`;
-        }
-        tbody.appendChild(tr);
-    });
-    patientList.appendChild(table);
-}
-
-function searchPatients(query) {
-    const patients = JSON.parse(localStorage.getItem('patients'));
-    return patients.filter(p => p.name.toLowerCase().includes(query.toLowerCase()) || p.id.toString().includes(query));
-}
-
-function viewReport(patientId) {
-    const patient = JSON.parse(localStorage.getItem('patients')).find(p => p.id === patientId);
-    const settings = JSON.parse(localStorage.getItem('labSettings'));
-    const currentDateTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'long', timeStyle: 'short' });
-    const appointmentTime = new Date(patient.appointment).toLocaleString('en-US', { timeZone: 'Asia/Karachi', dateStyle: 'medium', timeStyle: 'short' });
-    const reportWindow = window.open('', '_blank');
-    let html = `
-        <div style="position:relative;">
-            <div class="report-watermark"></div>
-            <img src="${settings.logo}" style="width:100px;">
-            <h1>${settings.name}</h1>
-            <p>${settings.tagline}</p>
-            <p>CLIA #${settings.cliaNumber} | CAP #${settings.capNumber}</p>
-            <p>${settings.hipaaNotice}</p>
-            <p>Generated on: ${currentDateTime}</p>
-            <h2>Patient Report - ID: ${patient.id}</h2>
-            <p>Name: ${patient.name} | Age: ${patient.age} | Gender: ${patient.gender}</p>
-            <p>Address: ${patient.address} | Phone: ${patient.phone}</p>
-            <p>Registered: ${patient.registeredDate}</p>
-            <p>Appointment: ${appointmentTime} | Status: ${patient.status}</p>
-            <h3>Results</h3>
-    `;
-    patient.departments.forEach(dept => {
-        const deptName = JSON.parse(localStorage.getItem('departments')).find(d => d.id == dept.deptId).name;
-        html += `<h4>${deptName}</h4><table><thead><tr><th>Test</th><th>Result</th><th>Normal Male</th><th>Normal Female</th></tr></thead><tbody>`;
-        dept.tests.forEach(t => {
-            const test = JSON.parse(localStorage.getItem('tests'))[dept.deptId].find(test => test.id == t.id);
-            html += `<tr><td>${test.name}</td><td>${t.result || 'Pending'}</td><td>${test.normalMale}</td><td>${test.normalFemale}</td></tr>`;
-        });
-        html += `</tbody></table>`;
-    });
-    html += `<div id="qr"></div></div>`;
-    reportWindow.document.body.innerHTML = html;
-    new QRCode(reportWindow.document.getElementById('qr'), JSON.stringify(patient));
-    reportWindow.print();
-}
-
 function changePassword(e) {
     e.preventDefault();
     const newPass = hashPassword(document.getElementById('newPassword').value);
@@ -654,8 +427,8 @@ function saveResults(patientId, div) {
 function checkReminders(role) {
     const remindersDiv = document.getElementById('reminders');
     const patients = JSON.parse(localStorage.getItem('patients'));
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+    const now = new Date(); // 01:04 PM PKT
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // 02:04 PM PKT
 
     remindersDiv.innerHTML = '';
     patients.forEach(p => {
@@ -699,4 +472,9 @@ function rescheduleAppointment(patientId) {
             alert(`Appointment for ${patient.name} rescheduled to ${newTime}`);
         }
     }
+}
+
+// Hashing function (required for password handling)
+function hashPassword(password) {
+    return CryptoJS.SHA256(password).toString();
 }
