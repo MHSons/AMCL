@@ -1,0 +1,134 @@
+/* Dark theme base */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #121212;
+  color: #e0e0e0;
+}
+
+/* Watermark logo in background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  background: url('logo.png') no-repeat center/contain;
+  opacity: 0.05;   /* watermark faint */
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.header {
+  background: #1f1f1f;
+  color: #00bcd4;
+  padding: 18px 24px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 18px auto;
+  padding: 18px;
+  background: #1e1e1e;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+h1, h2, h3, h4 {
+  color: #00e5ff;
+  margin-top: 0;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+.form-row .col {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin: 8px 0 4px;
+  font-weight: 600;
+  color: #ccc;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  background: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #e0e0e0;
+}
+
+button {
+  background: #00bcd4;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button:hover {
+  background: #0097a7;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.nav a {
+  color: #00e5ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+.nav a:hover {
+  text-decoration: underline;
+}
+
+#tests-list {
+  border: 1px solid #333;
+  padding: 10px;
+  max-height: 280px;
+  overflow: auto;
+  background: #2c2c2c;
+}
+.test-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px;
+  border-bottom: 1px solid #333;
+}
+.small {
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+/* Report header with logo + QR code */
+.report-header {
+  position: relative;
+  margin-bottom: 40px;
+}
+.report-header img {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  width: 120px;
+}
+#qrcode {
+  position: absolute;
+  top: 15px;
+  left: 20px;
+}
+.footer {
+  margin-top: 16px;
+  font-size: 0.9em;
+  color: #888;
+  text-align: center;
+}

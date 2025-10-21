@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - AlphaMed Clinical Laboratory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Secure Access Portal</p>
+  </div>
+
+  <div class="container" style="max-width:400px; text-align:center;">
+    <h2>Login</h2>
+    <form onsubmit="return loginUser(event)">
+      <label for="username">Username</label>
+      <input type="text" id="username" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+
+      <button type="submit" style="margin-top:15px;">Login</button>
+    </form>
+    <p class="small" style="margin-top:12px;">
+      Please login with your assigned credentials.
+    </p>
+  </div>
+
+  <script>
+    function loginUser(event){
+      event.preventDefault();
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value.trim();
+
+      // Default demo admin (replace with DB/backend later)
+      if(user === "admin" && pass === "1234"){
+        window.location.href = "index.html";
+      } else {
+        alert("Invalid username or password!");
+      }
+    }
+  </script>
+
+</body>
+</html>

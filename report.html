@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Report - AlphaMed Clinical Laboratory</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
+    .report {
+      border: 2px solid #000;
+      padding: 20px;
+      border-radius: 8px;
+      position: relative;
+      background: #fff;
+    }
+    .report::before {
+      content: "AlphaMed Clinical Laboratory";
+      font-size: 50px;
+      color: rgba(0,0,0,0.07);
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .lab-name { flex: 1; text-align: center; }
+    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
+    .lab-name h3 { margin: 0; font-size: 18px; color: #0066cc; }
+    .logo img { width: 120px; }
+    #qrCode { width: 100px; height: 100px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: center; }
+    th { background: #003366; color: #fff; }
+    .actions { margin-top: 20px; text-align: center; }
+    button {
+      background: #00bcd4;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      color: #fff;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover { background: #0097a7; }
+    .footer { text-align: center; margin-top: 15px; font-size: 12px; color: gray; }
+  </style>
+</head>
+<body>
+  <div class="report" id="reportContent">
+    <div class="header">
+      <div id="qrCode"></div>
+      <div class="lab-name">
+        <h2>AlphaMed Clinical Laboratory</h2>
+        <h3>Lab Report</h3>
+      </div>
+      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
+    </div>
+
+    <table>
+      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
+      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
+      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
+      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
+      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
+      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
+      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
+    </table>
+
+    <h3 style="margin-top:20px; color:#003366;">Test Results</h3>
+    <table id="resultsTable">
+      <thead>
+        <tr>
+          <th>Test</th>
+          <th>Parameter</th>
+          <th>Result</th>
+          <th>Unit</th>
+          <th>Normal Range</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="actions">
+      <button onclick="window.print()">🖨️ Print Report</button>
+      <button id="downloadPdf">📥 Download PDF</button>
+    </div>
+
+    <div class="footer">
+      AlphaMed Clinical Laboratory - Quality Assurance Through Advanced Technology
+    </div>
+  </div>
+
+  <!-- ✅ QR + PDF Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // URL se MRN param lena
+      const urlParams = new URLSearchParams(window.location.search);
+      const mrn = urlParams.get("mrn");
+
+      let reports = JSON.parse(localStorage.getItem("reports")) || [];
+      let reportData = reports.find(r => r.mrn === mrn);
+
+      if (reportData) {
+        document.getElementById("mrn").textContent = reportData.mrn || "N/A";
+        document.getElementById("sampleNo").textContent = reportData.sampleNo || "N/A";
+        document.getElementById("name").textContent = reportData.name || "N/A";
+        document.getElementById("age").textContent = reportData.age || "N/A";
+        document.getElementById("gender").textContent = reportData.gender || "N/A";
+        document.getElementById("department").textContent = reportData.departments && reportData.departments.length > 0 ? reportData.departments.join(", ") : "N/A";
+        document.getElementById("date").textContent = reportData.date || new Date().toLocaleString();
+
+        // ✅ Fill test results
+        const tbody = document.querySelector("#resultsTable tbody");
+        tbody.innerHTML = "";
+        if (reportData.results && reportData.results.length > 0) {
+          reportData.results.forEach(test => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${test.name || "N/A"}</td>
+              <td>${test.parameter || "N/A"}</td>
+              <td>${test.result || "N/A"}</td>
+              <td>${test.unit || "N/A"}</td>
+              <td>${(test.normalMin || "")} ${test.normalMin || test.normalMax ? "-" : ""} ${(test.normalMax || "")}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+
+        // ✅ QR Code generate
+        new QRCode(document.getElementById("qrCode"), {
+          text: "MRN: " + reportData.mrn + " | Name: " + reportData.name,
+          width: 90,
+          height: 90
+        });
+      }
+
+      // ✅ PDF Download
+      document.getElementById("downloadPdf").addEventListener("click", function () {
+        const slip = document.getElementById("reportContent");
+        html2pdf().from(slip).save("Lab_Report.pdf");
+      });
+    });
+  </script>
+</body>
+</html>
