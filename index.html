@@ -1,32 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AlphaMed Clinical Laboratory System for managing patients, test results, and professional reports with a responsive interface.">
+  <meta name="keywords" content="clinical laboratory, patient management, lab reports, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
   <title>AlphaMed Clinical Laboratory - Dashboard</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Optional: Open Graph for social media sharing -->
+  <meta property="og:title" content="AlphaMed Clinical Laboratory Dashboard">
+  <meta property="og:description" content="Manage patients, lab results, and reports with AlphaMed's advanced system.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com">
 </head>
 <body>
-
   <!-- Header -->
-  <div class="header">
+  <header class="header">
     <h1>AlphaMed Clinical Laboratory</h1>
     <p>Quality Assurance Through Advanced Technology</p>
-  </div>
+  </header>
 
   <!-- Navigation -->
-  <div class="container">
-    <div class="nav">
-      <a href="register_patient.html">Register Patient</a>
-      <a href="view_reports.html">View Reports</a>
-      <a href="add_test_result.html">Add Test Results</a>
-      <a href="manage_users.html">Manage Users</a>
-      <a href="settings.html">Settings</a>
-      <a href="login.html">Logout</a>
-    </div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="register_patient.html" aria-current="page">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-    <!-- Welcome Section -->
-    <div>
-      <h2>Welcome to AlphaMed Clinical Laboratory System</h2>
+  <!-- Main Content -->
+  <main class="container">
+    <section aria-labelledby="welcome-heading">
+      <h2 id="welcome-heading">Welcome to AlphaMed Clinical Laboratory System</h2>
       <p>
         This system allows receptionists, technicians, and administrators to 
         manage patients, record test results, and generate professional reports.
@@ -38,12 +52,14 @@
         <li>✔ Manage staff and users</li>
         <li>✔ Fully responsive dark theme interface</li>
       </ul>
-    </div>
+    </section>
+  </main>
 
-    <div class="footer">
-      &copy; 2025 AlphaMed Clinical Laboratory - All Rights Reserved
-    </div>
-  </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
+  <script src="script.js" defer></script>
 </body>
 </html>
