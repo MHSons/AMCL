@@ -3,104 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Register patients for AlphaMed Clinical Laboratory System with ease.">
-  <meta name="keywords" content="patient registration, lab management, AlphaMed">
-  <meta name="author" content="AlphaMed Clinical Laboratory">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
-  <title>Register Patient - AlphaMed Clinical Laboratory</title>
+  <meta name="description" content="Patient Registration for AlphaMed Clinical Laboratory">
+  <title>Patient Registration - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <!-- Open Graph for social media -->
-  <meta property="og:title" content="Register Patient - AlphaMed Clinical Laboratory">
-  <meta property="og:description" content="Register patients for lab tests with AlphaMed's advanced system.">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://yourwebsite.com/register_patient.html">
 </head>
 <body>
-  <header class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Quality Assurance Through Advanced Technology</p>
-  </header>
-
   <nav class="nav" aria-label="Main navigation">
-    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-      <span class="hamburger"></span>
-    </button>
-    <ul class="nav-list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="register_patient.html" aria-current="page">Register Patient</a></li>
-      <li><a href="view_reports.html">View Reports</a></li>
-      <li><a href="add_test_result.html">Add Test Results</a></li>
-      <li><a href="manage_users.html">Manage Users</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="login.html">Logout</a></li>
-    </ul>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="settings.html">Settings</a>
+    <a href="admin.html">Admin</a>
+    <a href="reception.html">Reception</a>
+    <a href="technician.html">Technician</a>
+    <a href="view_reports.html">View Reports</a>
   </nav>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
 
-  <main class="container">
-    <section aria-labelledby="register-heading">
-      <h2 id="register-heading">Patient Registration</h2>
-      <form id="registerForm" novalidate>
-        <fieldset>
-          <legend>Patient Details</legend>
-          <div class="form-row">
-            <div class="col">
-              <label for="patientName">Patient Name:</label>
-              <input type="text" id="patientName" name="patientName" required aria-required="true">
-              <span class="error" id="patientNameError" aria-live="polite"></span>
-            </div>
-            <div class="col">
-              <label for="age">Age:</label>
-              <input type="number" id="age" name="age" min="0" required aria-required="true">
-              <span class="error" id="ageError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="gender">Gender:</label>
-              <select id="gender" name="gender" required aria-required="true">
-                <option value="">-- Select Gender --</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              <span class="error" id="genderError" aria-live="polite"></span>
-            </div>
-            <div class="col">
-              <label for="sampleNo">Sample Number:</label>
-              <input type="text" id="sampleNo" name="sampleNo" required aria-required="true">
-              <span class="error" id="sampleNoError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="department">Select Department(s):</label>
-              <select id="department" name="department" multiple required aria-required="true">
-                <option value="">-- Select Department --</option>
-              </select>
-              <span class="error" id="departmentError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="test">Select Test(s):</label>
-              <select id="test" name="test" multiple required aria-required="true">
-                <option value="">-- Select Test --</option>
-              </select>
-              <span class="error" id="testError" aria-live="polite"></span>
-            </div>
-          </div>
-          <button type="submit">Register</button>
-        </fieldset>
-      </form>
-    </section>
-  </main>
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Patient Registration</p>
+  </div>
 
-  <footer class="footer">
-    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
-  </footer>
+  <div id="message" class="message" aria-live="polite"></div>
 
-  <script src="tests.js" defer></script>
-  <script src="script.js" defer></script>
+  <div class="container">
+    <h2>Register Patient</h2>
+    <form id="registerForm" class="form-row">
+      <div class="col">
+        <label for="sampleNo">Sample No</label>
+        <input type="text" id="sampleNo" required aria-required="true">
+      </div>
+      <div class="col">
+        <label for="patientName">Patient Name</label>
+        <input type="text" id="patientName" required aria-required="true">
+      </div>
+      <div class="col">
+        <label for="age">Age</label>
+        <input type="number" id="age" required aria-required="true" min="1">
+      </div>
+      <div class="col">
+        <label for="gender">Gender</label>
+        <select id="gender" required aria-required="true">
+          <option value="">-- Select Gender --</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="department">Department(s)</label>
+        <select id="department" multiple aria-label="Select Department(s)" required>
+          <option value="">-- Select Department(s) --</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="test">Test(s)</label>
+        <select id="test" multiple aria-label="Select Test(s)" required>
+          <option value="">-- Select Test(s) --</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-button" aria-label="Register Patient">Register</button>
+    </form>
+  </div>
+
+  <script type="module" src="register.js"></script>
+  <script type="module" src="nav.js"></script>
 </body>
 </html>
