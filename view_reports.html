@@ -3,72 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>View Reports</title>
-  <style>
-    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
-    h2 { color:#00bcd4; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
-    th, td { border:1px solid #444; padding:10px; text-align:left; }
-    th { background:#00bcd4; color:#fff; }
-    button {
-      background:#00bcd4;
-      border:none;
-      padding:6px 12px;
-      border-radius:6px;
-      color:#fff;
-      cursor:pointer;
-    }
-    button:hover { background:#0097a7; }
-  </style>
+  <meta name="description" content="View all completed lab reports in AlphaMed Clinical Laboratory System.">
+  <meta name="keywords" content="lab reports, view reports, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
+  <title>View Reports - AlphaMed Clinical Laboratory</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Open Graph -->
+  <meta property="og:title" content="View Reports - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="Access and view all patient lab reports securely.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/view_reports.html">
 </head>
 <body>
-  <h2>All Reports</h2>
-  <div id="reportTable"></div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
-      const container = document.getElementById("reportTable");
+  <!-- Header -->
+  <header class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>View Completed Reports</p>
+  </header>
 
-      if (reports.length === 0) {
-        container.innerHTML = "<p>No reports available.</p>";
-        return;
-      }
+  <!-- Navigation -->
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html">Register Patient</a></li>
+      <li><a href="view_reports.html" aria-current="page">View Reports</a></li>
+      <li><a href="add_test_result.html">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-      let html = `
-        <table>
-          <tr>
-            <th>MRN</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Department(s)</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-      `;
+  <!-- Main Content -->
+  <main class="container">
+    <section aria-labelledby="reports-heading">
+      <h2 id="reports-heading">All Lab Reports</h2>
+      <div id="reportTable"></div>
+    </section>
+  </main>
 
-      reports.forEach(r => {
-        html += `
-          <tr>
-            <td>${r.mrn}</td>
-            <td>${r.name}</td>
-            <td>${r.age}</td>
-            <td>${r.gender}</td>
-            <td>${r.departments && r.departments.length ? r.departments.join(", ") : "N/A"}</td>
-            <td>${new Date(r.date || Date.now()).toLocaleString()}</td>
-            <td><button onclick="viewReport('${r.mrn}')">View Report</button></td>
-          </tr>
-        `;
-      });
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
-      html += "</table>";
-      container.innerHTML = html;
-    });
-
-    function viewReport(mrn) {
-      window.location.href = `report.html?mrn=${mrn}`;
-    }
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
