@@ -5,10 +5,11 @@
   --accent-color: #00bcd4;
   --accent-hover: #0097a7;
   --text-color: #e0e0e0;
-  --text-muted: #888;
+  --text-muted: #aaa; /* Improved contrast */
   --border-color: #444;
   --header-bg: #1f1f1f;
   --highlight-color: #00e5ff;
+  --error-color: #ff4444;
 }
 
 /* Reset and Base Styles */
@@ -23,7 +24,7 @@ body {
   background: var(--primary-bg);
   color: var(--text-color);
   line-height: 1.6;
-  font-size: 16px; /* Base font size for accessibility */
+  font-size: 16px;
 }
 
 /* Watermark logo in background */
@@ -34,10 +35,11 @@ body::before {
   left: 50%;
   width: 400px;
   height: 400px;
-  background: url('logo.png') no-repeat center/contain;
+  background: url('logo.png') no-repeat center/contain, var(--secondary-bg);
   opacity: 0.05;
   transform: translate(-50%, -50%);
   z-index: -1;
+  aria-hidden: true;
 }
 
 /* Header */
@@ -50,7 +52,7 @@ body::before {
 
 /* Container */
 .container {
-  max-width: 1200px; /* Slightly wider for modern screens */
+  max-width: 1200px;
   margin: 1.5rem auto;
   padding: 1.5rem;
   background: var(--secondary-bg);
@@ -68,12 +70,12 @@ h1, h2, h3, h4 {
 .form-row {
   display: flex;
   gap: 1rem;
-  flex-wrap: wrap; /* Responsive form layout */
+  flex-wrap: wrap;
 }
 
 .form-row .col {
   flex: 1;
-  min-width: 250px; /* Prevent columns from shrinking too much */
+  min-width: 250px;
 }
 
 label {
@@ -98,8 +100,17 @@ input:focus, select:focus, textarea:focus {
   outline-offset: 2px;
 }
 
+input:invalid, select:invalid {
+  border-color: var(--error-color);
+}
+
+select[multiple] {
+  height: 120px;
+  overflow-y: auto;
+}
+
 /* Button Styles */
-button {
+button, .submit-button {
   background: var(--accent-color);
   color: white;
   border: none;
@@ -110,11 +121,11 @@ button {
   font-size: 1rem;
 }
 
-button:hover {
+button:hover, .submit-button:hover {
   background: var(--accent-hover);
 }
 
-button:focus {
+button:focus, .submit-button:focus {
   outline: 2px solid var(--highlight-color);
   outline-offset: 2px;
 }
@@ -142,7 +153,6 @@ button:focus {
   outline-offset: 2px;
 }
 
-/* Hamburger Menu (for mobile) */
 .nav-toggle {
   display: none;
   background: none;
@@ -195,7 +205,7 @@ button:focus {
 }
 
 .small {
-  font-size: 0.95rem; /* Slightly larger for accessibility */
+  font-size: 0.95rem;
   color: var(--text-muted);
 }
 
@@ -219,10 +229,18 @@ button:focus {
   left: 1.25rem;
 }
 
+/* Message */
+.message {
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
 /* Footer */
 .footer {
   margin-top: 1.5rem;
-  font-size: 1rem; /* Larger for readability */
+  font-size: 1rem;
   color: var(--text-muted);
   text-align: center;
 }
@@ -267,7 +285,7 @@ button:focus {
 /* Print Styles */
 @media print {
   .nav, .nav-toggle, body::before {
-    display: none; /* Hide navigation and watermark for printing */
+    display: none;
   }
 
   .container {
@@ -283,7 +301,7 @@ button:focus {
   }
 }
 
-/* RTL Support (if needed) */
+/* RTL Support */
 @media (direction: rtl) {
   .report-header img {
     right: auto;
