@@ -1,52 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Technician - AlphaMed Clinical Laboratory</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Technician dashboard for AlphaMed Clinical Laboratory to manage patient test results.">
+  <meta name="keywords" content="technician dashboard, test results, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
+  <title>Technician Dashboard - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Technician Dashboard - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="View patients waiting for test results and add results in AlphaMed's system.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/technician.html">
 </head>
-<body onload="loadPatients()">
-
-  <!-- Header -->
-  <div class="header">
+<body>
+  <header class="header">
     <h1>AlphaMed Clinical Laboratory</h1>
     <p>Technician Dashboard</p>
-  </div>
+  </header>
 
-  <!-- Patients List -->
-  <div class="container">
-    <h2>Patients Waiting for Tests</h2>
-    <table border="1" width="100%" cellpadding="6" cellspacing="0" style="border-collapse:collapse; background:#2c2c2c; color:#eee;">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Department</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="patient-list"></tbody>
-    </table>
-  </div>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html" aria-current="page">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-  <script>
-    function loadPatients(){
-      let patients = JSON.parse(localStorage.getItem("patients") || "[]");
-      document.getElementById("patient-list").innerHTML = patients.map((p,i) => `
-        <tr>
-          <td>${p.id}</td>
-          <td>${p.name}</td>
-          <td>${p.department}</td>
-          <td><button onclick="addResult(${i})">➕ Add Result</button></td>
-        </tr>
-      `).join("");
-    }
+  <main class="container">
+    <section aria-labelledby="patients-heading">
+      <h2 id="patients-heading">Patients Waiting for Tests</h2>
+      <table aria-describedby="patients-heading">
+        <caption class="sr-only">List of patients waiting for test results</caption>
+        <thead>
+          <tr>
+            <th scope="col">MRN</th>
+            <th scope="col">Name</th>
+            <th scope="col">Department(s)</th>
+            <th scope="col">Test(s)</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="patient-list"></tbody>
+      </table>
+    </section>
+  </main>
 
-    function addResult(index){
-      localStorage.setItem("currentPatientIndex", index);
-      window.location.href = "add_test_result.html";
-    }
-  </script>
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
+  <script src="script.js" defer></script>
 </body>
 </html>
