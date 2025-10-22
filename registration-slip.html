@@ -3,107 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Patient registration slip for AlphaMed Clinical Laboratory with QR code and PDF download.">
+  <meta name="keywords" content="registration slip, lab management, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;">
   <title>Registration Slip - AlphaMed Clinical Laboratory</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #fff; margin: 20px; color: #000; }
-    .slip {
-      border: 2px solid #000;
-      padding: 20px;
-      border-radius: 8px;
-      position: relative;
-      background: #fff;
-    }
-    .slip::before {
-      content: "AlphaMed Clinical Laboratory";
-      font-size: 50px;
-      color: rgba(0,0,0,0.07);
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      white-space: nowrap;
-      pointer-events: none;
-    }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .lab-name { flex: 1; text-align: center; }
-    .lab-name h2 { margin: 0; font-size: 24px; color: #003366; }
-    .logo img { width: 120px; }
-    #qrCode { width: 100px; height: 100px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #000; padding: 6px; text-align: left; }
-    th { background: #003366; color: #fff; }
-    .actions { margin-top: 20px; text-align: center; }
-    button {
-      background: #00bcd4;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      color: #fff;
-      cursor: pointer;
-      margin: 5px;
-    }
-    button:hover { background: #0097a7; }
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Registration Slip - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="View and download patient registration slip with QR code.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/registration-slip.html">
 </head>
 <body>
-  <div class="slip">
-    <div class="header">
-      <div id="qrCode"></div>
-      <div class="lab-name">
-        <h2>AlphaMed Clinical Laboratory</h2>
-        <h3>Patient Registration Slip</h3>
+  <header class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Quality Assurance Through Advanced Technology</p>
+  </header>
+
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html" aria-current="page">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <section class="slip" aria-labelledby="slip-heading">
+      <h2 id="slip-heading" class="lab-name">Patient Registration Slip</h2>
+      <div class="header">
+        <div id="qrCode" aria-label="QR code containing patient details"></div>
+        <div class="lab-name">
+          <h3>AlphaMed Clinical Laboratory</h3>
+        </div>
+        <div class="logo"><img src="logo.png" alt="AlphaMed Clinical Laboratory Logo"></div>
       </div>
-      <div class="logo"><img src="logo.png" alt="Lab Logo"></div>
-    </div>
 
-    <table>
-      <tr><td><b>MRN:</b></td><td id="mrn">N/A</td></tr>
-      <tr><td><b>Sample No:</b></td><td id="sampleNo">N/A</td></tr>
-      <tr><td><b>Name:</b></td><td id="name">N/A</td></tr>
-      <tr><td><b>Age:</b></td><td id="age">N/A</td></tr>
-      <tr><td><b>Gender:</b></td><td id="gender">N/A</td></tr>
-      <tr><td><b>Department(s):</b></td><td id="department">N/A</td></tr>
-      <tr><td><b>Test(s):</b></td><td id="test">N/A</td></tr>
-      <tr><td><b>Date:</b></td><td id="date">N/A</td></tr>
-    </table>
+      <table aria-describedby="slip-heading">
+        <caption class="sr-only">Patient Registration Details</caption>
+        <tr><th scope="row">MRN:</th><td id="mrn">N/A</td></tr>
+        <tr><th scope="row">Sample No:</th><td id="sampleNo">N/A</td></tr>
+        <tr><th scope="row">Name:</th><td id="name">N/A</td></tr>
+        <tr><th scope="row">Age:</th><td id="age">N/A</td></tr>
+        <tr><th scope="row">Gender:</th><td id="gender">N/A</td></tr>
+        <tr><th scope="row">Department(s):</th><td id="department">N/A</td></tr>
+        <tr><th scope="row">Test(s):</th><td id="test">N/A</td></tr>
+        <tr><th scope="row">Date:</th><td id="date">N/A</td></tr>
+      </table>
 
-    <div class="actions">
-      <button onclick="window.print()">🖨️ Print Slip</button>
-      <button id="downloadPdf">📥 Download PDF</button>
-    </div>
-  </div>
+      <div class="actions">
+        <button type="button" onclick="window.print()" aria-label="Print registration slip">🖨️ Print Slip</button>
+        <button type="button" id="downloadPdf" aria-label="Download registration slip as PDF">📥 Download PDF</button>
+      </div>
+    </section>
+  </main>
 
-  <!-- ✅ QR + PDF Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const patientData = JSON.parse(localStorage.getItem("lastRegisteredPatient"));
-      if (patientData) {
-        document.getElementById("mrn").textContent = patientData.mrn;
-        document.getElementById("sampleNo").textContent = patientData.sampleNo;
-        document.getElementById("name").textContent = patientData.name;
-        document.getElementById("age").textContent = patientData.age;
-        document.getElementById("gender").textContent = patientData.gender;
-        document.getElementById("department").textContent = patientData.departments.join(", ");
-        document.getElementById("test").textContent = patientData.tests.join(", ");
-        document.getElementById("date").textContent = new Date().toLocaleString();
-
-        // ✅ QR Code (smaller size for top left)
-        new QRCode(document.getElementById("qrCode"), {
-          text: JSON.stringify(patientData),
-          width: 90,
-          height: 90
-        });
-      }
-
-      // ✅ PDF Download
-      document.getElementById("downloadPdf").addEventListener("click", function () {
-        const slip = document.querySelector(".slip");
-        html2pdf().from(slip).save("Registration_Slip.pdf");
-      });
-    });
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNj7hu1zTI8fs1k1O5Smp1dhrSF9mDIyOLwP0Pn3+4zGqOix6En0owvLhS4e3H3uCyVfgxM0aZ7X0v40W0W0gTg==" crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
