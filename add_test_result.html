@@ -3,50 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Add test results for patients in AlphaMed Clinical Laboratory System.">
-  <meta name="keywords" content="test results, lab management, AlphaMed">
-  <meta name="author" content="AlphaMed Clinical Laboratory">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
-  <title>Add Test Results - AlphaMed Clinical Laboratory</title>
+  <meta name="description" content="Add Test Results for AlphaMed Clinical Laboratory">
+  <title>Add Test Result - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta property="og:title" content="Add Test Results - AlphaMed Clinical Laboratory">
-  <meta property="og:description" content="Enter and save test results for patients in AlphaMed's system.">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://yourwebsite.com/add_test_result.html">
 </head>
 <body>
-  <header class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Technician Dashboard - Add Test Results</p>
-  </header>
-
   <nav class="nav" aria-label="Main navigation">
-    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-      <span class="hamburger"></span>
-    </button>
-    <ul class="nav-list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="register_patient.html">Register Patient</a></li>
-      <li><a href="view_reports.html">View Reports</a></li>
-      <li><a href="add_test_result.html" aria-current="page">Add Test Results</a></li>
-      <li><a href="manage_users.html">Manage Users</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="login.html">Logout</a></li>
-    </ul>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register_patient.html">Register Patient</a>
+    <a href="settings.html">Settings</a>
+    <a href="admin.html">Admin</a>
+    <a href="reception.html">Reception</a>
+    <a href="view_reports.html">View Reports</a>
   </nav>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
 
-  <main class="container">
-    <section aria-labelledby="test-results-heading">
-      <h2 id="test-results-heading">Add Test Results</h2>
-      <div id="patientTable"></div>
-    </section>
-  </main>
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Add Test Result</p>
+  </div>
 
-  <footer class="footer">
-    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
-  </footer>
+  <div id="message" class="message" aria-live="polite"></div>
 
-  <script src="script.js" defer></script>
+  <div class="container">
+    <h2>Select Patient</h2>
+    <select id="patientSelect" aria-label="Select Patient" required>
+      <option value="">-- Select Patient --</option>
+    </select>
+
+    <h2>Test Results</h2>
+    <form id="resultForm" class="form-row">
+      <div id="tests-list"></div>
+      <button type="submit" class="submit-button" aria-label="Save Results">Save Results</button>
+    </form>
+  </div>
+
+  <script type="module" src="add_test_result.js"></script>
+  <script type="module" src="nav.js"></script>
 </body>
 </html>
