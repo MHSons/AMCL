@@ -14,5 +14,12 @@ export const departmentsArray = [
       { id: "t3", name: "Glucose", parameter: "FBS", unit: "mg/dL", normalMin: "70", normalMax: "100" },
       { id: "t4", name: "Cholesterol", parameter: "Total Cholesterol", unit: "mg/dL", normalMin: "100", normalMax: "200" }
     ]
+  },
+  {
+    id: "3",
+    name: "Microbiology",
+    tests: [
+      { id: "t5", name: "Blood Culture", parameter: "Culture", unit: "N/A", normalMin: "Negative", normalMax: "Negative" }
+    ]
   }
 ];
