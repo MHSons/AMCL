@@ -103,6 +103,18 @@ input:invalid, select:invalid {
 select[multiple] {
   height: 120px;
   overflow-y: auto;
+  background: #2c2c2c;
+  padding: 0.5rem;
+}
+
+/* Enhanced styling for select[multiple] */
+select[multiple] option {
+  padding: 0.5rem;
+}
+
+select[multiple] option:checked {
+  background: var(--accent-color);
+  color: white;
 }
 
 /* Button Styles */
