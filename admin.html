@@ -3,133 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Admin panel for AlphaMed Clinical Laboratory to manage user accounts.">
-  <meta name="keywords" content="admin panel, user management, AlphaMed">
-  <meta name="author" content="AlphaMed Clinical Laboratory">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
-  <title>Admin Panel - AlphaMed Clinical Laboratory</title>
+  <meta name="description" content="Admin Dashboard for AlphaMed Clinical Laboratory">
+  <title>Admin - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta property="og:title" content="Admin Panel - AlphaMed Clinical Laboratory">
-  <meta property="og:description" content="Manage user accounts for AlphaMed Clinical Laboratory System.">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://yourwebsite.com/admin.html">
 </head>
 <body>
-  <header class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Administrator Panel</p>
-  </header>
-
   <nav class="nav" aria-label="Main navigation">
-    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
-      <span class="hamburger"></span>
-    </button>
-    <ul class="nav-list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="register_patient.html">Register Patient</a></li>
-      <li><a href="view_reports.html">View Reports</a></li>
-      <li><a href="add_test_result.html">Add Test Results</a></li>
-      <li><a href="manage_users.html">Manage Users</a></li>
-      <li><a href="settings.html">Settings</a></li>
-      <li><a href="login.html">Logout</a></li>
-    </ul>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register_patient.html">Register Patient</a>
+    <a href="settings.html">Settings</a>
+    <a href="reception.html">Reception</a>
+    <a href="technician.html">Technician</a>
+    <a href="view_reports.html">View Reports</a>
   </nav>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
 
-  <main class="container">
-    <section aria-labelledby="add-user-heading">
-      <h2 id="add-user-heading">Add New User</h2>
-      <form id="addUserForm" novalidate>
-        <fieldset>
-          <legend>User Details</legend>
-          <div class="form-row">
-            <div class="col">
-              <label for="username">Username:</label>
-              <input type="text" id="username" name="username" required aria-required="true">
-              <span class="error" id="usernameError" aria-live="polite"></span>
-            </div>
-            <div class="col">
-              <label for="role">Role:</label>
-              <select id="role" name="role" required aria-required="true">
-                <option value="">-- Select Role --</option>
-                <option value="Receptionist">Receptionist</option>
-                <option value="Technician">Technician</option>
-                <option value="Admin">Admin</option>
-              </select>
-              <span class="error" id="roleError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required aria-required="true">
-              <span class="error" id="passwordError" aria-live="polite"></span>
-            </div>
-          </div>
-          <button type="submit">➕ Add User</button>
-        </fieldset>
-      </form>
-    </section>
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Admin Dashboard</p>
+  </div>
 
-    <section aria-labelledby="users-heading">
-      <h2 id="users-heading">All Users</h2>
-      <table aria-describedby="users-heading">
-        <caption class="sr-only">List of registered users</caption>
-        <thead>
-          <tr>
-            <th scope="col">Username</th>
-            <th scope="col">Role</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody id="user-list"></tbody>
-      </table>
-    </section>
+  <div id="message" class="message" aria-live="polite"></div>
 
-    <!-- Edit User Modal -->
-    <div id="editUserModal" class="modal" role="dialog" aria-labelledby="edit-user-heading" aria-hidden="true">
-      <div class="modal-content">
-        <h2 id="edit-user-heading">Edit User</h2>
-        <form id="editUserForm">
-          <input type="hidden" id="editIndex">
-          <div class="form-row">
-            <div class="col">
-              <label for="editUsername">Username:</label>
-              <input type="text" id="editUsername" name="editUsername" disabled>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="editRole">Role:</label>
-              <select id="editRole" name="editRole" required>
-                <option value="">-- Select Role --</option>
-                <option value="Receptionist">Receptionist</option>
-                <option value="Technician">Technician</option>
-                <option value="Admin">Admin</option>
-              </select>
-              <span class="error" id="editRoleError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="editPassword">New Password:</label>
-              <input type="password" id="editPassword" name="editPassword" required>
-              <span class="error" id="editPasswordError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="modal-actions">
-            <button type="submit">Save Changes</button>
-            <button type="button" id="cancelEdit">Cancel</button>
-          </div>
-        </form>
-      </div>
+  <div class="container">
+    <h2>Admin Actions</h2>
+    <div class="form-row">
+      <button class="submit-button" onclick="window.location.href='manage_users.html'" aria-label="Manage Users">Manage Users</button>
+      <button class="submit-button" onclick="window.location.href='settings.html'" aria-label="Manage Settings">Manage Settings</button>
+      <button class="submit-button" onclick="window.location.href='view_reports.html'" aria-label="View Reports">View Reports</button>
     </div>
-  </main>
+  </div>
 
-  <footer class="footer">
-    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
-  </footer>
-
-  <script src="script.js" defer></script>
+  <script type="module" src="admin.js"></script>
+  <script type="module" src="nav.js"></script>
 </body>
 </html>
