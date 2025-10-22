@@ -3,142 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Test Result - Lab Management System</title>
-  <style>
-    body { background:#121212; color:#e0e0e0; font-family:Arial; padding:20px; }
-    h2 { color:#00bcd4; }
-    table { width:100%; border-collapse:collapse; background:#1e1e1e; margin-top:20px; }
-    th, td { border:1px solid #444; padding:10px; text-align:left; }
-    th { background:#00bcd4; color:#fff; }
-    input { width:100%; padding:5px; border-radius:4px; border:none; background:#2c2c2c; color:#fff; }
-    button {
-      background:#00bcd4;
-      border:none;
-      padding:6px 12px;
-      border-radius:6px;
-      color:#fff;
-      cursor:pointer;
-    }
-    button:hover { background:#0097a7; }
-  </style>
+  <meta name="description" content="Add test results for patients in AlphaMed Clinical Laboratory System.">
+  <meta name="keywords" content="test results, lab management, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
+  <title>Add Test Results - AlphaMed Clinical Laboratory</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Add Test Results - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="Enter and save test results for patients in AlphaMed's system.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/add_test_result.html">
 </head>
 <body>
-  <h2>Add Test Results</h2>
-  <div id="patientTable"></div>
+  <header class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Technician Dashboard - Add Test Results</p>
+  </header>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      const container = document.getElementById("patientTable");
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html" aria-current="page">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-      if (patients.length === 0) {
-        container.innerHTML = "<p>No patients available for test results.</p>";
-        return;
-      }
+  <main class="container">
+    <section aria-labelledby="test-results-heading">
+      <h2 id="test-results-heading">Add Test Results</h2>
+      <div id="patientTable"></div>
+    </section>
+  </main>
 
-      let html = `
-        <table>
-          <tr>
-            <th>MRN</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Department(s)</th>
-            <th>Test(s)</th>
-            <th>Result Entry</th>
-            <th>Action</th>
-          </tr>
-      `;
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
-      patients.forEach((p, index) => {
-        const tests = p.tests || []; 
-        html += `
-          <tr>
-            <td>${p.mrn}</td>
-            <td>${p.name}</td>
-            <td>${p.age}</td>
-            <td>${p.gender}</td>
-            <td>${p.departments && p.departments.length > 0 ? p.departments.join(", ") : "N/A"}</td>
-            <td>${tests.length > 0 ? tests.join(", ") : "No Tests Assigned"}</td>
-            <td>
-              ${tests.length > 0 ? `
-              <div id="results-${index}">
-                <table style="background:#2c2c2c; width:100%;">
-                  <tr>
-                    <th>Test</th>
-                    <th>Parameter</th>
-                    <th>Result</th>
-                    <th>Unit</th>
-                    <th>Normal Range</th>
-                  </tr>
-                  ${tests.map((t, i) => `
-                    <tr>
-                      <td>${t}</td>
-                      <td><input type="text" id="param-${index}-${i}" placeholder="Parameter"></td>
-                      <td><input type="text" id="result-${index}-${i}" placeholder="Result"></td>
-                      <td><input type="text" id="unit-${index}-${i}" placeholder="Unit"></td>
-                      <td>
-                        <input type="text" id="min-${index}-${i}" placeholder="Min" style="width:45%;"> - 
-                        <input type="text" id="max-${index}-${i}" placeholder="Max" style="width:45%;">
-                      </td>
-                    </tr>
-                  `).join("")}
-                </table>
-              </div>` : `<p>No result entry available</p>`}
-            </td>
-            <td>
-              ${tests.length > 0 
-                ? `<button onclick="saveResult(${index})">Save</button>` 
-                : "N/A"}
-            </td>
-          </tr>
-        `;
-      });
-
-      html += "</table>";
-      container.innerHTML = html;
-    });
-
-    function saveResult(index) {
-      let patients = JSON.parse(localStorage.getItem("patients")) || [];
-      let reports = JSON.parse(localStorage.getItem("reports")) || [];
-
-      const p = patients[index];
-      let results = [];
-
-      (p.tests || []).forEach((t, i) => {
-        results.push({
-          name: t,
-          parameter: document.getElementById(`param-${index}-${i}`).value,
-          result: document.getElementById(`result-${index}-${i}`).value,
-          unit: document.getElementById(`unit-${index}-${i}`).value,
-          normalMin: document.getElementById(`min-${index}-${i}`).value,
-          normalMax: document.getElementById(`max-${index}-${i}`).value,
-        });
-      });
-
-      const reportData = {
-        mrn: p.mrn,
-        sampleNo: p.sampleNo,
-        name: p.name,
-        age: p.age,
-        gender: p.gender,
-        departments: p.departments,
-        results: results,
-        date: new Date().toLocaleString()
-      };
-
-      reports.push(reportData);
-      localStorage.setItem("reports", JSON.stringify(reports));
-
-      // Remove patient from pending list
-      patients.splice(index, 1);
-      localStorage.setItem("patients", JSON.stringify(patients));
-
-      alert("Test results saved successfully!");
-      // ✅ Directly open report for this MRN
-      window.location.href = "report.html?mrn=" + p.mrn;
-    }
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
