@@ -1,115 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage users for AlphaMed Clinical Laboratory System. Add, edit, or delete user accounts.">
+  <meta name="keywords" content="user management, lab system, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
   <title>Manage Users - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta property="og:title" content="Manage Users - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="Admin dashboard to manage user accounts for AlphaMed Clinical Laboratory.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/manage_users.html">
 </head>
 <body>
-
-  <!-- Header -->
-  <div class="header">
+  <header class="header">
     <h1>AlphaMed Clinical Laboratory</h1>
     <p>Manage Users</p>
-  </div>
+  </header>
 
-  <!-- Add User -->
-  <div class="container">
-    <h2>Add New User</h2>
-    <form onsubmit="return addUser(event)">
-      <label for="username">Username</label>
-      <input type="text" id="username" required>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html">Add Test Results</a></li>
+      <li><a href="manage_users.html" aria-current="page">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-      <label for="role">Role</label>
-      <select id="role" required>
-        <option value="">--Select--</option>
-        <option>Receptionist</option>
-        <option>Technician</option>
-        <option>Admin</option>
-      </select>
+  <main class="container">
+    <section aria-labelledby="add-user-heading">
+      <h2 id="add-user-heading">Add New User</h2>
+      <form id="addUserForm" novalidate>
+        <fieldset>
+          <legend>User Details</legend>
+          <div class="form-row">
+            <div class="col">
+              <label for="username">Username:</label>
+              <input type="text" id="username" name="username" required aria-required="true">
+              <span class="error" id="usernameError" aria-live="polite"></span>
+            </div>
+            <div class="col">
+              <label for="role">Role:</label>
+              <select id="role" name="role" required aria-required="true">
+                <option value="">-- Select Role --</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Technician">Technician</option>
+                <option value="Admin">Admin</option>
+              </select>
+              <span class="error" id="roleError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" required aria-required="true">
+              <span class="error" id="passwordError" aria-live="polite"></span>
+            </div>
+          </div>
+          <button type="submit">➕ Add User</button>
+        </fieldset>
+      </form>
+    </section>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" required>
+    <section aria-labelledby="users-heading">
+      <h2 id="users-heading">All Users</h2>
+      <table aria-describedby="users-heading">
+        <caption class="sr-only">List of registered users</caption>
+        <thead>
+          <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Role</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="user-list"></tbody>
+      </table>
+    </section>
 
-      <button type="submit" style="margin-top:12px;">➕ Add User</button>
-    </form>
-  </div>
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal" role="dialog" aria-labelledby="edit-user-heading" aria-hidden="true">
+      <div class="modal-content">
+        <h2 id="edit-user-heading">Edit User</h2>
+        <form id="editUserForm">
+          <input type="hidden" id="editIndex">
+          <div class="form-row">
+            <div class="col">
+              <label for="editUsername">Username:</label>
+              <input type="text" id="editUsername" name="editUsername" disabled>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="editRole">Role:</label>
+              <select id="editRole" name="editRole" required>
+                <option value="">-- Select Role --</option>
+                <option value="Receptionist">Receptionist</option>
+                <option value="Technician">Technician</option>
+                <option value="Admin">Admin</option>
+              </select>
+              <span class="error" id="editRoleError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="editPassword">New Password:</label>
+              <input type="password" id="editPassword" name="editPassword" required>
+              <span class="error" id="editPasswordError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="submit">Save Changes</button>
+            <button type="button" id="cancelEdit">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
 
-  <!-- User List -->
-  <div class="container">
-    <h2>All Users</h2>
-    <table border="1" width="100%" cellpadding="6" cellspacing="0" style="border-collapse:collapse; background:#2c2c2c; color:#eee;">
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>Role</th>
-          <th>Password</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="user-list"></tbody>
-    </table>
-  </div>
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
-  <script>
-    function loadUsers(){
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
-      document.getElementById("user-list").innerHTML = users.map((u,i) => `
-        <tr>
-          <td>${u.username}</td>
-          <td>${u.role}</td>
-          <td>${u.password}</td>
-          <td>
-            <button onclick="editUser(${i})">✏ Edit</button>
-            <button onclick="deleteUser(${i})">🗑 Delete</button>
-          </td>
-        </tr>
-      `).join("");
-    }
-
-    function addUser(e){
-      e.preventDefault();
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
-      const username = document.getElementById("username").value.trim();
-      const role = document.getElementById("role").value;
-      const password = document.getElementById("password").value;
-
-      if(users.find(u => u.username === username)){
-        alert("Username already exists!");
-        return;
-      }
-
-      users.push({username, role, password});
-      localStorage.setItem("users", JSON.stringify(users));
-      alert("User added!");
-      loadUsers();
-      e.target.reset();
-    }
-
-    function deleteUser(index){
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
-      users.splice(index,1);
-      localStorage.setItem("users", JSON.stringify(users));
-      loadUsers();
-    }
-
-    function editUser(index){
-      let users = JSON.parse(localStorage.getItem("users") || "[]");
-      let u = users[index];
-      let newRole = prompt("Enter new role:", u.role);
-      let newPass = prompt("Enter new password:", u.password);
-      if(newRole && newPass){
-        u.role = newRole;
-        u.password = newPass;
-        users[index] = u;
-        localStorage.setItem("users", JSON.stringify(users));
-        loadUsers();
-      }
-    }
-
-    // Load on page start
-    loadUsers();
-  </script>
-
+  <script src="script.js" defer></script>
 </body>
 </html>
