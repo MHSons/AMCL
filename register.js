@@ -35,33 +35,50 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Load departments
-  if (!departmentsArray || !Array.isArray(departmentsArray)) {
-    showMessage("Error: Department data not available!", true);
+  try {
+    if (!departmentsArray || !Array.isArray(departmentsArray)) {
+      throw new Error("Department data not available");
+    }
+    deptDropdown.innerHTML = '<option value="" disabled>-- Select Department(s) --</option>'; // Added disabled default option
+    departmentsArray.forEach(dept => {
+      const option = document.createElement("option");
+      option.value = dept.id;
+      option.textContent = dept.name;
+      deptDropdown.appendChild(option);
+    });
+  } catch (e) {
+    showMessage("Error loading departments: " + e.message, true);
+    deptDropdown.disabled = true;
     return;
   }
 
-  departmentsArray.forEach(dept => {
-    const option = document.createElement("option");
-    option.value = dept.id;
-    option.textContent = dept.name;
-    deptDropdown.appendChild(option);
-  });
-
   // On department change
   deptDropdown.addEventListener("change", () => {
-    testDropdown.innerHTML = '<option value="">-- Select Test(s) --</option>';
+    testDropdown.innerHTML = '<option value="" disabled>-- Select Test(s) --</option>'; // Reset tests
     const selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
 
+    if (selectedDepts.length === 0) {
+      testDropdown.disabled = true;
+      return;
+    }
+
+    testDropdown.disabled = false;
+    const tests = new Set(); // Avoid duplicate tests
     selectedDepts.forEach(deptId => {
       const selectedDept = departmentsArray.find(d => d.id === deptId);
-      if (selectedDept) {
+      if (selectedDept && selectedDept.tests) {
         selectedDept.tests.forEach(test => {
-          const option = document.createElement("option");
-          option.value = test.id;
-          option.textContent = test.name;
-          testDropdown.appendChild(option);
+          tests.add(JSON.stringify({ id: test.id, name: test.name }));
         });
       }
+    });
+
+    Array.from(tests).forEach(testStr => {
+      const test = JSON.parse(testStr);
+      const option = document.createElement("option");
+      option.value = test.id;
+      option.textContent = test.name;
+      testDropdown.appendChild(option);
     });
   });
 
@@ -81,6 +98,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const test = dept.tests.find(t => t.id === opt.value);
         if (test) return { id: test.id, name: test.name, parameter: test.parameter, unit: test.unit, normalMin: test.normalMin, normalMax: test.normalMax };
       }
+      return null;
     }).filter(Boolean);
 
     const patientData = {
@@ -117,7 +135,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       await mockApi.saveLastPatient(patientData);
       showMessage("Patient registered successfully!", false);
       registerForm.reset();
-      testDropdown.innerHTML = '<option value="">-- Select Test(s) --</option>';
+      deptDropdown.value = "";
+      testDropdown.innerHTML = '<option value="" disabled>-- Select Test(s) --</option>';
+      testDropdown.disabled = true;
       setTimeout(() => window.location.href = "registration-slip.html", 1000);
     } catch (e) {
       showMessage("Error saving patient data!", true);
