@@ -3,54 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Login to AlphaMed Clinical Laboratory System for authorized users.">
-  <meta name="keywords" content="login, lab management, AlphaMed">
-  <meta name="author" content="AlphaMed Clinical Laboratory">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
+  <meta name="description" content="Login to AlphaMed Clinical Laboratory">
   <title>Login - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta property="og:title" content="Login - AlphaMed Clinical Laboratory">
-  <meta property="og:description" content="Secure login for AlphaMed Clinical Laboratory System users.">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://yourwebsite.com/login.html">
 </head>
 <body>
-  <header class="header">
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="register_patient.html">Register Patient</a>
+    <a href="settings.html">Settings</a>
+    <a href="admin.html">Admin</a>
+    <a href="reception.html">Reception</a>
+    <a href="technician.html">Technician</a>
+    <a href="view_reports.html">View Reports</a>
+  </nav>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
+
+  <div class="header">
     <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Login to Access the System</p>
-  </header>
+    <p>User Login</p>
+  </div>
 
-  <main class="container">
-    <section aria-labelledby="login-heading">
-      <h2 id="login-heading">User Login</h2>
-      <form id="loginForm" novalidate>
-        <fieldset>
-          <legend>Login Credentials</legend>
-          <div class="form-row">
-            <div class="col">
-              <label for="username">Username:</label>
-              <input type="text" id="username" name="username" required aria-required="true">
-              <span class="error" id="usernameError" aria-live="polite"></span>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col">
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" required aria-required="true">
-              <span class="error" id="passwordError" aria-live="polite"></span>
-            </div>
-          </div>
-          <button type="submit">🔒 Login</button>
-        </fieldset>
-      </form>
-    </section>
-  </main>
+  <div id="message" class="message" aria-live="polite"></div>
 
-  <footer class="footer">
-    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
-  </footer>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm" class="form-row">
+      <div class="col">
+        <label for="username">Username</label>
+        <input type="text" id="username" required aria-required="true">
+      </div>
+      <div class="col">
+        <label for="password">Password</label>
+        <input type="password" id="password" required aria-required="true">
+      </div>
+      <button type="submit" class="submit-button" aria-label="Login">Login</button>
+    </form>
+  </div>
 
-  <script src="script.js" defer></script>
+  <script type="module" src="login.js"></script>
+  <script type="module" src="nav.js"></script>
 </body>
 </html>
