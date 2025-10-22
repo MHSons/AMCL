@@ -1,15 +1,16 @@
-/* CSS Variables for maintainability */
+/* CSS Variables */
 :root {
   --primary-bg: #121212;
   --secondary-bg: #1e1e1e;
   --accent-color: #00bcd4;
   --accent-hover: #0097a7;
   --text-color: #e0e0e0;
-  --text-muted: #aaa; /* Improved contrast */
+  --text-muted: #b0b0b0;
   --border-color: #444;
   --header-bg: #1f1f1f;
   --highlight-color: #00e5ff;
   --error-color: #ff4444;
+  --success-color: #00cc00;
 }
 
 /* Reset and Base Styles */
@@ -20,14 +21,14 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, 'Noto Sans', sans-serif;
   background: var(--primary-bg);
   color: var(--text-color);
   line-height: 1.6;
   font-size: 16px;
 }
 
-/* Watermark logo in background */
+/* Watermark */
 body::before {
   content: "";
   position: fixed;
@@ -52,7 +53,7 @@ body::before {
 
 /* Container */
 .container {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 1.5rem auto;
   padding: 1.5rem;
   background: var(--secondary-bg);
@@ -68,14 +69,9 @@ h1, h2, h3, h4 {
 
 /* Form Styles */
 .form-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.form-row .col {
-  flex: 1;
-  min-width: 250px;
 }
 
 label {
@@ -85,7 +81,7 @@ label {
   color: var(--text-color);
 }
 
-input, select, textarea {
+input, select {
   width: 100%;
   padding: 0.5rem;
   background: #2c2c2c;
@@ -95,7 +91,7 @@ input, select, textarea {
   font-size: 1rem;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus, select:focus {
   outline: 2px solid var(--accent-color);
   outline-offset: 2px;
 }
@@ -110,7 +106,7 @@ select[multiple] {
 }
 
 /* Button Styles */
-button, .submit-button {
+.submit-button {
   background: var(--accent-color);
   color: white;
   border: none;
@@ -121,31 +117,38 @@ button, .submit-button {
   font-size: 1rem;
 }
 
-button:hover, .submit-button:hover {
+.submit-button:hover:not(:disabled) {
   background: var(--accent-hover);
 }
 
-button:focus, .submit-button:focus {
+.submit-button:focus {
   outline: 2px solid var(--highlight-color);
   outline-offset: 2px;
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Navigation */
 .nav {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin: 1rem;
+  justify-content: center;
 }
 
 .nav a {
   color: var(--highlight-color);
   text-decoration: none;
   font-weight: 600;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
 }
 
 .nav a:hover {
-  text-decoration: underline;
+  background: var(--accent-hover);
+  border-radius: 4px;
 }
 
 .nav a:focus {
@@ -159,6 +162,9 @@ button:focus, .submit-button:focus {
   border: none;
   cursor: pointer;
   padding: 0.5rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 .nav-toggle .hamburger {
@@ -187,6 +193,14 @@ button:focus, .submit-button:focus {
   top: 8px;
 }
 
+/* Message */
+.message {
+  padding: 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
 /* Tests List */
 #tests-list {
   border: 1px solid var(--border-color);
@@ -204,37 +218,46 @@ button:focus, .submit-button:focus {
   border-bottom: 1px solid var(--border-color);
 }
 
-.small {
-  font-size: 0.95rem;
-  color: var(--text-muted);
+.test-item button {
+  font-size: 0.9rem;
+  padding: 0.5rem;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  text-align: left;
+}
+
+th {
+  background: var(--header-bg);
+  color: var(--highlight-color);
+}
+
+tr:nth-child(even) {
+  background: #2c2c2c;
 }
 
 /* Report Header */
 .report-header {
   position: relative;
   margin-bottom: 2.5rem;
+  text-align: center;
 }
 
 .report-header img {
   position: absolute;
-  top: 1rem;
-  right: 1.25rem;
-  width: 120px;
+  top: 0;
+  right: 1rem;
+  width: 100px;
   height: auto;
-}
-
-#qrcode {
-  position: absolute;
-  top: 1rem;
-  left: 1.25rem;
-}
-
-/* Message */
-.message {
-  padding: 0.5rem;
-  font-size: 1rem;
-  text-align: center;
-  font-weight: bold;
 }
 
 /* Footer */
@@ -256,6 +279,7 @@ button:focus, .submit-button:focus {
     display: none;
     flex-direction: column;
     gap: 0.5rem;
+    margin: 1rem;
   }
 
   .nav.active {
@@ -267,15 +291,10 @@ button:focus, .submit-button:focus {
   }
 
   .form-row {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
-  .form-row .col {
-    min-width: 100%;
-  }
-
-  .report-header img,
-  #qrcode {
+  .report-header img {
     position: static;
     margin: 0.5rem auto;
     display: block;
@@ -294,22 +313,8 @@ button:focus, .submit-button:focus {
     padding: 0;
   }
 
-  .report-header img,
-  #qrcode {
+  .report-header img {
     position: static;
     margin: 0.5rem;
-  }
-}
-
-/* RTL Support */
-@media (direction: rtl) {
-  .report-header img {
-    right: auto;
-    left: 1.25rem;
-  }
-
-  #qrcode {
-    left: auto;
-    right: 1.25rem;
   }
 }
