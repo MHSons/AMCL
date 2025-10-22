@@ -3,157 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Patient - Lab Management System</title>
+  <meta name="description" content="Register patients for AlphaMed Clinical Laboratory System with ease.">
+  <meta name="keywords" content="patient registration, lab management, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:;">
+  <title>Register Patient - AlphaMed Clinical Laboratory</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      width: 60%;
-      margin: auto;
-      margin-top: 50px;
-      padding: 20px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-    }
-    h2 {
-      text-align: center;
-      color: #00bcd4;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 15px;
-    }
-    input, select {
-      background: #2c2c2c;
-      color: #fff;
-    }
-    button {
-      background: #00bcd4;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #0097a7;
-    }
-  </style>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Open Graph for social media -->
+  <meta property="og:title" content="Register Patient - AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="Register patients for lab tests with AlphaMed's advanced system.">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://yourwebsite.com/register_patient.html">
 </head>
 <body>
-  <div class="container">
-    <h2>Patient Registration</h2>
-    <form id="registerForm">
-      <label for="patientName">Patient Name:</label>
-      <input type="text" id="patientName" name="patientName" required>
+  <header class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Quality Assurance Through Advanced Technology</p>
+  </header>
 
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" required>
+  <nav class="nav" aria-label="Main navigation">
+    <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span class="hamburger"></span>
+    </button>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="register_patient.html" aria-current="page">Register Patient</a></li>
+      <li><a href="view_reports.html">View Reports</a></li>
+      <li><a href="add_test_result.html">Add Test Results</a></li>
+      <li><a href="manage_users.html">Manage Users</a></li>
+      <li><a href="settings.html">Settings</a></li>
+      <li><a href="login.html">Logout</a></li>
+    </ul>
+  </nav>
 
-      <label for="gender">Gender:</label>
-      <select id="gender" name="gender" required>
-        <option value="">-- Select Gender --</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
+  <main class="container">
+    <section aria-labelledby="register-heading">
+      <h2 id="register-heading">Patient Registration</h2>
+      <form id="registerForm" novalidate>
+        <fieldset>
+          <legend>Patient Details</legend>
+          <div class="form-row">
+            <div class="col">
+              <label for="patientName">Patient Name:</label>
+              <input type="text" id="patientName" name="patientName" required aria-required="true">
+              <span class="error" id="patientNameError" aria-live="polite"></span>
+            </div>
+            <div class="col">
+              <label for="age">Age:</label>
+              <input type="number" id="age" name="age" min="0" required aria-required="true">
+              <span class="error" id="ageError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="gender">Gender:</label>
+              <select id="gender" name="gender" required aria-required="true">
+                <option value="">-- Select Gender --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="error" id="genderError" aria-live="polite"></span>
+            </div>
+            <div class="col">
+              <label for="sampleNo">Sample Number:</label>
+              <input type="text" id="sampleNo" name="sampleNo" required aria-required="true">
+              <span class="error" id="sampleNoError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="department">Select Department(s):</label>
+              <select id="department" name="department" multiple required aria-required="true">
+                <option value="">-- Select Department --</option>
+              </select>
+              <span class="error" id="departmentError" aria-live="polite"></span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col">
+              <label for="test">Select Test(s):</label>
+              <select id="test" name="test" multiple required aria-required="true">
+                <option value="">-- Select Test --</option>
+              </select>
+              <span class="error" id="testError" aria-live="polite"></span>
+            </div>
+          </div>
+          <button type="submit">Register</button>
+        </fieldset>
+      </form>
+    </section>
+  </main>
 
-      <label for="sampleNo">Sample Number:</label>
-      <input type="text" id="sampleNo" name="sampleNo" required>
+  <footer class="footer">
+    <p>&copy; 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
+  </footer>
 
-      <label for="department">Select Department(s):</label>
-      <select id="department" name="department" multiple required>
-        <option value="">-- Select Department --</option>
-      </select>
-
-      <label for="test">Select Test(s):</label>
-      <select id="test" name="test" multiple required>
-        <option value="">-- Select Test --</option>
-      </select>
-
-      <button type="submit">Register</button>
-    </form>
-  </div>
-
-  <!-- ✅ Scripts load order important -->
-  <script src="tests.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const deptDropdown = document.getElementById("department");
-      const testDropdown = document.getElementById("test");
-      const registerForm = document.getElementById("registerForm");
-
-      // ✅ Load departments dynamically
-      if (typeof departmentsArray !== "undefined" && Array.isArray(departmentsArray)) {
-        departmentsArray.forEach(dept => {
-          let option = document.createElement("option");
-          option.value = dept.id;
-          option.textContent = dept.name;
-          deptDropdown.appendChild(option);
-        });
-      }
-
-      // ✅ On department change → load tests
-      deptDropdown.addEventListener("change", function () {
-        testDropdown.innerHTML = "";
-        const selectedDepts = Array.from(deptDropdown.selectedOptions).map(opt => opt.value);
-
-        selectedDepts.forEach(deptId => {
-          let selectedDept = departmentsArray.find(d => d.id === deptId);
-          if (selectedDept) {
-            selectedDept.tests.forEach(test => {
-              let option = document.createElement("option");
-              option.value = test.id;
-              option.textContent = test.name;
-              testDropdown.appendChild(option);
-            });
-          }
-        });
-      });
-
-      // ✅ On form submit → save patient + open slip
-      registerForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        // Auto-generate MRN
-        const mrn = "MRN-" + Date.now();
-
-        const patientData = {
-          mrn: mrn,
-          name: document.getElementById("patientName").value,
-          age: document.getElementById("age").value,
-          gender: document.getElementById("gender").value,
-          sampleNo: document.getElementById("sampleNo").value,
-          departments: Array.from(deptDropdown.selectedOptions).map(opt => opt.text),
-          tests: Array.from(testDropdown.selectedOptions).map(opt => opt.text),
-        };
-
-        // Save in localStorage
-        let patients = JSON.parse(localStorage.getItem("patients")) || [];
-        patients.push(patientData);
-        localStorage.setItem("patients", JSON.stringify(patients));
-
-        // Save last registered patient for slip
-        localStorage.setItem("lastRegisteredPatient", JSON.stringify(patientData));
-
-        alert("Patient Registered Successfully! MRN: " + mrn);
-
-        // ✅ Open registration slip automatically
-        window.location.href = "registration-slip.html";
-      });
-    });
-  </script>
+  <script src="tests.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
