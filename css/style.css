@@ -82,3 +82,24 @@
 @media (max-width: 480px) {
   .modal-content { width: 95%; }
 }
+/* Report Page */
+.report-page { background: #f8f9fa; padding: 2rem 0; }
+.report-card { background: white; max-width: 800px; margin: 0 auto; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); }
+.report-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 2px solid var(--secondary); padding-bottom: 1rem; }
+.report-logo { width: 80px; height: 80px; border-radius: 50%; }
+.report-header h1 { margin: 0; color: var(--primary); }
+.report-header p { margin: 0; color: var(--gray); }
+
+.patient-info { margin: 1.5rem 0; line-height: 1.8; }
+.report-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.report-table th, .report-table td { border: 1px solid #ddd; padding: 0.75rem; text-align: left; }
+.report-table th { background: #f8f9fa; }
+
+.report-footer { margin-top: 2rem; font-size: 0.9rem; color: var(--gray); }
+.report-actions { text-align: center; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; }
+
+/* Print */
+@media print {
+  .report-actions, .header, .footer { display: none; }
+  .report-card { box-shadow: none; }
+}
