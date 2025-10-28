@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register Patient - LabPro</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background:#f4f6f9;">
+  <!-- Navbar (Same as dashboard) -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <i class="fas fa-flask"></i> LabPro
+    </div>
+    <div class="nav-user">
+      <i class="fas fa-user-circle"></i> Admin
+      <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+    <!-- Sidebar (Same as dashboard) -->
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="patient-register.html" class="active"><i class="fas fa-user-plus"></i> Register Patient</a></li>
+        <li><a href="test-booking.html"><i class="fas fa-vial"></i> Book Test</a></li>
+        <li><a href="results.html"><i class="fas fa-file-medical"></i> Test Results</a></li>
+        <li><a href="admin.html"><i class="fas fa-cog"></i> Admin Panel</a></li>
+      </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="form-container">
+        <h2><i class="fas fa-user-plus"></i> Register New Patient</h2>
+
+        <form id="patientForm">
+          <div class="form-grid">
+            <!-- Personal Info -->
+            <div class="form-group">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" name="name" required />
+            </div>
+
+            <div class="form-group">
+              <label>Age <span class="req">*</span></label>
+              <input type="number" name="age" min="1" max="120" required />
+            </div>
+
+            <div class="form-group">
+              <label>Gender <span class="req">*</span></label>
+              <select name="gender" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Phone <span class="req">*</span></label>
+              <input type="tel" name="phone" pattern="[0-9]{10}" placeholder="03001234567" required />
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" name="email" />
+            </div>
+
+            <div class="form-group full">
+              <label>Address</label>
+              <textarea name="address" rows="2"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Referred By (Doctor)</label>
+              <input type="text" name="referredBy" />
+            </div>
+
+            <div class="form-group">
+              <label>Emergency Contact</label>
+              <input type="tel" name="emergency" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-save"></i> Register Patient
+            </button>
+            <button type="reset" class="btn-secondary">
+              <i class="fas fa-undo"></i> Clear
+            </button>
+          </div>
+        </form>
+
+        <div id="successMsg" class="success-msg" style="display:none;">
+          <i class="fas fa-check-circle"></i>
+          Patient registered successfully! ID: <strong id="patientId"></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
