@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Manage Users for AlphaMed Clinical Laboratory">
+  <title>Manage Users - AlphaMed Clinical Laboratory</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="nav" aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register_patient.html">Register Patient</a>
+    <a href="settings.html">Settings</a>
+    <a href="reception.html">Reception</a>
+    <a href="technician.html">Technician</a>
+    <a href="view_reports.html">View Reports</a>
+  </nav>
+  <button class="nav-toggle" aria-label="Toggle navigation">
+    <span class="hamburger"></span>
+  </button>
+
+  <div class="header">
+    <h1>AlphaMed Clinical Laboratory</h1>
+    <p>Manage Users</p>
+  </div>
+
+  <div id="message" class="message" aria-live="polite"></div>
+
+  <div class="container">
+    <h2>Add User</h2>
+    <form id="addUserForm" class="form-row">
+      <div class="col">
+        <label for="username">Username</label>
+        <input type="text" id="username" required aria-required="true">
+      </div>
+      <div class="col">
+        <label for="password">Password</label>
+        <input type="password" id="password" required aria-required="true" minlength="8">
+      </div>
+      <div class="col">
+        <label for="role">Role</label>
+        <select id="role" required aria-required="true">
+          <option value="">-- Select Role --</option>
+          <option value="admin">Admin</option>
+          <option value="technician">Technician</option>
+          <option value="receptionist">Receptionist</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-button" aria-label="Add User">Add User</button>
+    </form>
+
+    <h2>Existing Users</h2>
+    <table id="usersTable">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script type="module" src="manage_users.js"></script>
+  <script type="module" src="nav.js"></script>
+</body>
+</html>
