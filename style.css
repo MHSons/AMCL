@@ -1,25 +1,33 @@
+/* style.css - AlphaMed Clinical Laboratory */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header Styling */
 .header-bg {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border-bottom: 5px solid #5a67d8;
+    padding: 20px 0;
 }
 
 .logo-img {
     height: 100px;
     margin-bottom: 10px;
-    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    border-radius: 8px;
 }
 
 .lab-name {
     font-size: 3rem;
     font-weight: bold;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     margin: 0;
+    letter-spacing: 1px;
 }
 
 .tagline {
@@ -27,9 +35,15 @@ body {
     font-style: italic;
     margin: 5px 0 0;
     opacity: 0.9;
+    letter-spacing: 0.5px;
 }
 
-/* Report Paper Style */
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Report Paper (with Watermark) */
 .report-paper {
     background: white;
     padding: 30px;
@@ -40,10 +54,10 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 200px;
-    background-opacity: 0.08;
     opacity: 0.95;
 }
 
+/* Watermark Effect */
 .report-paper::before {
     content: "";
     position: absolute;
@@ -54,16 +68,49 @@ body {
     z-index: 0;
 }
 
+/* Report Content on Top of Watermark */
 .report-content {
     position: relative;
     z-index: 1;
 }
 
-#printReport {
-    background: #28a745;
+/* QR Code */
+#qrcode img {
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    padding: 5px;
+    background: white;
 }
 
+/* Print Button */
+#printReport {
+    background: #28a745;
+    border: none;
+}
+
+#printReport:hover {
+    background: #218838;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-    .lab-name { font-size: 2rem; }
-    .logo-img { height: 70px; }
+    .lab-name { 
+        font-size: 2rem; 
+    }
+    .logo-img { 
+        height: 70px; 
+    }
+    .report-paper {
+        padding: 20px;
+        min-height: 500px;
+    }
+}
+
+@media (max-width: 576px) {
+    .lab-name { 
+        font-size: 1.8rem; 
+    }
+    .tagline { 
+        font-size: 0.9rem; 
+    }
 }
