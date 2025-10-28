@@ -3,83 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratory Website - Professional Lab Services</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Bootstrap for responsive design -->
+    <title>AlphaMed Clinical Laboratory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="bg-primary text-white text-center py-4">
-        <h1>Welcome to International Standard Laboratory</h1>
-        <p>Your trusted partner for accurate testing and analysis</p>
+
+    <!-- Header with Logo -->
+    <header class="text-center py-4 header-bg">
+        <img src="logo.png" alt="AlphaMed Clinical Laboratory" class="logo-img">
+        <h1 class="lab-name">AlphaMed</h1>
+        <p class="tagline">Quality Assurance Through Advance Technology</p>
     </header>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">LabPro</a>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">AlphaMed Lab</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#data">Data Management</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#entry">Data Entry</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#reports">Reports</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="container my-5">
-        <h2>Home</h2>
-        <p>This is a professional laboratory website meeting international standards like ISO 17025 for quality.</p>
+    <!-- Home -->
+    <section id="home" class="container my-5 text-center">
+        <h2>Welcome to AlphaMed Clinical Laboratory</h2>
+        <p>ISO Certified | Advanced Technology | Accurate Results</p>
     </section>
 
-    <section id="about" class="container my-5 bg-light p-4">
-        <h2>About Us</h2>
-        <p>We are a certified lab providing top-notch services globally.</p>
-    </section>
-
-    <section id="services" class="container my-5">
-        <h2>Our Services</h2>
-        <ul>
-            <li>Blood Testing</li>
-            <li>Chemical Analysis</li>
-            <li>Environmental Testing</li>
-        </ul>
-    </section>
-
-    <section id="data" class="container my-5 bg-light p-4">
-        <h2>Data Management (Using Local Storage)</h2>
-        <p>Enter lab data below, it will save in your browser's local storage.</p>
-        <form id="labForm">
-            <div class="mb-3">
-                <label for="sampleId" class="form-label">Sample ID</label>
+    <!-- Data Entry -->
+    <section id="entry" class="container my-5">
+        <h2>Enter Patient Test Data</h2>
+        <form id="labForm" class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Patient Name</label>
+                <input type="text" class="form-control" id="patientName" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Sample ID</label>
                 <input type="text" class="form-control" id="sampleId" required>
             </div>
-            <div class="mb-3">
-                <label for="result" class="form-label">Test Result</label>
-                <input type="text" class="form-control" id="result" required>
+            <div class="col-12">
+                <label class="form-label">Test Result</label>
+                <textarea class="form-control" id="result" rows="3" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Save Data</button>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Save & Generate Report</button>
+            </div>
         </form>
-        <h3>Saved Data</h3>
-        <ul id="dataList" class="list-group"></ul>
-        <button id="clearData" class="btn btn-danger mt-3">Clear All Data</button>
     </section>
 
-    <section id="contact" class="container my-5">
-        <h2>Contact Us</h2>
-        <p>Email: info@lab.com | Phone: +123-456-7890</p>
+    <!-- Reports List -->
+    <section id="reports" class="container my-5">
+        <h2>Saved Reports</h2>
+        <div id="reportList"></div>
+        <button id="clearAll" class="btn btn-danger mt-3">Clear All Reports</button>
     </section>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lab Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="reportContent" class="report-paper"></div>
+                    <div id="qrcode" class="text-center mt-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="printReport" class="btn btn-success">Print Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2025 Laboratory Website. All rights reserved.</p>
+        <p>© 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@520.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="qrcode.min.js"></script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
