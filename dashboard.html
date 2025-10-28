@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - LabPro</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body style="background:#f4f6f9;">
+  <nav class="navbar">
+    <div class="nav-brand">
+      <i class="fas fa-flask"></i> LabPro
+    </div>
+    <div class="nav-user">
+      <i class="fas fa-user-circle"></i> Admin
+      <a href="index.html" class="logout"><i class="fas fa-sign-out-alt"></i></a>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+    <div class="sidebar">
+      <ul>
+        <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+        <li><a href="patient-register.html"><i class="fas fa-user-plus"></i> Register Patient</a></li>
+        <li><a href="test-booking.html"><i class="fas fa-vial"></i> Book Test</a></li>
+        <li><a href="results.html"><i class="fas fa-file-medical"></i> Test Results</a></li>
+        <li><a href="admin.html"><i class="fas fa-cog"></i> Admin Panel</a></li>
+      </ul>
+    </div>
+
+    <div class="main-content">
+      <h2>Welcome back, Admin!</h2>
+      <div class="cards">
+        <div class="card">
+          <i class="fas fa-users"></i>
+          <h3>245</h3>
+          <p>Total Patients</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-vial"></i>
+          <h3>89</h3>
+          <p>Tests Today</p>
+        </div>
+        <div class="card">
+          <i class="fas fa-file-alt"></i>
+          <h3>67</h3>
+          <p>Reports Ready</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
