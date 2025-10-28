@@ -3,96 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlphaMed Clinical Laboratory</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>AlphaMed Clinical Laboratory Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <!-- Header with Logo -->
-    <header class="text-center py-4 header-bg">
-        <img src="logo.png" alt="AlphaMed Clinical Laboratory" class="logo-img">
-        <h1 class="lab-name">AlphaMed</h1>
-        <p class="tagline">Quality Assurance Through Advance Technology</p>
-    </header>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">AlphaMed Lab</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#entry">Data Entry</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#reports">Reports</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Home -->
-    <section id="home" class="container my-5 text-center">
-        <h2>Welcome to AlphaMed Clinical Laboratory</h2>
-        <p>ISO Certified | Advanced Technology | Accurate Results</p>
-    </section>
-
-    <!-- Data Entry -->
-    <section id="entry" class="container my-5">
-        <h2>Enter Patient Test Data</h2>
-        <form id="labForm" class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Patient Name</label>
-                <input type="text" class="form-control" id="patientName" required>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Sample ID</label>
-                <input type="text" class="form-control" id="sampleId" required>
-            </div>
-            <div class="col-12">
-                <label class="form-label">Test Result</label>
-                <textarea class="form-control" id="result" rows="3" required></textarea>
-            </div>
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">Save & Generate Report</button>
-            </div>
-        </form>
-    </section>
-
-    <!-- Reports List -->
-    <section id="reports" class="container my-5">
-        <h2>Saved Reports</h2>
-        <div id="reportList"></div>
-        <button id="clearAll" class="btn btn-danger mt-3">Clear All Reports</button>
-    </section>
-
-    <!-- Report Modal -->
-    <div class="modal fade" id="reportModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lab Report</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header text-center">
+                    <img src="logo.png" alt="Logo" class="login-logo">
+                    <h4>AlphaMed Clinical Laboratory</h4>
+                    <p>Quality Assurance Through Advance Technology</p>
                 </div>
                 <div class="modal-body">
-                    <div id="reportContent" class="report-paper"></div>
-                    <div id="qrcode" class="text-center mt-3"></div>
-                </div>
-                <div class="modal-footer">
-                    <button id="printReport" class="btn btn-success">Print Report</button>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-3">
-        <p>© 2025 AlphaMed Clinical Laboratory. All Rights Reserved.</p>
-    </footer>
+    <!-- Main App (Hidden until login) -->
+    <div id="app" style="display: none;">
+        <!-- Header -->
+        <header class="bg-primary text-white py-3">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div>
+                    <img src="logo.png" alt="Logo" class="header-logo">
+                    <span class="ms-2">AlphaMed Clinical Laboratory</span>
+                </div>
+                <div>
+                    <span id="userRole"></span> | <i class="fas fa-sign-out-alt" onclick="logout()"></i>
+                </div>
+            </div>
+        </header>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Sidebar -->
+        <div class="d-flex">
+            <nav class="sidebar bg-light">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li class="nav-item" id="receptionLi"><a class="nav-link" href="#" onclick="showSection('reception')"><i class="fas fa-user-plus"></i> Reception</a></li>
+                    <li class="nav-item" id="technicianLi"><a class="nav-link" href="#" onclick="showSection('technician')"><i class="fas fa-flask"></i> Technician</a></li>
+                    <li class="nav-item" id="doctorLi"><a class="nav-link" href="#" onclick="showSection('doctor')"><i class="fas fa-stethoscope"></i> Doctor</a></li>
+                    <li class="nav-item" id="adminLi"><a class="nav-link" href="#" onclick="showSection('admin')"><i class="fas fa-user-cog"></i> Admin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('inventory')"><i class="fas fa-box"></i> Inventory</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('quality')"><i class="fas fa-chart-bar"></i> Quality Control</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('billing')"><i class="fas fa-dollar-sign"></i> Billing</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="flex-grow-1 p-4">
+                <!-- Dashboard -->
+                <section id="dashboard" class="section">
+                    <h2>Dashboard</h2>
+                    <div class="row">
+                        <div class="col-md-3"><div class="card bg-success text-white"><div class="card-body"><h5>Total Patients</h5><p id="totalPatients">0</p></div></div></div>
+                        <div class="col-md-3"><div class="card bg-info text-white"><div class="card-body"><h5>Pending Tests</h5><p id="pendingTests">0</p></div></div></div>
+                        <div class="col-md-3"><div class="card bg-warning text-white"><div class="card-body"><h5>Inventory Low</h5><p id="lowInventory">0</p></div></div></div>
+                        <div class="col-md-3"><div class="card bg-danger text-white"><div class="card-body"><h5>QC Alerts</h5><p id="qcAlerts">0</p></div></div></div>
+                    </div>
+                </section>
+
+                <!-- Reception -->
+                <section id="reception" class="section d-none">
+                    <h2>Patient Registration</h2>
+                    <form id="patientForm">
+                        <div class="row">
+                            <div class="col-md-6"><input type="text" class="form-control mb-3" placeholder="Patient Name" id="pName" required></div>
+                            <div class="col-md-6"><input type="date" class="form-control mb-3" id="pDate" required></div>
+                            <div class="col-md-6"><input type="text" class="form-control mb-3" placeholder="Contact" id="pContact"></div>
+                            <div class="col-md-6"><select class="form-control mb-3" id="testCategory"><option>Choose Test Category</option><option value="hematology">Hematology (CBC, ESR)</option><option value="biochemistry">Biochemistry (Glucose, Lipid)</option><option value="microbiology">Microbiology (Cultures)</option><option value="urinalysis">Urinalysis</option><option value="serology">Serology (HIV, Hepatitis)</option></select></div>
+                            <div class="col-12"><textarea class="form-control mb-3" placeholder="Notes" id="pNotes"></textarea></div>
+                            <button type="submit" class="btn btn-primary">Register Patient</button>
+                        </div>
+                    </form>
+                    <h3 class="mt-4">Registered Patients</h3>
+                    <table class="table" id="patientTable">
+                        <thead><tr><th>ID</th><th>Name</th><th>Date</th><th>Category</th><th>Actions</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <!-- Technician -->
+                <section id="technician" class="section d-none">
+                    <h2>Sample Testing</h2>
+                    <select class="form-control mb-3" id="selectPatient">
+                        <option>Select Patient</option>
+                    </select>
+                    <form id="testForm">
+                        <div class="mb-3"><label>Department</label><select class="form-control" id="dept" required><option>Hematology</option><option>Biochemistry</option><option>Microbiology</option><option>Urinalysis</option><option>Serology</option></select></div>
+                        <div class="mb-3"><label>Test Type</label><input type="text" class="form-control" id="testType" placeholder="e.g., CBC" required></div>
+                        <div class="mb-3"><textarea class="form-control" id="testResult" placeholder="Enter Results" required></textarea></div>
+                        <button type="submit" class="btn btn-primary">Submit Results</button>
+                    </form>
+                    <h3 class="mt-4">Pending Tests</h3>
+                    <table class="table" id="testTable"><thead><tr><th>Patient</th><th>Department</th><th>Status</th></tr></thead><tbody></tbody></table>
+                </section>
+
+                <!-- Doctor -->
+                <section id="doctor" class="section d-none">
+                    <h2>Results Approval</h2>
+                    <table class="table" id="approvalTable">
+                        <thead><tr><th>Patient</th><th>Test</th><th>Result</th><th>Action</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </section>
+
+                <!-- Admin -->
+                <section id="admin" class="section d-none">
+                    <h2>User Management</h2>
+                    <form id="userForm">
+                        <div class="row">
+                            <div class="col-md-6"><input type="text" class="form-control mb-3" placeholder="Username" id="uName"></div>
+                            <div class="col-md-6"><input type="password" class="form-control mb-3" placeholder="Password" id="uPass"></div>
+                            <div class="col-md-6"><select class="form-control mb-3" id="uRole"><option>reception</option><option>technician</option><option>doctor</option><option>admin</option></select></div>
+                            <div class="col-12"><button type="submit" class="btn btn-primary">Add User</button></div>
+                        </div>
+                    </form>
+                    <h3 class="mt-4">Users</h3>
+                    <table class="table" id="userTable"><thead><tr><th>Username</th><th>Role</th><th>Actions</th></tr></thead><tbody></tbody></table>
+
+                    <h3 class="mt-4">Inventory Management</h3>
+                    <form id="inventoryForm">
+                        <div class="mb-3"><input type="text" class="form-control" placeholder="Item (e.g., Test Kit)" id="itemName"></div>
+                        <div class="mb-3"><input type="number" class="form-control" placeholder="Quantity" id="itemQty"></div>
+                        <button type="submit" class="btn btn-primary">Add Item</button>
+                    </form>
+                    <table class="table" id="inventoryTable"><thead><tr><th>Item</th><th>Qty</th></tr></thead><tbody></tbody></table>
+                </section>
+
+                <!-- Inventory -->
+                <section id="inventory" class="section d-none">
+                    <h2>Inventory</h2>
+                    <table class="table" id="invTable"><thead><tr><th>Item</th><th>Qty</th><th>Status</th></tr></thead><tbody></tbody></table>
+                </section>
+
+                <!-- Quality -->
+                <section id="quality" class="section d-none">
+                    <h2>Quality Control</h2>
+                    <form id="qcForm">
+                        <div class="mb-3"><input type="text" class="form-control" placeholder="QC Log (e.g., EQA Result)" id="qcLog"></div>
+                        <button type="submit" class="btn btn-primary">Log QC</button>
+                    </form>
+                    <h3>QC Logs</h3>
+                    <table class="table" id="qcTable"><thead><tr><th>Date</th><th>Log</th></tr></thead><tbody></tbody></table>
+                </section>
+
+                <!-- Billing -->
+                <section id="billing" class="section d-none">
+                    <h2>Billing</h2>
+                    <select class="form-control mb-3" id="billPatient">
+                        <option>Select Patient</option>
+                    </select>
+                    <form id="billForm">
+                        <div class="mb-3"><input type="number" class="form-control" placeholder="Amount" id="billAmount"></div>
+                        <button type="submit" class="btn btn-primary">Generate Bill</button>
+                    </form>
+                    <h3>Bills</h3>
+                    <table class="table" id="billTable"><thead><tr><th>Patient</th><th>Amount</th><th>Date</th></tr></thead><tbody></tbody></table>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Lab Report</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="reportContent"></div>
+                <div class="modal-footer">
+                    <button id="printBtn" class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+                    <button id="pdfBtn" class="btn btn-success"><i class="fas fa-download"></i> PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="qrcode.min.js"></script>
+    <script src="jspdf.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
