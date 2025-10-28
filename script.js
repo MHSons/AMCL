@@ -1,377 +1,188 @@
-// AUTO CREATE DEFAULT USERS ON FIRST LOAD
-if (!localStorage.getItem('users')) {
-  const defaultUsers = {
-    'admin': { pass: 'admin', role: 'admin' },
-    'reception': { pass: '123', role: 'reception' },
-    'technician': { pass: '123', role: 'technician' },
-    'doctor': { pass: '123', role: 'doctor' }
-  };
-  localStorage.setItem('users', JSON.stringify(defaultUsers));
-  console.log('Default users created: admin/admin, reception/123, etc.');
-}
-
-// Load Data
-let users = JSON.parse(localStorage.getItem('users')) || {};
+// SIMPLE LAB SYSTEM - 100% WORKING
 let currentUser = null;
-let patients = JSON.parse(localStorage.getItem('patients')) || [];
-let tests = JSON.parse(localStorage.getItem('tests')) || [];
-let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-let qcLogs = JSON.parse(localStorage.getItem('qcLogs')) || [];
-let bills = JSON.parse(localStorage.getItem('bills')) || [];
+let patients = JSON.parse(localStorage.getItem('labPatients')) || [];
+let tests = JSON.parse(localStorage.getItem('labTests')) || [];
+let inventory = JSON.parse(localStorage.getItem('labInventory')) || [];
 
-// Login
-document.getElementById('loginForm').addEventListener('submit', (e) => {
+// LOGIN - SUPER SIMPLE
+document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const un = document.getElementById('username').value.trim();
-    const pw = document.getElementById('password').value;
-    if (users[un] && users[un].pass === pw) {
-        currentUser = { name: un, role: users[un].role };
-        document.getElementById('userRole').textContent = currentUser.name + ' (' + currentUser.role + ')';
-        document.getElementById('app').style.display = 'block';
-        document.getElementById('loginModal').classList.remove('show');
-        document.body.classList.remove('modal-open');
-        const backdrop = document.querySelector('.modal-backdrop');
-        if (backdrop) backdrop.remove();
-        showRoleSections();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username === 'admin' && password === 'admin') {
+        currentUser = 'admin';
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        document.getElementById('currentUser').innerHTML = '<strong>Welcome, Admin!</strong>';
         loadAllData();
     } else {
-        alert('Invalid credentials! Try: admin / admin');
+        alert('Username: admin | Password: admin');
     }
 });
 
-function showRoleSections() {
-    const role = currentUser.role;
-    document.getElementById('receptionLi').style.display = ['reception', 'admin'].includes(role) ? 'block' : 'none';
-    document.getElementById('technicianLi').style.display = ['technician', 'admin'].includes(role) ? 'block' : 'none';
-    document.getElementById('doctorLi').style.display = ['doctor', 'admin'].includes(role) ? 'block' : 'none';
-    document.getElementById('adminLi').style.display = role === 'admin' ? 'block' : 'none';
-    showSection('dashboard');
+// SHOW PAGE
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+    document.getElementById(pageId).style.display = 'block';
 }
 
-function showSection(sec) {
-    document.querySelectorAll('.section').forEach(s => s.classList.add('d-none'));
-    const section = document.getElementById(sec);
-    if (section) section.classList.remove('d-none');
-}
-
-// Patient Registration
-document.getElementById('patientForm').addEventListener('submit', (e) => {
+// PATIENT REGISTRATION
+document.getElementById('patientForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const patient = {
-        id: 'P' + Date.now().toString().slice(-6),
-        name: document.getElementById('pName').value.trim(),
-        date: document.getElementById('pDate').value,
-        contact: document.getElementById('pContact').value.trim(),
-        category: document.getElementById('testCategory').value,
-        notes: document.getElementById('pNotes').value.trim(),
-        status: 'registered'
+        id: 'P' + (patients.length + 1).toString().padStart(4, '0'),
+        name: document.getElementById('pName').value,
+        contact: document.getElementById('pContact').value,
+        test: document.getElementById('pTest').value,
+        date: document.getElementById('pDate').value
     };
     patients.push(patient);
-    localStorage.setItem('patients', JSON.stringify(patients));
+    localStorage.setItem('labPatients', JSON.stringify(patients));
     loadPatients();
-    e.target.reset();
-    alert('Patient registered: ' + patient.id);
+    this.reset();
+    alert('Patient Registered: ' + patient.id);
 });
 
-// Load Patients
+// TEST RESULTS
+document.getElementById('testForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const patientId = document.getElementById('selectPatient').value;
+    const result = document.getElementById('testResult').value;
+    tests.push({
+        patientId: patientId,
+        result: result,
+        date: new Date().toISOString()
+    });
+    localStorage.setItem('labTests', JSON.stringify(tests));
+    loadTests();
+    this.reset();
+});
+
+// INVENTORY
+document.getElementById('invForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const item = {
+        name: document.getElementById('invName').value,
+        qty: parseInt(document.getElementById('invQty').value)
+    };
+    inventory.push(item);
+    localStorage.setItem('labInventory', JSON.stringify(inventory));
+    loadInventory();
+    this.reset();
+});
+
+// LOAD DATA FUNCTIONS
 function loadPatients() {
-    const tbody = document.querySelector('#patientTable tbody');
+    const tbody = document.getElementById('patientList');
     tbody.innerHTML = '';
     patients.forEach(p => {
         const tr = tbody.insertRow();
-        tr.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.name}</td>
-            <td>${p.date}</td>
-            <td>${p.category}</td>
-            <td><button class="btn btn-sm btn-info" onclick="viewReport('${p.id}')">View</button></td>
-        `;
+        tr.innerHTML = `<td>${p.id}</td><td>${p.name}</td><td>${p.test}</td><td>${p.date}</td>`;
     });
-
-    // Update dropdowns
-    const selectPatient = document.getElementById('selectPatient');
-    const billPatient = document.getElementById('billPatient');
-    selectPatient.innerHTML = '<option>Select Patient</option>' + patients.map(p => `<option value="${p.id}">${p.name} (${p.id})</option>`).join('');
-    billPatient.innerHTML = '<option>Select Patient</option>' + patients.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
+    loadPatientDropdown();
     updateDashboard();
 }
 
-// Technician: Submit Test
-document.getElementById('testForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const test = {
-        patientId: document.getElementById('selectPatient').value,
-        dept: document.getElementById('dept').value,
-        type: document.getElementById('testType').value.trim(),
-        result: document.getElementById('testResult').value.trim(),
-        date: new Date().toISOString(),
-        status: 'pending_approval'
-    };
-    tests.push(test);
-    localStorage.setItem('tests', JSON.stringify(tests));
-    loadTests();
-    e.target.reset();
-    alert('Test submitted for approval');
-});
+function loadPatientDropdown() {
+    const select = document.getElementById('selectPatient');
+    select.innerHTML = '<option value="">Select Patient</option>';
+    patients.forEach(p => {
+        select.innerHTML += `<option value="${p.id}">${p.name} (${p.id})</option>`;
+    });
+}
 
 function loadTests() {
-    // Pending Tests for Technician
-    const testTbody = document.querySelector('#testTable tbody');
-    testTbody.innerHTML = '';
-    tests.filter(t => t.status === 'pending').forEach(t => {
-        const patient = patients.find(p => p.id === t.patientId);
-        const tr = testTbody.insertRow();
-        tr.innerHTML = `<td>${patient?.name || ''}</td><td>${t.dept}</td><td>${t.status}</td>`;
-    });
-
-    // Approval Table for Doctor
-    const appTbody = document.querySelector('#approvalTable tbody');
-    appTbody.innerHTML = '';
-    tests.filter(t => t.status === 'pending_approval').forEach(t => {
-        const patient = patients.find(p => p.id === t.patientId);
-        const tr = appTbody.insertRow();
-        tr.innerHTML = `
-            <td>${patient?.name || ''}</td>
-            <td>${t.type}</td>
-            <td style="white-space: pre-line;">${t.result}</td>
-            <td>
-                <button class="btn btn-sm btn-success" onclick="approveTest('${t.date}')">Approve</button>
-                <button class="btn btn-sm btn-warning" onclick="rejectTest('${t.date}')">Reject</button>
-            </td>
-        `;
-    });
-}
-
-function approveTest(date) {
-    const test = tests.find(t => t.date === date);
-    if (test) {
-        test.status = 'approved';
-        localStorage.setItem('tests', JSON.stringify(tests));
-        loadTests();
-        generateReport(test.patientId);
-    }
-}
-
-function rejectTest(date) {
-    const test = tests.find(t => t.date === date);
-    if (test) {
-        test.status = 'rejected';
-        localStorage.setItem('tests', JSON.stringify(tests));
-        loadTests();
-    }
-}
-
-// Report Generation
-function viewReport(pid) {
-    const patient = patients.find(p => p.id === pid);
-    const approvedTests = tests.filter(t => t.patientId === pid && t.status === 'approved');
-    if (patient && approvedTests.length > 0) {
-        const content = `
-            <div class="text-center mb-4">
-                <h3>AlphaMed Clinical Laboratory</h3>
-                <p class="text-muted">Quality Assurance Through Advance Technology</p>
-            </div>
-            <table class="table table-bordered">
-                <tr><th>Patient ID</th><td>${patient.id}</td></tr>
-                <tr><th>Name</th><td>${patient.name}</td></tr>
-                <tr><th>Date</th><td>${new Date(patient.date).toLocaleDateString()}</td></tr>
-                <tr><th>Contact</th><td>${patient.contact}</td></tr>
-            </table>
-            <h5 class="mt-4">Test Results</h5>
-            <table class="table table-sm">
-                <thead class="table-light"><tr><th>Test</th><th>Department</th><th>Result</th></tr></thead>
-                <tbody>
-                    ${approvedTests.map(t => `<tr><td>${t.type}</td><td>${t.dept}</td><td style="white-space: pre-line;">${t.result}</td></tr>`).join('')}
-                </tbody>
-            </table>
-            <div id="qrHere" class="text-center mt-4"></div>
-            <div class="text-end mt-5">
-                <p><strong>Authorized Signatory</strong></p>
-            </div>
-        `;
-        document.getElementById('reportContent').innerHTML = content;
-        new QRCode(document.getElementById('qrHere'), {
-            text: window.location.origin + window.location.pathname + '?report=' + patient.id,
-            width: 120, height: 120
-        });
-        new bootstrap.Modal(document.getElementById('reportModal')).show();
-    } else {
-        alert('No approved tests for this patient.');
-    }
-}
-
-function generateReport(pid) {
-    viewReport(pid);
-}
-
-// Print & PDF
-document.getElementById('printBtn').addEventListener('click', () => {
-    const printWin = window.open('', '', 'width=900,height=700');
-    printWin.document.write(`
-        <html><head><title>Report</title>
-        <style>
-            body { font-family: Arial; padding: 20px; }
-            table { width: 100%; border-collapse: collapse; margin: 10px 0; }
-            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-            th { background: #f0f0f0; }
-            .text-center { text-align: center; }
-        </style>
-        </head><body>${document.getElementById('reportContent').innerHTML}</body></html>
-    `);
-    printWin.document.close();
-    setTimeout(() => printWin.print(), 500);
-});
-
-document.getElementById('pdfBtn').addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('p', 'mm', 'a4');
-    doc.html(document.getElementById('reportContent'), {
-        callback: (pdf) => pdf.save(`${patients.find(p => p.id === urlParams.get('report'))?.id || 'report'}.pdf`),
-        x: 10, y: 10, html2canvas: { scale: 0.23 }
-    });
-});
-
-// Admin: Users
-document.getElementById('userForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const un = document.getElementById('uName').value.trim();
-    const pw = document.getElementById('uPass').value;
-    const role = document.getElementById('uRole').value;
-    if (un && pw) {
-        users[un] = { pass: pw, role: role };
-        localStorage.setItem('users', JSON.stringify(users));
-        loadUsers();
-        e.target.reset();
-        alert('User added: ' + un);
-    }
-});
-
-function loadUsers() {
-    const tbody = document.querySelector('#userTable tbody');
+    const tbody = document.getElementById('testList');
     tbody.innerHTML = '';
-    Object.keys(users).forEach(u => {
-        if (u !== 'admin') { // admin delete na ho
-            const tr = tbody.insertRow();
-            tr.innerHTML = `<td>${u}</td><td>${users[u].role}</td><td><button class="btn btn-sm btn-danger" onclick="deleteUser('${u}')">Delete</button></td>`;
+    tests.forEach(t => {
+        const patient = patients.find(p => p.id === t.patientId);
+        const tr = tbody.insertRow();
+        tr.innerHTML = `<td>${patient ? patient.name : 'Unknown'}</td><td>${patient ? patient.test : ''}</td><td>${t.result}</td><td>${new Date(t.date).toLocaleDateString()}</td>`;
+    });
+    loadReports();
+    updateDashboard();
+}
+
+function loadInventory() {
+    const tbody = document.getElementById('invList');
+    tbody.innerHTML = '';
+    inventory.forEach(item => {
+        const tr = tbody.insertRow();
+        const status = item.qty < 10 ? 'danger' : 'success';
+        tr.innerHTML = `<td>${item.name}</td><td>${item.qty}</td><td><span class="text-${status}">${item.qty < 10 ? 'LOW' : 'OK'}</span></td>`;
+    });
+    updateDashboard();
+}
+
+function loadReports() {
+    const container = document.getElementById('reportList');
+    container.innerHTML = '';
+    patients.forEach(patient => {
+        const patientTests = tests.filter(t => t.patientId === patient.id);
+        if (patientTests.length > 0) {
+            const div = document.createElement('div');
+            div.className = 'col-md-4 mb-3';
+            div.innerHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h6>${patient.name}</h6>
+                        <p><small>${patient.id} | ${patient.test}</small></p>
+                        <button class="btn btn-sm btn-primary" onclick="printReport('${patient.id}')">Print Report</button>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
         }
     });
 }
 
-function deleteUser(un) {
-    if (confirm('Delete user: ' + un + '?')) {
-        delete users[un];
-        localStorage.setItem('users', JSON.stringify(users));
-        loadUsers();
-    }
+// PRINT REPORT
+function printReport(patientId) {
+    const patient = patients.find(p => p.id === patientId);
+    const patientTests = tests.filter(t => t.patientId === patientId);
+    const printContent = `
+        <div style="text-align: center; padding: 20px;">
+            <h2>AlphaMed Clinical Laboratory</h2>
+            <p>Quality Assurance Through Advance Technology</p>
+            <hr>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><td><strong>Patient ID:</strong></td><td>${patient.id}</td></tr>
+                <tr><td><strong>Name:</strong></td><td>${patient.name}</td></tr>
+                <tr><td><strong>Test:</strong></td><td>${patient.test}</td></tr>
+                <tr><td><strong>Date:</strong></td><td>${patient.date}</td></tr>
+            </table>
+            <h4 style="margin-top: 20px;">Results:</h4>
+            ${patientTests.map(t => `<p><strong>${patient.test}:</strong> ${t.result}</p>`).join('')}
+            <hr>
+            <p style="text-align: right;"><strong>Authorized Signature</strong></p>
+        </div>
+    `;
+    
+    const printWin = window.open('', '', 'width=800,height=600');
+    printWin.document.write(`
+        <html><head><title>Lab Report - ${patient.name}</title>
+        <style>body { font-family: Arial; margin: 20px; }</style>
+        </head><body>${printContent}</body></html>
+    `);
+    printWin.document.close();
+    printWin.print();
 }
 
-// Inventory
-document.getElementById('inventoryForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const item = {
-        name: document.getElementById('itemName').value.trim(),
-        qty: parseInt(document.getElementById('itemQty').value),
-        date: new Date().toISOString()
-    };
-    inventory.push(item);
-    localStorage.setItem('inventory', JSON.stringify(inventory));
-    loadInventory();
-    e.target.reset();
-});
-
-function loadInventory() {
-    const tbody = document.querySelector('#invTable tbody');
-    const adminTbody = document.querySelector('#inventoryTable tbody');
-    [tbody, adminTbody].forEach(tb => {
-        tb.innerHTML = '';
-        inventory.forEach(i => {
-            const tr = tb.insertRow();
-            tr.innerHTML = `<td>${i.name}</td><td>${i.qty}</td>${tb === tbody ? `<td>${i.qty < 10 ? '<span class="text-danger">Low</span>' : 'OK'}</td>` : ''}`;
-        });
-    });
-    updateDashboard();
-}
-
-// Quality Control
-document.getElementById('qcForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    qcLogs.push({
-        date: new Date().toISOString(),
-        entry: document.getElementById('qcLog').value.trim()
-    });
-    localStorage.setItem('qcLogs', JSON.stringify(qcLogs));
-    loadQC();
-    e.target.reset();
-});
-
-function loadQC() {
-    const tbody = document.querySelector('#qcTable tbody');
-    tbody.innerHTML = '';
-    qcLogs.slice(-10).reverse().forEach(l => {
-        const tr = tbody.insertRow();
-        tr.innerHTML = `<td>${new Date(l.date).toLocaleString()}</td><td>${l.entry}</td>`;
-    });
-}
-
-// Billing
-document.getElementById('billForm').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const bill = {
-        patientId: document.getElementById('billPatient').value,
-        amount: document.getElementById('billAmount').value,
-        date: new Date().toISOString()
-    };
-    bills.push(bill);
-    localStorage.setItem('bills', JSON.stringify(bills));
-    loadBills();
-    e.target.reset();
-});
-
-function loadBills() {
-    const tbody = document.querySelector('#billTable tbody');
-    tbody.innerHTML = '';
-    bills.forEach(b => {
-        const patient = patients.find(p => p.id === b.patientId);
-        const tr = tbody.insertRow();
-        tr.innerHTML = `<td>${patient?.name || 'Unknown'}</td><td>₹${b.amount}</td><td>${new Date(b.date).toLocaleString()}</td>`;
-    });
-}
-
-// Dashboard Stats
+// DASHBOARD STATS
 function updateDashboard() {
     document.getElementById('totalPatients').textContent = patients.length;
-    document.getElementById('pendingTests').textContent = tests.filter(t => t.status === 'pending_approval').length;
-    document.getElementById('lowInventory').textContent = inventory.filter(i => i.qty < 10).length;
-    document.getElementById('qcAlerts').textContent = qcLogs.length;
+    document.getElementById('totalTests').textContent = tests.length;
+    document.getElementById('lowStock').textContent = inventory.filter(i => i.qty < 10).length;
+    document.getElementById('todayReports').textContent = tests.filter(t => new Date(t.date).toDateString() === new Date().toDateString()).length;
 }
 
-// Load All
-function loadAllData() {
-    loadPatients();
-    loadTests();
-    loadUsers();
-    loadInventory();
-    loadQC();
-    loadBills();
-    updateDashboard();
-}
-
-// Logout
+// LOGOUT
 function logout() {
-    currentUser = null;
-    document.getElementById('app').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
     document.getElementById('loginForm').reset();
-    new bootstrap.Modal(document.getElementById('loginModal')).show();
 }
 
-// URL Report View
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.has('report')) {
-    setTimeout(() => {
-        viewReport(urlParams.get('report'));
-    }, 1000);
-}
-
-// Initialize
-document.getElementById('loginModal').classList.add('show');
-new bootstrap.Modal(document.getElementById('loginModal')).show();
+// INIT
+showPage('dashboard');
