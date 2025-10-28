@@ -1,36 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
+  <!-- Meta Tags for SEO & Performance -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AlphaMed Clinical Laboratory Management System">
-  <title>AlphaMed Clinical Laboratory</title>
+  <meta name="description" content="AlphaMed Clinical Laboratory Management System - Professional diagnostic services with advanced patient registration, test management, and reporting.">
+  <meta name="keywords" content="laboratory, clinical lab, patient registration, test results, medical diagnostics, AlphaMed">
+  <meta name="author" content="AlphaMed Clinical Laboratory">
+  
+  <!-- Open Graph for Social Sharing -->
+  <meta property="og:title" content="AlphaMed Clinical Laboratory">
+  <meta property="og:description" content="State-of-the-art laboratory management system">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://alphamed-lab.com">
+  <meta property="og:image" content="logo.png">
+  
+  <!-- PWA Meta -->
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="manifest.json"> <!-- Add later -->
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <title>AlphaMed Clinical Laboratory Management System</title>
+  
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="logo.png" as="image">
+  
+  <!-- Security: Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
-  <nav class="nav" aria-label="Main navigation">
-    <a href="login.html">Login</a>
-    <a href="register_patient.html">Register Patient</a>
-    <a href="settings.html">Settings</a>
-    <a href="admin.html">Admin</a>
-    <a href="reception.html">Reception</a>
-    <a href="technician.html">Technician</a>
-    <a href="view_reports.html">View Reports</a>
-  </nav>
-  <button class="nav-toggle" aria-label="Toggle navigation">
-    <span class="hamburger"></span>
-  </button>
-
-  <div class="header">
-    <h1>AlphaMed Clinical Laboratory</h1>
-    <p>Welcome to our state-of-the-art laboratory management system</p>
-  </div>
-
-  <div class="container">
-    <h2>About Us</h2>
-    <p>AlphaMed Clinical Laboratory provides accurate and timely diagnostic services. Use the navigation to register patients, manage settings, or view reports.</p>
-  </div>
-
-  <script type="module" src="nav.js"></script>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Header with Navigation -->
+  <header class="header" role="banner">
+    <!-- Logo & Branding -->
+    <div class="header-brand">
+      <img src="logo.png" alt="AlphaMed Clinical Laboratory Logo" class="logo" width="50" height="50" loading="eager">
+      <div class="brand-text">
+        <h1 class="brand-name">AlphaMed Clinical Laboratory</h1>
+        <p class="brand-tagline">Advanced Diagnostic Solutions</p>
+      </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <nav class="nav" aria-label="Main navigation" role="navigation">
+      <ul class="nav-list" id="navList">
+        <li><a href="login.html" class="nav-link" aria-label="Login to the system"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        <li><a href="register_patient.html" class="nav-link" aria-label="Register new patient"><i class="fas fa-user-plus"></i> Register Patient</a></li>
+        <li><a href="reception.html" class="nav-link" aria-label="Reception dashboard"><i class="fas fa-users"></i> Reception</a></li>
+        <li><a href="technician.html" class="nav-link" aria-label="Technician panel"><i class="fas fa-flask"></i> Technician</a></li>
+        <li><a href="view_reports.html" class="nav-link" aria-label="View test reports"><i class="fas fa-file-medical"></i> View Reports</a></li>
+        <li><a href="admin.html" class="nav-link" aria-label="Admin panel"><i class="fas fa-cog"></i> Admin</a></li>
+        <li><a href="settings.html" class="nav-link" aria-label="System settings"><i class="fas fa-sliders-h"></i> Settings</a></li>
+      </ul>
+      
+      <!-- Mobile Toggle -->
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navList">
+        <span class="hamburger" aria-hidden="true"></span>
+        <span class="sr-only">Menu</span>
+      </button>
+    </nav>
+  </header>
+  
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <!-- Hero Section -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="container">
+        <header class="hero-header">
+          <h1 id="hero-heading" class="hero-title">Welcome to AlphaMed Clinical Laboratory</h1>
+          <p class="hero-description">Your trusted partner for accurate and timely diagnostic services. Our state-of-the-art laboratory management system ensures seamless patient registration, test management, and result delivery.</p>
+        </header>
+        
+        <!-- Call to Action Buttons -->
+        <div class="hero-actions">
+          <a href="login.html" class="btn btn-primary" aria-label="Get started by logging in">
+            <i class="fas fa-sign-in-alt"></i> Get Started
+          </a>
+          <a href="register_patient.html" class="btn btn-secondary" aria-label="Register a new patient">
+            <i class="fas fa-user-plus"></i> Register Patient
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about" aria-labelledby="about-heading">
+      <div class="container">
+        <header class="section-header">
+          <h2 id="about-heading" class="section-title">About AlphaMed</h2>
+          <p class="section-subtitle">Excellence in Clinical Diagnostics</p>
+        </header>
+        
+        <div class="about-content">
+          <p>AlphaMed Clinical Laboratory is committed to providing accurate, reliable, and timely diagnostic services. Our advanced laboratory management system streamlines operations from patient registration to result delivery, ensuring compliance with international healthcare standards.</p>
+          
+          <div class="features-grid">
+            <div class="feature-card">
+              <i class="fas fa-user-check" aria-hidden="true"></i>
+              <h3>Patient-Centric</h3>
+              <p>Seamless registration and tracking for optimal patient experience.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-chart-line" aria-hidden="true"></i>
+              <h3>Real-Time Results</h3>
+              <p>Instant access to test results and comprehensive reporting.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-shield-alt" aria-hidden="true"></i>
+              <h3>Secure & Compliant</h3>
+              <p>HIPAA-inspired security and international standard compliance.</p>
+            </div>
+            <div class="feature-card">
+              <i class="fas fa-cogs" aria-hidden="true"></i>
+              <h3>Role-Based Access</h3>
+              <p>Specialized dashboards for reception, technicians, and administrators.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <img src="logo.png" alt="AlphaMed Clinical Laboratory Logo" class="footer-logo" width="40" height="40">
+          <p>&copy; 2025 AlphaMed Clinical Laboratory. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script type="module" src="nav.js" defer></script>
+  <script type="module" src="utils.js" defer></script>
+  
+  <!-- Service Worker for PWA (Optional) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW registration failed'));
+      });
+    }
+  </script>
 </body>
 </html>
