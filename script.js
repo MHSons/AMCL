@@ -1,6 +1,17 @@
-// Default Users (Admin: admin/admin)
-const defaultUsers = { 'admin': { pass: 'admin', role: 'admin' } };
-let users = JSON.parse(localStorage.getItem('users')) || defaultUsers;
+// AUTO CREATE DEFAULT USERS ON FIRST LOAD
+if (!localStorage.getItem('users')) {
+  const defaultUsers = {
+    'admin': { pass: 'admin', role: 'admin' },
+    'reception': { pass: '123', role: 'reception' },
+    'technician': { pass: '123', role: 'technician' },
+    'doctor': { pass: '123', role: 'doctor' }
+  };
+  localStorage.setItem('users', JSON.stringify(defaultUsers));
+  console.log('Default users created: admin/admin, reception/123, etc.');
+}
+
+// Baki code same rahega...
+let users = JSON.parse(localStorage.getItem('users')) || {};
 let currentUser = null;
 let patients = JSON.parse(localStorage.getItem('patients')) || [];
 let tests = JSON.parse(localStorage.getItem('tests')) || [];
@@ -11,20 +22,21 @@ let bills = JSON.parse(localStorage.getItem('bills')) || [];
 // Login
 document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    const un = document.getElementById('username').value;
+    const un = document.getElementById('username').value.trim();
     const pw = document.getElementById('password').value;
     if (users[un] && users[un].pass === pw) {
         currentUser = { name: un, role: users[un].role };
         document.getElementById('userRole').textContent = currentUser.name + ' (' + currentUser.role + ')';
         document.getElementById('app').style.display = 'block';
         document.getElementById('loginModal').classList.remove('show');
+        document.body.classList.remove('modal-open');
+        document.querySelector('.modal-backdrop')?.remove();
         showRoleSections();
         loadAllData();
     } else {
-        alert('Invalid credentials');
+        alert('Invalid credentials! Try: admin / admin');
     }
 });
-
 function showRoleSections() {
     const role = currentUser.role;
     document.getElementById('receptionLi').style.display = role === 'reception' || role === 'admin' ? 'block' : 'none';
