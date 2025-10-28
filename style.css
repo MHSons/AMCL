@@ -1,26 +1,69 @@
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
 }
 
-header, footer {
-    background-color: #007bff; /* Blue for professional feel */
+.header-bg {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom: 5px solid #5a67d8;
 }
 
-section {
-    border-radius: 8px;
+.logo-img {
+    height: 100px;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.5));
 }
 
-.btn {
-    transition: background-color 0.3s;
+.lab-name {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    margin: 0;
 }
 
-.btn:hover {
-    background-color: #0056b3;
+.tagline {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin: 5px 0 0;
+    opacity: 0.9;
 }
 
-/* Responsive adjustments */
+/* Report Paper Style */
+.report-paper {
+    background: white;
+    padding: 30px;
+    border: 1px solid #ddd;
+    position: relative;
+    min-height: 600px;
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 200px;
+    background-opacity: 0.08;
+    opacity: 0.95;
+}
+
+.report-paper::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('logo.png') center/180px no-repeat;
+    opacity: 0.07;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.report-content {
+    position: relative;
+    z-index: 1;
+}
+
+#printReport {
+    background: #28a745;
+}
+
 @media (max-width: 768px) {
-    h1 { font-size: 1.5rem; }
+    .lab-name { font-size: 2rem; }
+    .logo-img { height: 70px; }
 }
